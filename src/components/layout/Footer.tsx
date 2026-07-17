@@ -12,10 +12,6 @@ export function Footer() {
     <footer
       className="bg-[#0F0F0F] px-4 py-16 md:px-[200px]"
       aria-label="Site footer"
-      style={{
-        backgroundImage: "url(/paper-texture.webp)",
-        backgroundRepeat: "repeat",
-      }}
     >
       <blockquote className="font-serif italic text-[36px] leading-[1.3] text-white/90">
         &ldquo;{QUOTE}&rdquo;

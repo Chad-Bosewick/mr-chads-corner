@@ -27,8 +27,9 @@ export function NavMobile({ items, currentPath, onClose }: NavMobileProps) {
       className="animate-slide-in-left fixed inset-0 z-50 flex items-center justify-center"
       style={{
         backgroundColor: '#0F0F0F',
-        backgroundImage: 'url(/paper-texture.webp)',
+        backgroundImage: 'url(/menu-bg-mobile.webp)',
         backgroundRepeat: 'repeat',
+        backgroundSize: 'cover',
       }}
     >
       <button
