@@ -38,7 +38,13 @@ export default function RootLayout({
       lang="en"
       className={`${plusJakartaSans.variable} ${lora.variable}`}
     >
-      <body className="min-h-screen bg-[url('/paper-texture.webp')] bg-repeat font-sans">
+      <body
+        className="min-h-screen font-sans"
+        style={{
+          backgroundImage: 'url(/paper-texture.webp)',
+          backgroundRepeat: 'repeat',
+        }}
+      >
         <a href="#main-content" className="skip-link">
           Skip to main content
         </a>

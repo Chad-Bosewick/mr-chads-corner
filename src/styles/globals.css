@@ -31,8 +31,6 @@
   --motion-reduced: 0;
 }
 
-@custom-media --motion-ok (prefers-reduced-motion: no-preference);
-
 @media (prefers-reduced-motion: reduce) {
   :root {
     --motion-reduced: 1;
@@ -85,4 +83,36 @@ body {
 
 .skip-link:focus {
   top: 8px;
+}
+
+/* ===== Animation Keyframes ===== */
+@keyframes slide-in-left {
+  from { transform: translateX(-100%); }
+  to { transform: translateX(0); }
+}
+
+@keyframes fade-in-up {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Motion-controlled animation utilities */
+@media (prefers-reduced-motion: no-preference) {
+  .animate-slide-in-left {
+    animation: slide-in-left var(--duration-standard) var(--ease-out) forwards;
+  }
+
+  .animate-fade-in-up {
+    opacity: 0;
+    animation: fade-in-up var(--duration-standard) var(--ease-out) forwards;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-slide-in-left,
+  .animate-fade-in-up {
+    opacity: 1;
+    transform: none;
+    animation: none;
+  }
 }
