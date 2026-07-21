@@ -2,9 +2,7 @@ export interface ContentSection {
   type: "text" | "image-pair" | "metrics" | "full-image";
   heading?: string;
   body?: string;
-  /** For image-pair and full-image types */
   images?: { src: string; alt: string; caption?: string }[];
-  /** For metrics type */
   metrics?: { label: string; value: string }[];
 }
 
@@ -40,14 +38,37 @@ export const todoApp: CaseStudy = {
       body: "Users reported that TODO++ had become overwhelming. The average user was only engaging with 20% of available features, but those features were increasingly difficult to find beneath layers of menus and configuration screens. The churn rate had increased by 15% over two quarters, primarily driven by users migrating to tools that offered a simpler experience — even when those tools had objectively fewer capabilities.",
     },
     {
+      type: "image-pair",
+      heading: "User research — personas",
+      images: [
+        { src: "/images/case-studies/todo-app-persona-1.webp", alt: "TODO++ user persona — power user", caption: "Power user persona — needs advanced features without clutter" },
+        { src: "/images/case-studies/todo-app-persona-2.webp", alt: "TODO++ user persona — casual user", caption: "Casual user persona — wants simplicity over options" },
+      ],
+    },
+    {
       type: "text",
       heading: "Defining the principles",
       body: "We established three design principles that guided every decision: reduce cognitive load before adding features, make the most common paths the most prominent paths, and preserve power through progressive disclosure rather than sacrificing depth for simplicity. These principles became the litmus test for every design decision throughout the project.",
     },
     {
+      type: "full-image",
+      heading: "Redesigned interface",
+      images: [
+        { src: "/images/case-studies/todo-app-homepage-task.webp", alt: "TODO++ redesigned task view", caption: "The redesigned task view — clear hierarchy, focused on what matters" },
+      ],
+    },
+    {
       type: "text",
       heading: "The intelligent inbox",
       body: "The centrepiece of the redesign was the intelligent inbox — a smart prioritisation layer that surfaces the most relevant tasks based on deadlines, dependencies, and user behaviour patterns. Rather than forcing users to organise their work into folders and tags, the system learns how each user works and adapts the view accordingly. Users who want manual control can still access the full organisational model, but it no longer sits in the critical path of daily use.",
+    },
+    {
+      type: "full-image",
+      heading: "Onboarding flow",
+      images: [
+        { src: "/images/case-studies/todo-app-new-user-sync.webp", alt: "TODO++ new user sync screen", caption: "Onboarding — getting started with intelligent sync" },
+        { src: "/images/case-studies/todo-app-new-user-link-device.webp", alt: "TODO++ device linking", caption: "Cross-device setup — seamless transition between devices" },
+      ],
     },
     {
       type: "metrics",
@@ -63,6 +84,12 @@ export const todoApp: CaseStudy = {
       type: "text",
       heading: "Collaboration with engineering",
       body: "The implementation required close collaboration with the engineering team to ensure that the intelligent inbox was powered by meaningful signals without compromising user privacy or creating a black-box recommendation system. We held weekly design reviews where engineers could challenge assumptions about what data was available and what would be useful. This collaboration resulted in a transparent priority system that users could understand and adjust — no mysterious algorithms.",
+    },
+    {
+      type: "full-image",
+      images: [
+        { src: "/images/case-studies/todo-app-complete-task.webp", alt: "TODO++ completed task state", caption: "Completed task view — satisfying visual feedback without clutter" },
+      ],
     },
     {
       type: "text",
@@ -90,9 +117,33 @@ export const lettersApp: CaseStudy = {
       body: "The core design tension was immediately clear: how do you create a product that encourages considered communication without frustrating users who expect instant responses? Our research showed that users already felt overwhelmed by instant messaging — they wanted a way to communicate that felt deliberate without requiring a significant time commitment. The solution was not to slow down the interface but to change the expectations around response time.",
     },
     {
+      type: "full-image",
+      heading: "The inbox experience",
+      images: [
+        { src: "/images/case-studies/letters-app-homepage-post-1.webp", alt: "Letters App inbox view", caption: "The inbox — envelopes with preview windows, no read receipts, no typing indicators" },
+        { src: "/images/case-studies/letters-app-homepage-post-2.webp", alt: "Letters App homepage", caption: "Home feed — letters from your circle, organised by person" },
+      ],
+    },
+    {
       type: "text",
       heading: "Designing for anticipation",
-      body: "We designed the experience around the emotional arc of sending and receiving. Writing a letter involves intention — choosing words, arranging thoughts, deciding what matters. The interface was designed to support that reflection without adding friction. The inbox displays letters as physical envelopes, with the first few words visible through a translucent window — creating anticipation before opening. Delivery notifications are calm rather than demanding, arriving as a subtle badge rather than a banner interruption.",
+      body: "We designed the experience around the emotional arc of sending and receiving. Writing a letter involves intention — choosing words, arranging thoughts, deciding what matters. The interface was designed to support that reflection without adding friction. Delivery notifications are calm rather than demanding, arriving as a subtle badge rather than a banner interruption.",
+    },
+    {
+      type: "image-pair",
+      heading: "Writing and connecting",
+      images: [
+        { src: "/images/case-studies/letters-app-my-letters.webp", alt: "Letters App my letters view", caption: "My letters — a personal archive of correspondence" },
+        { src: "/images/case-studies/letters-app-my-pals.webp", alt: "Letters App pals page", caption: "My Pals — manage your correspondence circle" },
+      ],
+    },
+    {
+      type: "full-image",
+      heading: "Personality and connection",
+      images: [
+        { src: "/images/case-studies/letters-app-persona-details.webp", alt: "Letters App persona details", caption: "Persona details — understanding communication preferences" },
+        { src: "/images/case-studies/letters-app-personality-analysis.webp", alt: "Letters App personality analysis", caption: "Personality insights — how your communication style comes across" },
+      ],
     },
     {
       type: "metrics",
@@ -110,18 +161,85 @@ export const lettersApp: CaseStudy = {
       body: "Because the product depended so heavily on emotional cues and visual metaphors (envelopes, seals, handwriting-style typography), accessibility was not an afterthought but a core design driver. Every visual metaphor had a text-based alternative. The envelope preview had an accessible version that read the first sentence. The handwriting font was decorative only — all body text used system fonts with full accessibility support. Colour was never the sole indicator of urgency or importance.",
     },
     {
+      type: "full-image",
+      heading: "Showcase",
+      images: [
+        { src: "/images/case-studies/letters-app-showcase.webp", alt: "Letters App showcase", caption: "The complete Letters App experience" },
+      ],
+    },
+    {
       type: "text",
       heading: "Reflections",
       body: "Letters App taught me that emotional design doesn't require complex animations or elaborate visual treatments. The most emotionally resonant elements were simple: a letter that slowly appears to open, a seal that breaks when read, an inbox that treats each message as something valuable rather than something to process and discard. These moments worked because they were grounded in a real understanding of how people want to connect — not because they were visually impressive.",
     },
   ],
-  nextSlug: "enviodeck",
+  nextSlug: "credlane",
   prevSlug: "todo-app",
+};
+
+export const credlane: CaseStudy = {
+  slug: "credlane",
+  title: "Credlane",
+  category: "Fintech",
+  role: "Product design — UX, UI, design system",
+  timeline: "2026",
+  overview: "Case study content coming soon.",
+  coverSrc: "/images/case-studies/credlane-cover.webp",
+  sections: [
+    {
+      type: "text",
+      heading: "Coming soon",
+      body: "This case study is being prepared. Check back for the full story.",
+    },
+  ],
+  nextSlug: "testground",
+  prevSlug: "letters-app",
+};
+
+export const testground: CaseStudy = {
+  slug: "testground",
+  title: "Testground",
+  category: "Developer Tools",
+  role: "Product design — UX, UI",
+  timeline: "2026",
+  overview: "Case study content coming soon.",
+  coverSrc: "/images/case-studies/testground-cover.webp",
+  sections: [
+    {
+      type: "text",
+      heading: "Coming soon",
+      body: "This case study is being prepared. Check back for the full story.",
+    },
+  ],
+  nextSlug: "draftly",
+  prevSlug: "credlane",
+};
+
+export const draftly: CaseStudy = {
+  slug: "draftly",
+  title: "Draftly",
+  category: "Content Creation",
+  role: "Product design — UX, UI",
+  timeline: "2026",
+  overview: "Case study content coming soon.",
+  coverSrc: "/images/case-studies/draftly-cover.webp",
+  sections: [
+    {
+      type: "text",
+      heading: "Coming soon",
+      body: "This case study is being prepared. Check back for the full story.",
+    },
+  ],
+  nextSlug: null,
+  prevSlug: "testground",
 };
 
 export const caseStudies: Record<string, CaseStudy> = {
   "todo-app": todoApp,
   "letters-app": lettersApp,
+  "credlane": credlane,
+  "testground": testground,
+  "draftly": draftly,
 };
 
 export function getCaseStudy(slug: string): CaseStudy | undefined {
