@@ -1,39 +1,43 @@
 import { HeroHeading } from "@/components/sections/HeroHeading";
 import { SectionReveal } from "@/components/sections/SectionReveal";
 import { ProjectRow } from "@/components/sections/ProjectRow";
+import { PageShell } from "@/components/layout/PageShell";
 import { projects } from "@/content/projects";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Featured case studies",
   description:
-    "A selection of recent work spanning productivity, communication, and climate technology.",
+    "A selection of recent work spanning productivity, communication, fintech, and developer tools.",
 };
 
 export default function CaseStudiesPage() {
   return (
-    <div className="mx-auto max-w-[1038px] px-4 py-12 md:px-6 md:py-16 lg:py-24">
+    <PageShell>
       <SectionReveal>
         <HeroHeading
           title="Featured case studies"
-          subtitle="A selection of recent work spanning productivity, communication, and climate technology."
+          subtitle="A selection of recent work spanning productivity, communication, fintech, and developer tools."
         />
       </SectionReveal>
 
       <div className="mt-12 md:mt-16">
-        {projects.map((project, index) => (
+        {projects
+          .filter((p) => p.status === "published")
+          .map((project, index) => (
           <ProjectRow
             key={project.slug}
             slug={project.slug}
             title={project.title}
             category={project.category}
-            description={project.description}
+            hook={project.hook}
             coverSrc={project.coverSrc}
             status={project.status}
+            device={project.device}
             delay={index * 100}
           />
         ))}
       </div>
-    </div>
+    </PageShell>
   );
 }

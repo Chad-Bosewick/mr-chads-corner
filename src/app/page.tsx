@@ -1,71 +1,74 @@
-import { HeroHeading } from "@/components/sections/HeroHeading";
+import { EditorialHero } from "@/components/sections/EditorialHero";
 import { TextSection } from "@/components/sections/TextSection";
 import { ProjectRow } from "@/components/sections/ProjectRow";
 import { TestimonialBlock } from "@/components/sections/TestimonialBlock";
 import { SectionReveal } from "@/components/sections/SectionReveal";
+import { PageShell, ReadingColumn } from "@/components/layout/PageShell";
 import { projects } from "@/content/projects";
 import Link from "next/link";
 
 export default function HomePage() {
   return (
-    <div className="mx-auto max-w-[1038px] px-4 py-12 md:px-6 md:py-16 lg:py-24">
-      {/* Hero */}
-      <SectionReveal>
-        <HeroHeading
-          title="Hello!"
-          subtitle="I'm Temi Adekunle — product designer who thinks in systems and delivers polished, intentional digital experiences."
-        />
-      </SectionReveal>
+    <PageShell>
+      {/* Editorial hero */}
+      <EditorialHero
+        name="Temi Adekunle"
+        tagline="Product designer who thinks in systems and delivers polished, intentional digital experiences."
+      />
 
       {/* Editorial intro */}
-      <TextSection>
+      <TextSection align="start" spacing="tight" className="mt-5 md:mt-6">
         <SectionReveal delay={80}>
-          <p className="text-[clamp(0.875rem,2vw,1rem)] leading-relaxed text-[#151515]/70">
-            I design products that balance user needs with business outcomes —
-            working across strategy, interaction, and execution to ship
-            experiences that feel considered rather than assembled. I thrive in
-            close collaboration with engineers, where system thinking meets
-            implementation reality.
+          <p className="max-w-[700px] text-[clamp(0.875rem,2vw,1rem)] leading-relaxed text-[#151515]/70 [text-wrap:pretty]">
+            I design products where user needs and business outcomes
+            converge. Every decision serves both.
           </p>
         </SectionReveal>
 
         <SectionReveal delay={160}>
-          <p className="text-[clamp(0.875rem,2vw,1rem)] leading-relaxed text-[#151515]/70">
-            My approach is grounded in understanding context before applying
-            process — every product problem has a unique combination of users,
-            constraints, and goals that deserves a tailored response rather than
-            a templated workflow.
+          <p className="max-w-[700px] text-[clamp(0.875rem,2vw,1rem)] leading-relaxed text-[#151515]/70 [text-wrap:pretty]">
+            I work alongside engineers — from first principles through
+            implementation. Each product problem demands its own
+            response, shaped by context, constraints, and goals.
           </p>
         </SectionReveal>
       </TextSection>
 
       {/* Divider */}
       <SectionReveal delay={240}>
-        <hr className="my-16 border-[#151515]/10 md:my-20" />
+        <hr className="mb-16 mt-14 border-[#151515]/10 md:mb-20 md:mt-16" />
       </SectionReveal>
 
-      {/* Featured projects heading */}
+      {/* Featured case studies */}
       <SectionReveal delay={80}>
-        <h2 className="font-sans text-[clamp(1.5rem,4vw,2rem)] font-medium text-[#151515]">
-          Featured case studies
-        </h2>
-        <p className="mt-2 font-sans text-[clamp(0.875rem,2vw,1rem)] leading-relaxed text-[#757575]">
-          A selection of recent work spanning productivity, communication, and
-          climate technology.
-        </p>
+        <div className="space-y-3">
+          <p className="font-sans text-[11px] font-medium uppercase tracking-[0.18em] text-[#757575]">
+            SELECTED WORK
+          </p>
+          <h2 className="font-sans text-[clamp(1.5rem,4vw,2rem)] font-medium leading-[1.1] text-[#151515]">
+            Featured case studies
+          </h2>
+          <p className="font-sans text-[clamp(0.875rem,2vw,1rem)] leading-relaxed text-[#757575]">
+            A curation of recent product design work across productivity,
+            communication, fintech, and developer tools.
+          </p>
+        </div>
       </SectionReveal>
 
       {/* Project rows with sequential stagger */}
       <div className="mt-8 md:mt-12">
-        {projects.map((project, index) => (
+        {projects
+          .filter((p) => p.status === "published")
+          .map((project, index) => (
           <ProjectRow
             key={project.slug}
             slug={project.slug}
             title={project.title}
             category={project.category}
-            description={project.description}
+            hook={project.hook}
             coverSrc={project.coverSrc}
             status={project.status}
+            device={project.device}
             delay={index * 100}
           />
         ))}
@@ -77,13 +80,13 @@ export default function HomePage() {
       </SectionReveal>
 
       {/* Testimonial */}
-      <div className="max-w-[680px]">
+      <ReadingColumn>
         <TestimonialBlock
-          quote="It's clear that Temi cares deeply about the craft of product design — from the structure of the information architecture to the polish of the final interface. A genuine systems thinker who makes the work look effortless."
+          quote="It's clear that Temi cares deeply about the craft of product design, from the structure of the information architecture to the polish of the final interface. A genuine systems thinker who makes the work look effortless."
           attribution="Product Lead"
           role="previous team collaboration"
         />
-      </div>
+      </ReadingColumn>
 
       {/* Closing CTA */}
       <SectionReveal>
@@ -116,6 +119,6 @@ export default function HomePage() {
           </Link>
         </div>
       </SectionReveal>
-    </div>
+    </PageShell>
   );
 }
