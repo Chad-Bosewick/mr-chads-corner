@@ -1,9 +1,47 @@
 export interface ContentSection {
-  type: "text" | "image-pair" | "metrics" | "full-image";
+  type: "text" | "image-pair" | "metrics" | "full-image" | "hero-media" | "snapshot" | "diagram" | "comparison" | "sequence" | "future-state";
   heading?: string;
   body?: string;
   images?: { src: string; alt: string; caption?: string }[];
   metrics?: { label: string; value: string }[];
+  // Diagram fields
+  diagramType?: "problem" | "evolution" | "ecosystem" | "change-framework" | "team-workflow";
+  diagramData?: DiagramData;
+  // Comparison fields
+  comparisonItems?: { label: string; content: string }[];
+  // Sequence fields
+  sequenceItems?: { step: number; label: string; description?: string; src?: string; alt?: string }[];
+  // Future state
+  futureStateData?: { label: string; description: string }[];
+}
+
+export interface CaseStudyMeta {
+  role: string;
+  timeline: string;
+  date: string;
+  platform: string;
+  team: string;
+  scope: string;
+  status: string;
+}
+
+export interface DiagramData {
+  // Problem diagram
+  problemDiagram?: {
+    leftLabel: string;
+    leftStatement: string;
+    rightLabel: string;
+    rightStatement: string;
+    centre: string;
+  };
+  // Evolution timeline
+  evolutionStages?: { stage: string; description: string }[];
+  // Ecosystem map
+  ecosystemRoles?: { name: string; description: string; permissions: string[] }[];
+  // Change framework
+  changeRows?: { change: string; systems: string; response: string }[];
+  // Team workflow
+  workflowSteps?: string[];
 }
 
 export interface CaseStudy {
@@ -17,6 +55,9 @@ export interface CaseStudy {
   sections: ContentSection[];
   nextSlug: string | null;
   prevSlug: string | null;
+  // New fields
+  heroMedia?: { src: string; alt: string };
+  meta?: CaseStudyMeta;
 }
 
 import type { Project } from "./projects";
