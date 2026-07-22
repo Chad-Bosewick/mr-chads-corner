@@ -11,6 +11,17 @@ export interface Project {
 
 export const projects: Project[] = [
   {
+    slug: "credlane",
+    title: "Credlane",
+    category: "Fintech",
+    hook: "Making credit accessible through better design.",
+    description:
+      "I led the design of Credlane, a responsive talent-assessment and hiring platform connecting job readiness, employer discovery, custom assessments, and candidate evaluation.",
+    coverSrc: "/images/case-studies/credlane-cover.webp",
+    status: "published",
+    device: "laptop",
+  },
+  {
     slug: "todo-app",
     title: "TODO++",
     category: "Productivity",
@@ -22,24 +33,13 @@ export const projects: Project[] = [
     device: "laptop",
   },
   {
-    slug: "letters-app",
-    title: "Letters App",
-    category: "Communication",
-    hook: "Thoughtful correspondence for the modern world.",
+    slug: "draftly",
+    title: "Draftly",
+    category: "Content Creation",
+    hook: "Where ideas take shape before they become content.",
     description:
-      "Designing a thoughtful correspondence platform that reintroduces pause and intentionality into digital messaging — combining the warmth of letter-writing with the practicality of modern communication.",
-    coverSrc: "/images/case-studies/letters-app-cover.webp",
-    status: "published",
-    device: "phone",
-  },
-  {
-    slug: "credlane",
-    title: "Credlane",
-    category: "Fintech",
-    hook: "Making credit accessible through better design.",
-    description:
-      "A financial platform designed for clarity, trust, and informed decision-making.",
-    coverSrc: "/images/case-studies/credlane-cover.webp",
+      "A drafting tool designed for writers who think visually and editors who think structurally.",
+    coverSrc: "/images/case-studies/draftly-cover.webp",
     status: "published",
     device: "laptop",
   },
@@ -55,14 +55,14 @@ export const projects: Project[] = [
     device: "laptop",
   },
   {
-    slug: "draftly",
-    title: "Draftly",
-    category: "Content Creation",
-    hook: "Where ideas take shape before they become content.",
+    slug: "letters-app",
+    title: "Letters App",
+    category: "Communication",
+    hook: "Thoughtful correspondence for the modern world.",
     description:
-      "A drafting tool designed for writers who think visually and editors who think structurally.",
-    coverSrc: "/images/case-studies/draftly-cover.webp",
+      "Designing a thoughtful correspondence platform that reintroduces pause and intentionality into digital messaging — combining the warmth of letter-writing with the practicality of modern communication.",
+    coverSrc: "/images/case-studies/letters-app-cover.webp",
     status: "published",
-    device: "laptop",
+    device: "phone",
   },
 ];

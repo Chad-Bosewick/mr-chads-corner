@@ -139,7 +139,7 @@ export const todoApp: CaseStudy = {
     },
   ],
   nextSlug: "letters-app",
-  prevSlug: null,
+  prevSlug: "credlane",
 };
 
 export const lettersApp: CaseStudy = {
@@ -1028,8 +1028,8 @@ export const credlane: CaseStudy = {
       body: "Credlane challenged me to work beyond individual interface execution.\n\nI had to lead a design team, interpret changing stakeholder ideas, maintain a growing system, and connect assessments, job discovery, talent visibility, employer decision-making, and external candidate evaluation into one product.\n\nThe result was a broad, partially implemented platform that gave talent a structured way to demonstrate readiness and gave employers more evidence with which to make hiring decisions.\n\nMore importantly, the project strengthened my ability to create clarity when the product itself was still changing.",
     },
   ],
-  nextSlug: "testground",
-  prevSlug: "letters-app",
+  nextSlug: "todo-app",
+  prevSlug: null,
 };
 
 export const testground: CaseStudy = {
