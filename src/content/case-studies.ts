@@ -242,7 +242,7 @@ export const lettersApp: CaseStudy = {
 export const credlane: CaseStudy = {
   slug: "credlane",
   title: "Credlane",
-  category: "Fintech",
+  category: "Talent Platform",
   role: "Lead Product Designer",
   timeline: "2 months",
   overview:

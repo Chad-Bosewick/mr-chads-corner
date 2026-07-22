@@ -13,7 +13,7 @@ export const projects: Project[] = [
   {
     slug: "credlane",
     title: "Credlane",
-    category: "Fintech",
+    category: "Talent Platform",
     hook: "Making credit accessible through better design.",
     description:
       "I led the design of Credlane, a responsive talent-assessment and hiring platform connecting job readiness, employer discovery, custom assessments, and candidate evaluation.",
