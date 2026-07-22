@@ -1,0 +1,78 @@
+import { SectionReveal } from "@/components/sections/SectionReveal";
+
+interface SequenceItem {
+  step: number;
+  label: string;
+  description?: string;
+  src?: string;
+  alt?: string;
+}
+
+interface SequenceSectionProps {
+  heading?: string;
+  items: SequenceItem[];
+}
+
+export function SequenceSection({ heading, items }: SequenceSectionProps) {
+  if (!items.length) return null;
+
+  // Cap desktop columns at 5 for readability
+  const desktopCols = Math.min(items.length, 5);
+
+  return (
+    <SectionReveal>
+      <section className="my-12 md:my-16" aria-label={heading ?? "Sequence"}>
+        {heading && (
+          <h2 className="mb-6 font-sans text-[clamp(1.25rem,3vw,1.5rem)] font-medium text-[#151515]">
+            {heading}
+          </h2>
+        )}
+
+        {/* Horizontal scroll on mobile, equal columns on desktop */}
+        <div
+          className="flex snap-x snap-mandatory gap-4 overflow-x-auto pb-4 md:grid md:gap-6 md:overflow-visible md:pb-0"
+          style={{ gridTemplateColumns: `repeat(${desktopCols}, minmax(0, 1fr))` }}
+          role="list"
+          aria-label={heading ?? "Step sequence"}
+        >
+          {items.map((item) => (
+            <div
+              key={item.step}
+              className="flex w-[75vw] shrink-0 flex-col snap-center md:w-auto md:snap-align-none"
+              role="listitem"
+            >
+              {/* Step number */}
+              <span className="mb-2 flex h-8 w-8 items-center justify-center rounded-full bg-[#A43718] font-sans text-sm font-medium text-white">
+                {item.step}
+              </span>
+
+              {/* Optional image */}
+              {item.src && (
+                <figure className="mb-3">
+                  <img
+                    src={item.src}
+                    alt={item.alt ?? ""}
+                    className="w-full rounded-md object-cover"
+                    loading="lazy"
+                  />
+                </figure>
+              )}
+
+              {/* Label */}
+              <h4 className="font-sans text-sm font-medium text-[#151515]">
+                {item.label}
+              </h4>
+
+              {/* Optional description */}
+              {item.description && (
+                <p className="mt-1 font-sans text-[clamp(0.8125rem,1.5vw,0.875rem)] leading-relaxed text-[#757575]">
+                  {item.description}
+                </p>
+              )}
+            </div>
+          ))}
+        </div>
+      </section>
+    </SectionReveal>
+  );
+}
