@@ -13,6 +13,18 @@ interface SequenceSectionProps {
   items: SequenceItem[];
 }
 
+/**
+ * Returns the Tailwind grid-cols class for desktop.
+ * Uses arbitrary values so the column count is dynamic.
+ */
+function desktopGridClass(cols: number): string {
+  if (cols <= 1) return "md:grid-cols-1";
+  if (cols === 2) return "md:grid-cols-2";
+  if (cols === 3) return "md:grid-cols-3";
+  if (cols === 4) return "md:grid-cols-4";
+  return "md:grid-cols-5";
+}
+
 export function SequenceSection({ heading, items }: SequenceSectionProps) {
   if (!items.length) return null;
 
@@ -28,17 +40,20 @@ export function SequenceSection({ heading, items }: SequenceSectionProps) {
           </h2>
         )}
 
-        {/* Horizontal scroll on mobile, equal columns on desktop */}
+        {/*
+          Mobile: horizontal scroll with snap, each card min-w-[280px]
+          Tablet (sm): 2-column grid, no scroll
+          Desktop (md): N-column grid capped at 5, no scroll
+        */}
         <div
-          className="flex snap-x snap-mandatory gap-4 overflow-x-auto pb-4 md:grid md:gap-6 md:overflow-visible md:pb-0"
-          style={{ gridTemplateColumns: `repeat(${desktopCols}, minmax(0, 1fr))` }}
+          className={`flex gap-4 overflow-x-auto pb-4 sm:grid sm:grid-cols-2 sm:overflow-visible sm:pb-0 md:gap-6 ${desktopGridClass(desktopCols)}`}
           role="list"
           aria-label={heading ?? "Step sequence"}
         >
           {items.map((item) => (
             <div
               key={item.step}
-              className="flex w-[75vw] shrink-0 flex-col snap-center md:w-auto md:snap-align-none"
+              className="flex min-w-[280px] flex-col snap-center sm:min-w-0 sm:snap-align-none md:w-auto"
               role="listitem"
             >
               {/* Step number */}
@@ -52,7 +67,7 @@ export function SequenceSection({ heading, items }: SequenceSectionProps) {
                   <img
                     src={item.src}
                     alt={item.alt ?? ""}
-                    className="w-full rounded-md object-cover"
+                    className="aspect-[4/3] w-full rounded-md object-contain"
                     loading="lazy"
                   />
                 </figure>

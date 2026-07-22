@@ -24,13 +24,13 @@ function ProblemDiagram({ data }: { data: NonNullable<DiagramData["problemDiagra
         </p>
       </div>
 
-      {/* Centre connector */}
+      {/* Centre connector — vertical on mobile, horizontal on desktop */}
       <div className="flex flex-col items-center gap-2 px-4">
-        <div className="hidden h-px w-12 bg-[#151515]/15 md:block" />
+        <div className="h-px w-12 bg-[#151515]/15 md:block" />
         <span className="inline-block rounded-full bg-[#A43718] px-3 py-1 text-xs font-medium text-white">
           {data.centre}
         </span>
-        <div className="hidden h-px w-12 bg-[#151515]/15 md:block" />
+        <div className="h-px w-12 bg-[#151515]/15 md:block" />
       </div>
 
       {/* Right card */}
@@ -52,13 +52,13 @@ function EvolutionDiagram({ data }: { data: NonNullable<DiagramData["evolutionSt
       <div className="flex flex-col items-start gap-0 md:flex-row md:items-start md:justify-between">
         {data.map((stage, i) => (
           <div key={stage.stage} className="flex w-full items-start gap-4 md:w-auto md:flex-1">
-            {/* Step number + arrow */}
+            {/* Step number + connector line */}
             <div className="flex flex-col items-center">
               <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#A43718] font-sans text-sm font-medium text-white">
                 {i + 1}
               </span>
               {i < data.length - 1 && (
-                <div className="hidden h-px w-12 bg-[#151515]/15 md:block" />
+                <div className="h-px w-12 bg-[#151515]/15 md:block" />
               )}
             </div>
 
@@ -178,17 +178,17 @@ function TeamWorkflowDiagram({ data }: { data: NonNullable<DiagramData["workflow
   return (
     <figure>
       <div
-        className="flex flex-col gap-0 md:flex-row md:items-start md:justify-between"
+        className="flex flex-col gap-0 sm:grid sm:grid-cols-2 sm:gap-4 md:grid-cols-3 md:gap-6"
         role="list"
         aria-label="Team workflow steps"
       >
         {data.map((step, i) => (
           <div
             key={step}
-            className="flex w-full items-center gap-4 md:w-auto md:flex-1"
+            className="flex w-full items-center gap-4"
             role="listitem"
           >
-            {/* Step number + arrow */}
+            {/* Step number + connector line (desktop only) */}
             <div className="flex flex-col items-center">
               <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#151515] font-sans text-sm font-medium text-white">
                 {i + 1}

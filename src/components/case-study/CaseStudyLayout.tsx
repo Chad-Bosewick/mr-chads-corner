@@ -10,9 +10,40 @@ import { DiagramSection } from "@/components/case-study/DiagramSection";
 import { ComparisonSection } from "@/components/case-study/ComparisonSection";
 import { SequenceSection } from "@/components/case-study/SequenceSection";
 import { EditorialCard } from "@/components/case-study/EditorialCard";
+import { SectionDivider } from "@/components/case-study/SectionDivider";
 import { PageShell, ReadingColumn } from "@/components/layout/PageShell";
 import type { CaseStudy, ContentSection as ContentSectionType } from "@/content/case-studies";
 import type { Project } from "@/content/projects";
+
+/**
+ * Returns true if a divider should appear AFTER this section.
+ * Divider placement marks transitions between major narrative beats.
+ */
+function shouldInsertDividerAfter(section: ContentSectionType): boolean {
+  if (!section.heading) return false;
+  const h = section.heading.toLowerCase();
+  return (
+    h === "my role" ||
+    h === "the problem" ||
+    h === "from education platform to hiring product" ||
+    h === "understanding the product ecosystem" ||
+    h === "research and product definition" ||
+    h === "designing the assessment experience" ||
+    h === "designing the talent experience" ||
+    h === "designing the employer experience" ||
+    h === "designing external assessments" ||
+    h === "maintaining the design system"
+  );
+}
+
+/**
+ * Returns true if a divider should appear BEFORE this section.
+ * Used to insert a divider before the outcome section.
+ */
+function shouldInsertDividerBefore(section: ContentSectionType): boolean {
+  if (!section.heading) return false;
+  return section.heading.toLowerCase() === "outcome";
+}
 
 function renderSection(
   section: ContentSectionType,
@@ -153,9 +184,19 @@ export function CaseStudyLayout({
         )}
 
         {/* Content sections — text stays in column, images break out */}
-        {caseStudy.sections.map((section: ContentSectionType, index: number) =>
-          renderSection(section, index, caseStudy)
-        )}
+        {caseStudy.sections.flatMap((section: ContentSectionType, index: number) => {
+          const items: React.ReactNode[] = [];
+          // Insert divider BEFORE section if needed (e.g. before outcome)
+          if (shouldInsertDividerBefore(section)) {
+            items.push(<SectionDivider key={`div-before-${index}`} />);
+          }
+          items.push(renderSection(section, index, caseStudy));
+          // Insert divider AFTER section if needed
+          if (shouldInsertDividerAfter(section)) {
+            items.push(<SectionDivider key={`div-after-${index}`} />);
+          }
+          return items;
+        })}
 
         {/* Back link */}
         <ReadingColumn>
