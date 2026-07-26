@@ -47,7 +47,7 @@ export const projects: Project[] = [
     hook: "A task manager that adapts to how you work.",
     description:
       "Redesigning a task management tool from feature-heavy checklist into an intelligent, adaptive workflow system — reducing cognitive load while preserving power-user capabilities.",
-    coverSrc: "/images/case-studies/todo-app-cover.webp",
+    coverSrc: "/images/case-studies/todo-app-device.webp",
     status: "published",
     device: "laptop",
   },
@@ -58,7 +58,18 @@ export const projects: Project[] = [
     hook: "Where ideas take shape before they become content.",
     description:
       "A drafting tool designed for writers who think visually and editors who think structurally.",
-    coverSrc: "/images/case-studies/draftly-cover.webp",
+    coverSrc: "/images/draftly/draftly-hero-1440x900.webp",
+    coverScroll: {
+      src: "/images/draftly/draftly-landing-page-full.webp",
+      alt: "Draftly landing page",
+      sections: [
+        { label: "Meet Draftly", start: 0 },
+        { label: "Idea starter", start: 0.2 },
+        { label: "Writing assistant", start: 0.45 },
+        { label: "Integrity checks", start: 0.65 },
+        { label: "Pricing", start: 0.85 },
+      ],
+    },
     status: "published",
     device: "laptop",
   },
