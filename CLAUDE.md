@@ -36,7 +36,8 @@ You must operate as the central decision-making and coordination layer for the e
 
 | Priority | Task | Why |
 |---|---|---|
-| **UI-001** | CoverScroll viewport-gated animation start | Animation runs before card is visible — hero is missed |
+| **UI-001** | CoverScroll viewport-gated animation start | ✅ Done |
+| **UI-002** | Bezel standardisation + Letters App dual-phone layout | Inconsistent bezel strokes (1.5px vs 3px), Letters App wastes column space |
 | ~~**P1**~~ | ~~Remove font mocking system~~ | ~~Done — Phase D (c1b6af6)~~ |
 | ~~**P1**~~ | ~~Fix carousel pagination touch targets~~ | ~~Done — already 44×44px~~ |
 | **P1** | Deploy foundations branch to Netlify | After UI observations are resolved. |
