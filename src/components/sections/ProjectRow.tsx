@@ -98,7 +98,7 @@ export function ProjectRow({
               className="transition-transform duration-[var(--duration-standard)] ease-[var(--ease-out)] group-hover:translate-x-1"
             >
               <path
-                d="M5.5 3L10.5 8L5.5 13"
+                d="M5.25 3.75L10.25 8.25L5.25 12.75"
                 stroke="currentColor"
                 strokeWidth="1.5"
                 strokeLinecap="round"

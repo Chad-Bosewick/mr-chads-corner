@@ -110,7 +110,7 @@ export default function HomePage() {
               aria-hidden="true"
             >
               <path
-                d="M7 4L13 10L7 16"
+                d="M7 4.75L13 10L7 15.25"
                 stroke="currentColor"
                 strokeWidth="1.5"
                 strokeLinecap="round"
