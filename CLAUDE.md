@@ -11,6 +11,62 @@ You must operate as the central decision-making and coordination layer for the e
 
 ---
 
+# 0. OPERATIONAL STATE (updated by Claude Code after each sprint)
+
+> **This section is the single source of truth for project status.**
+> Every agent (Claude Code, Codex, ChatGPT) must read this before starting work.
+> Do not re-investigate completed work. Trust the phase reports in `docs/qa/`.
+
+## Current branch: `foundations`
+## Deployed: No — awaiting deployment to Netlify
+## Last updated: 2026-07-26
+
+## What's Done
+
+| Phase | Scope | Report |
+|---|---|---|
+| Core architecture | Navigation, footer, pages, case study system, content model, styling, motion | Commit history on `foundations` branch |
+| Phase A | Travel gallery grid, heading hierarchy, homepage copy, comparison section spacing | `docs/qa/2026-07-26-codex-ui-cleanup-phase-a-report.md` |
+| Phase B | Accessibility contrast tokens — all `#757575` replaced with WCAG AA-compliant `#6F6F6F` | `docs/qa/2026-07-26-codex-ui-cleanup-phase-b-report.md` |
+| Phase C | Root metadata (`metadataBase`, OG, Twitter), social preview image, stable sitemap dates, case-study index copy fix | `docs/qa/2026-07-26-codex-ui-cleanup-phase-c-report.md` |
+
+## What's Next (Priority Order)
+
+| Priority | Task | Why |
+|---|---|---|
+| **P1** | Remove font mocking system (`scripts/google-font-mocks.cjs`, `scripts/with-font-mocks.cjs`) | Site loads Arial/Georgia instead of Plus Jakarta Sans/Lora. Every page looks wrong. |
+| **P1** | Fix carousel pagination touch targets (6px → 44px minimum) | Carousels are unusable on touch devices. WCAG 2.5.8 violation. |
+| **P1** | Deploy foundations branch to Netlify | Owner needs live portfolio URL for job applications immediately. |
+| **P2** | Add visible animation pause/stop controls (WCAG 2.2.2) | Sprint 2 — important but not blocking deployment. |
+| **P2** | Add screen-reader-accessible career timeline alternative | Sprint 2 — canvas content invisible to assistive tech. |
+| **P2** | Test coverage for risky behaviour (carousels, animations, navigation) | Sprint 2. |
+
+## Known Issues
+
+Full backlog of all P1 and P2 issues: `CODEX_REVIEW_DEFERRED.md`
+Already-fixed items are marked with status in that file.
+
+## Codex Quick Reference
+
+When receiving a task, Codex should:
+1. Read this section first — do not re-investigate completed work
+2. Read `CODEX_REVIEW_DEFERRED.md` for the full issue backlog
+3. Read `docs/qa/` phase reports for implementation context
+4. Read `tasks/` for implementation specs
+5. Follow the CODEX TASK TEMPLATE (Section 21) for all deliverables
+6. Return the required output format specified in Section 21
+
+## ChatGPT Quick Reference
+
+When receiving a review request, ChatGPT should:
+1. Read the approved requirement in the task file
+2. Read `TASTE.md` and `FIGMA_AUDIT.md` for design reference
+3. Read the relevant acceptance criteria
+4. Follow the QA HANDOFF TEMPLATE (Section 22)
+5. Classify findings using the severity model (Section 15)
+
+---
+
 # 1. PROJECT CONTEXT
 
 We are redesigning my existing portfolio website.
