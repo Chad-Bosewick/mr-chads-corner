@@ -23,6 +23,85 @@ const sections = [
   { label: "Footer", start: 0.97 },
 ];
 
+class MockIntersectionObserver {
+  static instances: MockIntersectionObserver[] = [];
+
+  callback: IntersectionObserverCallback;
+
+  constructor(callback: IntersectionObserverCallback) {
+    this.callback = callback;
+    MockIntersectionObserver.instances.push(this);
+  }
+
+  observe() {}
+
+  disconnect() {}
+
+  unobserve() {}
+
+  takeRecords() {
+    return [];
+  }
+
+  trigger(entry: Partial<IntersectionObserverEntry>) {
+    this.callback(
+      [
+        {
+          boundingClientRect: {} as DOMRectReadOnly,
+          intersectionRatio: 0,
+          intersectionRect: {} as DOMRectReadOnly,
+          isIntersecting: false,
+          rootBounds: null,
+          target: document.createElement("div"),
+          time: 0,
+          ...entry,
+        } as IntersectionObserverEntry,
+      ],
+      this as unknown as IntersectionObserver,
+    );
+  }
+
+  static reset() {
+    MockIntersectionObserver.instances = [];
+  }
+}
+
+class MockResizeObserver {
+  callback: ResizeObserverCallback;
+
+  constructor(callback: ResizeObserverCallback) {
+    this.callback = callback;
+  }
+
+  observe(target: Element) {
+    this.callback(
+      [
+        {
+          target,
+          contentRect: {
+            width: 680,
+            height: 425,
+            x: 0,
+            y: 0,
+            top: 0,
+            left: 0,
+            right: 680,
+            bottom: 425,
+            toJSON() {
+              return {};
+            },
+          } as DOMRectReadOnly,
+        } as ResizeObserverEntry,
+      ],
+      this as unknown as ResizeObserver,
+    );
+  }
+
+  disconnect() {}
+
+  unobserve() {}
+}
+
 /** Simulate image load so the component calculates imageHeight. */
 function simulateImageLoad(container: HTMLElement) {
   const img = container.querySelector("img") as HTMLImageElement;
@@ -35,10 +114,28 @@ function simulateImageLoad(container: HTMLElement) {
   fireEvent.load(img);
 }
 
+function stubMatchMedia(matches = false) {
+  vi.stubGlobal(
+    "matchMedia",
+    vi.fn().mockImplementation(() => ({
+      matches,
+      media: "(prefers-reduced-motion: reduce)",
+      onchange: null,
+      addEventListener: vi.fn(),
+      removeEventListener: vi.fn(),
+      addListener: vi.fn(),
+      removeListener: vi.fn(),
+      dispatchEvent: vi.fn(),
+    })),
+  );
+}
+
 describe("CoverScroll — manual mode (default)", () => {
   beforeEach(() => {
-    vi.stubGlobal("IntersectionObserver", class { observe() {} disconnect() {} });
-    vi.stubGlobal("ResizeObserver", class { observe() {} disconnect() {} });
+    MockIntersectionObserver.reset();
+    vi.stubGlobal("IntersectionObserver", MockIntersectionObserver);
+    vi.stubGlobal("ResizeObserver", MockResizeObserver);
+    stubMatchMedia(false);
   });
 
   afterEach(() => {
@@ -83,11 +180,20 @@ describe("CoverScroll — manual mode (default)", () => {
 
 describe("CoverScroll — auto-scroll mode", () => {
   beforeEach(() => {
-    vi.stubGlobal("IntersectionObserver", class { observe() {} disconnect() {} });
-    vi.stubGlobal("ResizeObserver", class { observe() {} disconnect() {} });
+    MockIntersectionObserver.reset();
+    vi.useFakeTimers();
+    vi.stubGlobal("IntersectionObserver", MockIntersectionObserver);
+    vi.stubGlobal("ResizeObserver", MockResizeObserver);
+    stubMatchMedia(false);
+    vi.stubGlobal(
+      "requestAnimationFrame",
+      vi.fn((cb: FrameRequestCallback) => window.setTimeout(() => cb(Date.now()), 16)),
+    );
+    vi.stubGlobal("cancelAnimationFrame", vi.fn((id: number) => clearTimeout(id)));
   });
 
   afterEach(() => {
+    vi.useRealTimers();
     vi.unstubAllGlobals();
   });
 
@@ -145,5 +251,70 @@ describe("CoverScroll — auto-scroll mode", () => {
     simulateImageLoad(container);
     const styleEl = container.querySelector("style");
     expect(styleEl).toBeNull();
+  });
+
+  it("does not start auto-scroll until the frame is sufficiently visible", () => {
+    const { container } = render(
+      <CoverScroll src="/img.png" alt="Preview" sections={sections} autoScroll />,
+    );
+    simulateImageLoad(container);
+    const frame = screen.getByTestId("cover-scroll-frame");
+    const inner = frame.firstElementChild as HTMLElement;
+    const observer = MockIntersectionObserver.instances[0];
+
+    act(() => {
+      vi.advanceTimersByTime(5000);
+    });
+    expect(inner.style.transform).toBe("");
+
+    act(() => {
+      observer.trigger({
+        isIntersecting: true,
+        intersectionRatio: 0.5,
+        target: frame,
+      });
+      vi.advanceTimersByTime(5000);
+    });
+    expect(inner.style.transform).toBe("");
+
+    act(() => {
+      observer.trigger({
+        isIntersecting: true,
+        intersectionRatio: 0.8,
+        target: frame,
+      });
+      vi.advanceTimersByTime(1400);
+    });
+    expect(inner.style.transform).toBe("");
+
+    act(() => {
+      vi.advanceTimersByTime(1600);
+    });
+    expect(inner.style.transform).not.toBe("");
+  });
+
+  it("respects reduced motion and never starts auto-scroll", () => {
+    vi.unstubAllGlobals();
+    MockIntersectionObserver.reset();
+    vi.useFakeTimers();
+    vi.stubGlobal("IntersectionObserver", MockIntersectionObserver);
+    vi.stubGlobal("ResizeObserver", MockResizeObserver);
+    stubMatchMedia(true);
+    vi.stubGlobal(
+      "requestAnimationFrame",
+      vi.fn((cb: FrameRequestCallback) => window.setTimeout(() => cb(Date.now()), 16)),
+    );
+    vi.stubGlobal("cancelAnimationFrame", vi.fn((id: number) => clearTimeout(id)));
+
+    const { container } = render(
+      <CoverScroll src="/img.png" alt="Preview" sections={sections} autoScroll />,
+    );
+    simulateImageLoad(container);
+    const frame = screen.getByTestId("cover-scroll-frame");
+    const inner = frame.firstElementChild as HTMLElement;
+    act(() => {
+      vi.advanceTimersByTime(6000);
+    });
+    expect(inner.style.transform).toBe("");
   });
 });

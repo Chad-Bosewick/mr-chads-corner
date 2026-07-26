@@ -23,13 +23,19 @@ interface CoverScrollProps {
 
 const SCROLL_DURATION = 1200;
 const PAUSE_DURATION = 3000;
-const INITIAL_DELAY = 4000;
+const INITIAL_DELAY = 1500;
+const VIEWPORT_START_THRESHOLD = 0.8;
 
 /** Liquid easing — starts slow, accelerates, decelerates. Harmonic feel. */
 const liquidEase = (t: number): number =>
   t < 0.5
     ? 4 * t * t * t
     : 1 - (-2 * t + 2) ** 3 / 2;
+
+const getPrefersReducedMotion = (): boolean => {
+  if (typeof window === "undefined" || typeof window.matchMedia !== "function") return false;
+  return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+};
 
 /**
  * CoverScroll — a fixed-frame viewport into a full-page screenshot.
@@ -55,6 +61,9 @@ export function CoverScroll({
   const [imageSrc, setImageSrc] = useState(src);
   const [imgWidth, setImgWidth] = useState(1200);
   const [imgHeight, setImgHeight] = useState(2400);
+  const [hasEnteredViewport, setHasEnteredViewport] = useState(false);
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(getPrefersReducedMotion);
+  const hasStartedRef = useRef(false);
 
   // Auto-scroll state (refs for rAF)
   const phaseRef = useRef<"idle" | "scrolling" | "pausing">("idle");
@@ -82,6 +91,52 @@ export function CoverScroll({
     return () => ro.disconnect();
   }, []);
 
+  // ── Reduced motion preference ──
+  useEffect(() => {
+    const mediaQuery =
+      typeof window !== "undefined" && typeof window.matchMedia === "function"
+        ? window.matchMedia("(prefers-reduced-motion: reduce)")
+        : null;
+    if (!mediaQuery) return;
+    const syncPreference = () => {
+      setPrefersReducedMotion(mediaQuery.matches);
+    };
+
+    syncPreference();
+    mediaQuery.addEventListener("change", syncPreference);
+
+    return () => {
+      mediaQuery.removeEventListener("change", syncPreference);
+    };
+  }, []);
+
+  // ── Viewport gate for auto-scroll start ──
+  useEffect(() => {
+    if (!autoScroll || prefersReducedMotion || hasStartedRef.current) return;
+
+    const frame = frameRef.current;
+    if (!frame || typeof IntersectionObserver === "undefined") return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry?.isIntersecting) return;
+
+        if (entry.intersectionRatio >= VIEWPORT_START_THRESHOLD) {
+          hasStartedRef.current = true;
+          setHasEnteredViewport(true);
+          observer.disconnect();
+        }
+      },
+      {
+        threshold: [VIEWPORT_START_THRESHOLD],
+      },
+    );
+
+    observer.observe(frame);
+
+    return () => observer.disconnect();
+  }, [autoScroll, prefersReducedMotion]);
+
   // ── Image load ──
   const handleImageLoad = useCallback(
     (event: React.SyntheticEvent<HTMLImageElement>) => {
@@ -101,7 +156,15 @@ export function CoverScroll({
 
   // ── Auto-scroll animation loop ──
   useEffect(() => {
-    if (!autoScroll || totalScrollDistance <= 0 || sections.length < 2) return;
+    if (
+      !autoScroll ||
+      prefersReducedMotion ||
+      !hasEnteredViewport ||
+      totalScrollDistance <= 0 ||
+      sections.length < 2
+    ) {
+      return;
+    }
 
     // Initialize on first frame
     if (phaseRef.current === "idle") {
@@ -199,7 +262,7 @@ export function CoverScroll({
       pauseElapsed = 0;
       initialized = false;
     };
-  }, [autoScroll, totalScrollDistance, sections.length, sectionOffsets]);
+  }, [autoScroll, hasEnteredViewport, prefersReducedMotion, totalScrollDistance, sections.length, sectionOffsets]);
 
   // ── Scrollbar styles (manual mode only) ──
   const scrollBarStyles = `
