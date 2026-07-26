@@ -77,11 +77,11 @@ export default function AboutPage() {
 
           <SectionReveal delay={240}>
             <p className="text-[clamp(0.875rem,2vw,1rem)] leading-relaxed text-[#151515]/70">
-              Before product design, I studied architecture — a background that
-              taught me to think in systems, proportion, and the relationship
-              between form and function. Those principles carry through
-              everything I design today, whether it&rsquo;s a task management
-              interface or a design system component.
+              Before product design, I studied biochemistry — a background that
+              taught me to think in systems, process, and the relationship
+              between cause and effect. Those principles carry through
+              everything I design today, whether it&rsquo;s mapping a user
+              journey or building a design system component.
             </p>
           </SectionReveal>
         </TextSection>

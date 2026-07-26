@@ -76,7 +76,7 @@ export default function ContactPage() {
           <p className="font-sans text-[clamp(0.875rem,2vw,1rem)] leading-relaxed text-[#151515]/70">
             Currently open to freelance collaborations, product design
             leadership opportunities, and speaking engagements. Based in
-            London, working remotely with teams worldwide.
+            Lagos, working remotely with teams worldwide.
           </p>
         </SectionReveal>
       </ReadingColumn>

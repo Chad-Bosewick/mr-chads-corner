@@ -29,15 +29,18 @@ You must operate as the central decision-making and coordination layer for the e
 | Phase A | Travel gallery grid, heading hierarchy, homepage copy, comparison section spacing | `docs/qa/2026-07-26-codex-ui-cleanup-phase-a-report.md` |
 | Phase B | Accessibility contrast tokens — all `#757575` replaced with WCAG AA-compliant `#6F6F6F` | `docs/qa/2026-07-26-codex-ui-cleanup-phase-b-report.md` |
 | Phase C | Root metadata (`metadataBase`, OG, Twitter), social preview image, stable sitemap dates, case-study index copy fix | `docs/qa/2026-07-26-codex-ui-cleanup-phase-c-report.md` |
+| Phase D | Font mocking removal — real Plus Jakarta Sans + Lora now self-hosted | `docs/qa/2026-07-26-codex-phase-d-report.md` |
+| Content fixes | Bio: architecture → biochemistry (UoL). Location: London → Lagos | Verified in source |
 
 ## What's Next (Priority Order)
 
 | Priority | Task | Why |
 |---|---|---|
-| **P1** | Remove font mocking system (`scripts/google-font-mocks.cjs`, `scripts/with-font-mocks.cjs`) | Site loads Arial/Georgia instead of Plus Jakarta Sans/Lora. Every page looks wrong. |
-| **P1** | Fix carousel pagination touch targets (6px → 44px minimum) | Carousels are unusable on touch devices. WCAG 2.5.8 violation. |
-| **P1** | Deploy foundations branch to Netlify | Owner needs live portfolio URL for job applications immediately. |
-| **P2** | Add visible animation pause/stop controls (WCAG 2.2.2) | Sprint 2 — important but not blocking deployment. |
+| **UI-001** | CoverScroll viewport-gated animation start | Animation runs before card is visible — hero is missed |
+| ~~**P1**~~ | ~~Remove font mocking system~~ | ~~Done — Phase D (c1b6af6)~~ |
+| ~~**P1**~~ | ~~Fix carousel pagination touch targets~~ | ~~Done — already 44×44px~~ |
+| **P1** | Deploy foundations branch to Netlify | After UI observations are resolved. |
+| **P2** | Add visible animation pause/stop controls (WCAG 2.2.2) | Sprint 2. |
 | **P2** | Add screen-reader-accessible career timeline alternative | Sprint 2 — canvas content invisible to assistive tech. |
 | **P2** | Test coverage for risky behaviour (carousels, animations, navigation) | Sprint 2. |
 
