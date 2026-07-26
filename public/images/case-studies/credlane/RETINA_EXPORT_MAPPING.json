@@ -1,0 +1,93 @@
+[
+  {
+    "section": "Employer journey",
+    "position": 1,
+    "nodeId": "15484:5243",
+    "output": "credlane-employer-01-overview.webp",
+    "sourceWidth": 1440,
+    "sourceHeight": 1024,
+    "width": 1360,
+    "height": 850,
+    "format": "WEBP",
+    "quality": 90,
+    "sha256": "ea197a5e058839e2f34b97444fd1d235b10188e3ee0867bbe3f12808e3cca94c"
+  },
+  {
+    "section": "Employer journey",
+    "position": 2,
+    "nodeId": "15484:5457",
+    "output": "credlane-employer-02-roles.webp",
+    "sourceWidth": 1440,
+    "sourceHeight": 1172,
+    "width": 1360,
+    "height": 850,
+    "format": "WEBP",
+    "quality": 90,
+    "sha256": "a0be3882fa2470137cb090a919d982f26b50e93fc4270585dac7db44c115f67d"
+  },
+  {
+    "section": "Employer journey",
+    "position": 3,
+    "nodeId": "15484:5957",
+    "output": "credlane-employer-03-create-role.webp",
+    "sourceWidth": 1440,
+    "sourceHeight": 1499,
+    "width": 1360,
+    "height": 850,
+    "format": "WEBP",
+    "quality": 90,
+    "sha256": "8ba848b0f9783241ae34d1981efc19357ae5fdd709d7c52488e619b15e4eca80"
+  },
+  {
+    "section": "Employer journey",
+    "position": 4,
+    "nodeId": "15484:5656",
+    "output": "credlane-assessment-01-dashboard.webp",
+    "sourceWidth": 1440,
+    "sourceHeight": 1557,
+    "width": 1360,
+    "height": 850,
+    "format": "WEBP",
+    "quality": 90,
+    "sha256": "f7528f7609e92ceacae2645b9497f740d6017a6ae5e028db6e9f4cd4ad157065"
+  },
+  {
+    "section": "External assessment workflow",
+    "position": 1,
+    "nodeId": "15510:3795",
+    "output": "credlane-external-assessment-creation.webp",
+    "sourceWidth": 1440,
+    "sourceHeight": 1024,
+    "width": 1360,
+    "height": 850,
+    "format": "WEBP",
+    "quality": 90,
+    "sha256": "fa9fd3889a27f982ec348a5f23789ce4cdf53db8b466570486cc5f4bfa752925"
+  },
+  {
+    "section": "External assessment workflow",
+    "position": 2,
+    "nodeId": "15510:3915",
+    "output": "credlane-external-applicant-flow.webp",
+    "sourceWidth": 1440,
+    "sourceHeight": 1203,
+    "width": 1360,
+    "height": 850,
+    "format": "WEBP",
+    "quality": 90,
+    "sha256": "19cfeb19b23fe116e8b21d28653823a67591614881379bb64a746ed2dd611229"
+  },
+  {
+    "section": "External assessment workflow",
+    "position": 3,
+    "nodeId": "15510:4046",
+    "output": "credlane-external-results-dashboard.webp",
+    "sourceWidth": 1440,
+    "sourceHeight": 1024,
+    "width": 1360,
+    "height": 850,
+    "format": "WEBP",
+    "quality": 90,
+    "sha256": "5bc7ebdf1eb0e7333c11a7e1b5f239ca8e05f8bb79b220bccc569df22a560105"
+  }
+]

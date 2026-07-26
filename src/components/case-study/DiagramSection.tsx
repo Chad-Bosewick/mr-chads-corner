@@ -16,7 +16,7 @@ function ProblemDiagram({ data }: { data: NonNullable<DiagramData["problemDiagra
     <div className="flex flex-col items-center gap-6 md:flex-row md:justify-center md:gap-0">
       {/* Left card */}
       <div className="flex w-full max-w-sm flex-col items-center text-center md:w-1/3">
-        <span className="mb-2 text-xs font-medium uppercase tracking-widest text-[#757575]">
+        <span className="mb-2 text-xs font-medium uppercase tracking-widest text-[var(--color-text-muted)]">
           {data.leftLabel}
         </span>
         <p className="font-sans text-[clamp(0.875rem,2vw,1rem)] leading-relaxed text-[#151515]/70">
@@ -35,7 +35,7 @@ function ProblemDiagram({ data }: { data: NonNullable<DiagramData["problemDiagra
 
       {/* Right card */}
       <div className="flex w-full max-w-sm flex-col items-center text-center md:w-1/3">
-        <span className="mb-2 text-xs font-medium uppercase tracking-widest text-[#757575]">
+        <span className="mb-2 text-xs font-medium uppercase tracking-widest text-[var(--color-text-muted)]">
           {data.rightLabel}
         </span>
         <p className="font-sans text-[clamp(0.875rem,2vw,1rem)] leading-relaxed text-[#151515]/70">
@@ -64,10 +64,10 @@ function EvolutionDiagram({ data }: { data: NonNullable<DiagramData["evolutionSt
 
             {/* Content */}
             <div className="flex-1 pb-8">
-              <h4 className="font-sans text-sm font-medium text-[#151515]">
+              <h3 className="font-sans text-sm font-medium text-[#151515]">
                 {stage.stage}
-              </h4>
-              <p className="mt-1 font-sans text-[clamp(0.8125rem,1.5vw,0.875rem)] leading-relaxed text-[#757575]">
+              </h3>
+              <p className="mt-1 font-sans text-[clamp(0.8125rem,1.5vw,0.875rem)] leading-relaxed text-[var(--color-text-muted)]">
                 {stage.description}
               </p>
             </div>
@@ -89,10 +89,10 @@ function EcosystemDiagram({ data }: { data: NonNullable<DiagramData["ecosystemRo
               <div className="absolute right-0 top-8 hidden h-px w-full bg-[#151515]/10 md:block" />
             )}
             <div className="relative z-10 rounded-lg border border-[#151515]/10 bg-[#f0f0f0]/50 p-5">
-              <h4 className="font-sans text-sm font-medium text-[#151515]">
+              <h3 className="font-sans text-sm font-medium text-[#151515]">
                 {role.name}
-              </h4>
-              <p className="mt-2 font-sans text-[clamp(0.8125rem,1.5vw,0.875rem)] leading-relaxed text-[#757575]">
+              </h3>
+              <p className="mt-2 font-sans text-[clamp(0.8125rem,1.5vw,0.875rem)] leading-relaxed text-[var(--color-text-muted)]">
                 {role.description}
               </p>
               {role.permissions.length > 0 && (
@@ -123,13 +123,13 @@ function ChangeFrameworkDiagram({ data }: { data: NonNullable<DiagramData["chang
       <table className="hidden w-full border-collapse md:table">
         <thead>
           <tr>
-            <th className="border-b border-[#151515]/10 px-4 py-3 text-left font-sans text-xs font-medium uppercase tracking-widest text-[#757575]">
+            <th className="border-b border-[#151515]/10 px-4 py-3 text-left font-sans text-xs font-medium uppercase tracking-widest text-[var(--color-text-muted)]">
               Change
             </th>
-            <th className="border-b border-[#151515]/10 px-4 py-3 text-left font-sans text-xs font-medium uppercase tracking-widest text-[#757575]">
+            <th className="border-b border-[#151515]/10 px-4 py-3 text-left font-sans text-xs font-medium uppercase tracking-widest text-[var(--color-text-muted)]">
               Affected Systems
             </th>
-            <th className="border-b border-[#151515]/10 px-4 py-3 text-left font-sans text-xs font-medium uppercase tracking-widest text-[#757575]">
+            <th className="border-b border-[#151515]/10 px-4 py-3 text-left font-sans text-xs font-medium uppercase tracking-widest text-[var(--color-text-muted)]">
               Our Response
             </th>
           </tr>
@@ -140,7 +140,7 @@ function ChangeFrameworkDiagram({ data }: { data: NonNullable<DiagramData["chang
               <td className="border-b border-[#151515]/5 px-4 py-3 font-sans text-sm text-[#151515]">
                 {row.change}
               </td>
-              <td className="border-b border-[#151515]/5 px-4 py-3 font-sans text-sm text-[#757575]">
+              <td className="border-b border-[#151515]/5 px-4 py-3 font-sans text-sm text-[var(--color-text-muted)]">
                 {row.systems}
               </td>
               <td className="border-b border-[#151515]/5 px-4 py-3 font-sans text-sm text-[#151515]/70">
@@ -158,13 +158,13 @@ function ChangeFrameworkDiagram({ data }: { data: NonNullable<DiagramData["chang
             key={i}
             className="rounded-lg border border-[#151515]/10 bg-[#f0f0f0]/50 p-4"
           >
-            <h4 className="font-sans text-sm font-medium text-[#151515]">
+            <h3 className="font-sans text-sm font-medium text-[#151515]">
               {row.change}
-            </h4>
+            </h3>
             <p className="mt-1 font-sans text-xs font-medium text-[#A43718]">
               {row.systems}
             </p>
-            <p className="mt-2 font-sans text-[clamp(0.8125rem,1.5vw,0.875rem)] leading-relaxed text-[#757575]">
+            <p className="mt-2 font-sans text-[clamp(0.8125rem,1.5vw,0.875rem)] leading-relaxed text-[var(--color-text-muted)]">
               {row.response}
             </p>
           </div>
@@ -256,7 +256,7 @@ export function DiagramSection({
 
   return (
     <SectionReveal>
-      <section className="my-12 md:my-16" aria-label={heading ?? "Diagram"}>
+      <section aria-label={heading ?? "Diagram"}>
         {heading && (
           <h2 className="mb-6 font-sans text-[clamp(1.25rem,3vw,1.5rem)] font-medium text-[#151515]">
             {heading}

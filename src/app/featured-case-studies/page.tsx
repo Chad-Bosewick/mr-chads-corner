@@ -8,7 +8,7 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Featured case studies",
   description:
-    "A selection of recent work spanning productivity, communication, fintech, and developer tools.",
+    "A selection of recent work spanning talent platforms, productivity, communication, and developer tools.",
 };
 
 export default function CaseStudiesPage() {
@@ -17,7 +17,7 @@ export default function CaseStudiesPage() {
       <SectionReveal>
         <HeroHeading
           title="Featured case studies"
-          subtitle="A selection of recent work spanning productivity, communication, fintech, and developer tools."
+          subtitle="A selection of recent work spanning talent platforms, productivity, communication, and developer tools."
         />
       </SectionReveal>
 
@@ -25,18 +25,18 @@ export default function CaseStudiesPage() {
         {projects
           .filter((p) => p.status === "published")
           .map((project, index) => (
-          <ProjectRow
-            key={project.slug}
-            slug={project.slug}
-            title={project.title}
-            category={project.category}
-            hook={project.hook}
-            coverSrc={project.coverSrc}
-            status={project.status}
-            device={project.device}
-            delay={index * 100}
-          />
-        ))}
+            <ProjectRow
+              key={project.slug}
+              slug={project.slug}
+              title={project.title}
+              category={project.category}
+              hook={project.hook}
+              coverSrc={project.coverSrc}
+              status={project.status}
+              device={project.device}
+              delay={index * 100}
+            />
+          ))}
       </div>
     </PageShell>
   );

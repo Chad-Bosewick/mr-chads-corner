@@ -15,7 +15,7 @@ export function ComparisonSection({ heading, items }: ComparisonSectionProps) {
 
   return (
     <SectionReveal>
-      <section className="my-12 md:my-16" aria-label={heading ?? "Comparison"}>
+      <section aria-label={heading ?? "Comparison"}>
         {heading && (
           <h2 className="mb-6 font-sans text-[clamp(1.25rem,3vw,1.5rem)] font-medium text-[#151515]">
             {heading}
@@ -29,8 +29,7 @@ export function ComparisonSection({ heading, items }: ComparisonSectionProps) {
                 <div className="absolute inset-y-0 left-0 hidden w-px bg-[#151515]/10 md:block" />
               )}
 
-              <div className="py-6 md:py-0 md:pr-6">
-                {/* First item gets no extra left padding on desktop; second gets left padding */}
+              <div className={i === 0 ? "py-6 md:py-0 md:pr-6" : "py-6 md:py-0 md:pl-6"}>
                 <h3
                   className="font-sans text-sm font-medium uppercase tracking-widest text-[#A43718]"
                 >

@@ -10,7 +10,7 @@ export function EditorialCard({ label, heading, children }: EditorialCardProps) 
   return (
     <SectionReveal>
       <div className="my-12 rounded-lg border border-[#151515]/10 bg-[#f8f8f8] p-6 md:my-16 md:p-8">
-        <p className="font-sans text-[11px] font-medium uppercase tracking-[0.18em] text-[#757575]">
+        <p className="font-sans text-[11px] font-medium uppercase tracking-[0.18em] text-[var(--color-text-muted)]">
           {label}
         </p>
         {heading && (

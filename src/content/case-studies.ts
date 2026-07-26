@@ -14,10 +14,20 @@ export interface ContentSection {
     | "what-i-designed"
     | "results"
     | "constraints"
-    | "key-decisions";
+    | "key-decisions"
+    | "carousel";
   heading?: string;
   body?: string;
-  images?: { src: string; alt: string; caption?: string }[];
+  images?: {
+    src: string;
+    alt: string;
+    caption?: string;
+    width?: number;
+    height?: number;
+    scroll?: boolean;
+  }[];
+  // Image width: "text" (680px, within ReadingColumn) or "full-bleed" (1120px, breaks out)
+  width?: "text" | "full-bleed";
   metrics?: { label: string; value: string }[];
   // Diagram fields
   diagramType?: "problem" | "evolution" | "ecosystem" | "change-framework" | "team-workflow";
@@ -34,6 +44,10 @@ export interface ContentSection {
   designedFeatures?: { name: string; description: string }[];
   // Outcome bullets — used by results, constraints, and key-decisions sections
   outcomeBullets?: { label: string; description: string }[];
+  // Optional nav label — if set, this section appears in the in-page navigation
+  navLabel?: string;
+  // Chapter grouping — dividers render when chapter changes between consecutive sections
+  chapter?: "context" | "process" | "solution" | "results" | "reflection";
 }
 
 export interface CaseStudyMeta {
@@ -72,12 +86,19 @@ export interface CaseStudy {
   role: string;
   timeline: string;
   overview: string;
-  coverSrc: string;
+  subtitle?: string;
+  coverSrc?: string;
   sections: ContentSection[];
   nextSlug: string | null;
   prevSlug: string | null;
   // New fields
   heroMedia?: { src: string; alt: string };
+  /** Full-page screenshot for auto-scrolling cover component */
+  coverScroll?: {
+    src: string;
+    alt: string;
+    sections?: { label: string; start: number }[];
+  };
   meta?: CaseStudyMeta;
 }
 
@@ -103,8 +124,8 @@ export const todoApp: CaseStudy = {
       type: "image-pair",
       heading: "User research — personas",
       images: [
-        { src: "/images/case-studies/todo-app-persona-1.webp", alt: "TODO++ user persona — power user", caption: "Power user persona — needs advanced features without clutter" },
-        { src: "/images/case-studies/todo-app-persona-2.webp", alt: "TODO++ user persona — casual user", caption: "Casual user persona — wants simplicity over options" },
+        { src: "/images/case-studies/todo-app-persona-1.webp", alt: "TODO++ user persona — power user", caption: "Power user persona — needs advanced features without clutter", width: 800, height: 744 },
+        { src: "/images/case-studies/todo-app-persona-2.webp", alt: "TODO++ user persona — casual user", caption: "Casual user persona — wants simplicity over options", width: 800, height: 744 },
       ],
     },
     {
@@ -116,7 +137,7 @@ export const todoApp: CaseStudy = {
       type: "full-image",
       heading: "Redesigned interface",
       images: [
-        { src: "/images/case-studies/todo-app-homepage-task.webp", alt: "TODO++ redesigned task view", caption: "The redesigned task view — clear hierarchy, focused on what matters" },
+        { src: "/images/case-studies/todo-app-homepage-task.webp", alt: "TODO++ redesigned task view", caption: "The redesigned task view — clear hierarchy, focused on what matters", width: 492, height: 1057 },
       ],
     },
     {
@@ -128,8 +149,8 @@ export const todoApp: CaseStudy = {
       type: "full-image",
       heading: "Onboarding flow",
       images: [
-        { src: "/images/case-studies/todo-app-new-user-sync.webp", alt: "TODO++ new user sync screen", caption: "Onboarding — getting started with intelligent sync" },
-        { src: "/images/case-studies/todo-app-new-user-link-device.webp", alt: "TODO++ device linking", caption: "Cross-device setup — seamless transition between devices" },
+        { src: "/images/case-studies/todo-app-new-user-sync.webp", alt: "TODO++ new user sync screen", caption: "Onboarding — getting started with intelligent sync", width: 492, height: 1057 },
+        { src: "/images/case-studies/todo-app-new-user-link-device.webp", alt: "TODO++ device linking", caption: "Cross-device setup — seamless transition between devices", width: 485, height: 1050 },
       ],
     },
     {
@@ -150,7 +171,7 @@ export const todoApp: CaseStudy = {
     {
       type: "full-image",
       images: [
-        { src: "/images/case-studies/todo-app-complete-task.webp", alt: "TODO++ completed task state", caption: "Completed task view — satisfying visual feedback without clutter" },
+        { src: "/images/case-studies/todo-app-complete-task.webp", alt: "TODO++ completed task state", caption: "Completed task view — satisfying visual feedback without clutter", width: 492, height: 1057 },
       ],
     },
     {
@@ -182,8 +203,8 @@ export const lettersApp: CaseStudy = {
       type: "full-image",
       heading: "The inbox experience",
       images: [
-        { src: "/images/case-studies/letters-app-homepage-post-1.webp", alt: "Letters App inbox view", caption: "The inbox — envelopes with preview windows, no read receipts, no typing indicators" },
-        { src: "/images/case-studies/letters-app-homepage-post-2.webp", alt: "Letters App homepage", caption: "Home feed — letters from your circle, organised by person" },
+        { src: "/images/case-studies/letters-app-homepage-post-1.webp", alt: "Letters App inbox view", caption: "The inbox — envelopes with preview windows, no read receipts, no typing indicators", width: 492, height: 1057 },
+        { src: "/images/case-studies/letters-app-homepage-post-2.webp", alt: "Letters App homepage", caption: "Home feed — letters from your circle, organised by person", width: 492, height: 1057 },
       ],
     },
     {
@@ -195,16 +216,16 @@ export const lettersApp: CaseStudy = {
       type: "image-pair",
       heading: "Writing and connecting",
       images: [
-        { src: "/images/case-studies/letters-app-my-letters.webp", alt: "Letters App my letters view", caption: "My letters — a personal archive of correspondence" },
-        { src: "/images/case-studies/letters-app-my-pals.webp", alt: "Letters App pals page", caption: "My Pals — manage your correspondence circle" },
+        { src: "/images/case-studies/letters-app-my-letters.webp", alt: "Letters App my letters view", caption: "My letters — a personal archive of correspondence", width: 492, height: 1057 },
+        { src: "/images/case-studies/letters-app-my-pals.webp", alt: "Letters App pals page", caption: "My Pals — manage your correspondence circle", width: 492, height: 1057 },
       ],
     },
     {
       type: "full-image",
       heading: "Personality and connection",
       images: [
-        { src: "/images/case-studies/letters-app-persona-details.webp", alt: "Letters App persona details", caption: "Persona details — understanding communication preferences" },
-        { src: "/images/case-studies/letters-app-personality-analysis.webp", alt: "Letters App personality analysis", caption: "Personality insights — how your communication style comes across" },
+        { src: "/images/case-studies/letters-app-persona-details.webp", alt: "Letters App persona details", caption: "Persona details — understanding communication preferences", width: 800, height: 744 },
+        { src: "/images/case-studies/letters-app-personality-analysis.webp", alt: "Letters App personality analysis", caption: "Personality insights — how your communication style comes across", width: 800, height: 741 },
       ],
     },
     {
@@ -226,7 +247,7 @@ export const lettersApp: CaseStudy = {
       type: "full-image",
       heading: "Showcase",
       images: [
-        { src: "/images/case-studies/letters-app-showcase.webp", alt: "Letters App showcase", caption: "The complete Letters App experience" },
+        { src: "/images/case-studies/letters-app-showcase.webp", alt: "Letters App showcase", caption: "The complete Letters App experience", width: 800, height: 461 },
       ],
     },
     {
@@ -241,16 +262,30 @@ export const lettersApp: CaseStudy = {
 
 export const credlane: CaseStudy = {
   slug: "credlane",
-  title: "Credlane",
+  title: "Travecs",
   category: "Talent Platform",
   role: "Lead Product Designer",
   timeline: "2 months",
   overview:
-    "Credlane is a responsive skills-verification and hiring platform connecting talent readiness, employer discovery, and custom assessments. I led the design across the talent, employer, and external experiences over two months, handing off a partially implemented product to engineering.",
-  coverSrc: "/images/case-studies/credlane-hero.webp",
+    "Travecs is a skills-verification and hiring platform where talent proves readiness and employers evaluate candidates with evidence. I led the design across two months, turning a shifting education concept into a coherent multi-sided hiring system.",
+  subtitle:
+    "Turning a shifting education concept into a coherent multi-sided hiring platform.",
+  coverSrc: "/images/case-studies/credlane/credlane-hero.webp",
   heroMedia: {
-    src: "/images/case-studies/credlane-hero.webp",
-    alt: "Credlane talent dashboard, assessment interface, and employer dashboard shown together.",
+    src: "/images/case-studies/credlane/credlane-hero.webp",
+    alt: "Travecs platform displayed on a MacBook Pro showing the product landing page",
+  },
+  coverScroll: {
+    src: "/images/case-studies/credlane/credlane-landing-page-full.webp",
+    alt: "Travecs landing page",
+    sections: [
+      { label: "Meet Travecs", start: 0 },
+      { label: "Talent experience", start: 0.31 },
+      { label: "Employer experience", start: 0.49 },
+      { label: "Frequently asked questions", start: 0.78 },
+      { label: "Find talent, get hired", start: 0.9 },
+      { label: "Footer", start: 0.97 },
+    ],
   },
   meta: {
     role: "Lead Product Designer",
@@ -262,23 +297,7 @@ export const credlane: CaseStudy = {
     status: "Handed off to engineering and partially implemented",
   },
   sections: [
-    /* 1. Project snapshot */
-    { type: "snapshot" },
-
-    /* 2. Executive summary */
-    {
-      type: "executive-summary",
-      executiveSummary: {
-        problem:
-          "Hiring decisions rely on CVs and short interviews that rarely provide dependable evidence of what a candidate can do.",
-        solution:
-          "Credlane gives talent a structured assessment pathway and gives employers interpretable results to support hiring decisions.",
-        outcome:
-          "A broad, partially implemented platform covering talent readiness, employer discovery, custom assessments, and candidate evaluation.",
-      },
-    },
-
-    /* 3. What I designed */
+    /* 1. What I designed */
     {
       type: "what-i-designed",
       heading: "What I designed",
@@ -286,7 +305,7 @@ export const credlane: CaseStudy = {
         {
           name: "Talent experience",
           description:
-            "Onboarding, assessment dashboard, job exploration, and employer outreach — connecting readiness with opportunity.",
+            "Onboarding, assessment dashboard, job exploration, and employer outreach.",
         },
         {
           name: "Employer experience",
@@ -296,560 +315,289 @@ export const credlane: CaseStudy = {
         {
           name: "Assessment system",
           description:
-            "Personal, skill, and advanced assessments with Job Ready qualification, Employability Score, and integrity safeguards.",
+            "Three-tier assessments with Job Ready qualification, Employability Score, and employer-created evaluations.",
         },
         {
           name: "External assessments",
           description:
-            "Shareable assessment links for non-platform candidates with a distinct permission model and dedicated applicant flow.",
+            "Shareable assessment links for non-platform candidates with a distinct permission model.",
         },
       ],
     },
 
-    /* 4. The problem */
+    /* 3. The problem */
     {
       type: "text",
       heading: "The problem",
-      body: "<strong>Hiring lacks evidence.</strong> CVs, self-reported skills, and short interviews provide context, but not dependable proof of what a candidate can do.\n\n<strong>Both sides feel the gap.</strong> Job seekers with limited experience struggle to prove competence. Employers spend time screening candidates and still lack practical evidence of readiness.\n\n<strong>Credlane bridges the gap.</strong> The product gives talent a structured way to demonstrate capabilities while giving employers interpretable results as part of a broader hiring decision.\n\n<strong>My role.</strong> As Lead Designer, I turned an evolving product idea into a coherent experience across multiple user groups — leading design direction, assigning flows to other designers, maintaining the design system, translating stakeholder decisions into actionable flows, and preparing the talent, employer, and external experiences for development.\n\n<strong>The real challenge</strong> was not designing individual screens. It was helping the team understand what the product was becoming and ensuring each change in direction was reflected consistently across the platform.",
-    },
-    {
-      type: "diagram",
-      diagramType: "problem",
-      diagramData: {
-        problemDiagram: {
-          leftLabel: "Talent",
-          leftStatement: "I need a fair way to prove what I can do.",
-          rightLabel: "Employer",
-          rightStatement: "I need stronger evidence before I hire.",
-          centre: "Structured assessments + interpretable results",
-        },
-      },
+      navLabel: "Problem",
+      chapter: "context",
+      body: "<strong>Hiring lacks evidence.</strong> CVs and self-reported skills give context but not proof of what a candidate can do. Employers spend hours screening and still lack practical evidence of readiness.\n\n<strong>The assessment system is the differentiator.</strong> I designed a three-tier assessment flow where talent proves readiness through personal, skill, and advanced assessments. Passing earns Job Ready status and makes them discoverable to employers. The Employability Score gives employers a structured signal without reducing a candidate to a number.\n\n<strong>The product evolved while we designed it.</strong> The project began as the education platform SkillBridge, became the hiring-focused Credlane, and ultimately launched under the Travecs name. Each transition changed the navigation, permissions, and relationship between talent and employers. The scope tripled. The timeline did not. I led the design through every pivot, keeping the information architecture coherent across shifting requirements.\n\n<strong>Two user types, distinct journeys.</strong> Talent completed assessments and explored opportunities. Employers discovered talent, created roles, and managed hiring. A third user type (external applicants) was invited through shareable assessment links but had restricted access. Each role needed its own permissions, navigation, and entry points.",
     },
 
-    /* 5. Product evolution */
-    {
-      type: "text",
-      heading: "Product evolution",
-      body: "<strong>Started as education.</strong> Credlane began as a platform where talent could learn skills, complete assessments, and become visible to employers. The intended journey was: learn, practise, assess, become employable.\n\n<strong>Pivoted to hiring.</strong> As stakeholders reconsidered the commercial position, the product evolved into a semi-job board and talent-assessment platform. This changed the structure, navigation, permissions, and relationship between both user groups.\n\n<strong>Scope expanded significantly.</strong> The revised product needed to support assessments, job discovery, employer hiring tools, external assessments, subscriptions, and candidate management — all within two months.\n\n<strong>Two questions emerged.</strong> How might we turn verified assessment performance into a useful hiring signal without reducing talent to a single score? And how could the design team keep the product coherent while its underlying definition continued to change?",
-    },
-    {
-      type: "diagram",
-      diagramType: "evolution",
-      diagramData: {
-        evolutionStages: [
-          {
-            stage: "Education platform",
-            description: "Learn, practise, assess, become employable",
-          },
-          {
-            stage: "Skills-verification platform",
-            description: "Assess, earn Job Ready status, become discoverable",
-          },
-          {
-            stage: "Semi-job board and hiring system",
-            description: "Discover roles and talent, assess, shortlist, hire",
-          },
-        ],
-      },
-    },
-
-    /* 6. Product ecosystem */
-    {
-      type: "text",
-      heading: "Product ecosystem",
-      body: "<strong>Three distinct user types.</strong> Credlane had to work for registered talent, employers, and external assessment applicants — each with different goals, permissions, and entry points.\n\n<strong>Talent</strong> completed assessments, explored opportunities, and became discoverable to employers.\n\n<strong>Employers</strong> discovered talent, created roles, invited candidates, built assessments, and managed hiring decisions.\n\n<strong>External applicants</strong> were invited through a shareable assessment link but were not full members of the talent platform. They could register, complete the assessment, and receive results — but could not access the talent dashboard or enter the discoverable talent pool.\n\n<strong>The third role was critical.</strong> Without a distinct permission model, external applicants could accidentally gain access to parts of the product intended for registered talent.",
-    },
-    {
-      type: "diagram",
-      diagramType: "ecosystem",
-      diagramData: {
-        ecosystemRoles: [
-          {
-            name: "Talent",
-            description:
-              "Registered job seekers using the main platform. They complete assessments, explore opportunities, and become discoverable to employers.",
-            permissions: [
-              "Complete assessments",
-              "Explore jobs",
-              "Receive offers",
-              "View results",
-            ],
-          },
-          {
-            name: "Employers",
-            description:
-              "Organizations using Credlane to discover talent, create roles, invite candidates, and manage hiring decisions.",
-            permissions: [
-              "Create roles",
-              "Discover talent",
-              "Send offers",
-              "Build assessments",
-            ],
-          },
-          {
-            name: "External applicants",
-            description:
-              "Users invited through an external assessment link. Not full members of the talent platform.",
-            permissions: [
-              "Register via email",
-              "Complete assessment",
-              "Receive results",
-            ],
-          },
-        ],
-      },
-    },
-
-    /* 7. Research and definition */
-    {
-      type: "text",
-      heading: "Research and definition",
-      body: "<strong>Compressed discovery.</strong> Because Credlane was a new product with a tight timeline, our discovery combined competitor analysis, interface pattern research, team brainstorming, stakeholder discussions, prototype testing, and design reviews.\n\n<strong>Pattern research.</strong> We reviewed products across assessment, recruitment, education, and job-board categories. Mobbin was used to examine recurring patterns — onboarding structures, assessment instructions, multi-step forms, dashboard navigation, candidate profiles, table layouts, progress indicators, and warning states.\n\n<strong>Not reproduction.</strong> The goal was not to copy another product. Studying familiar patterns helped us avoid introducing unnecessary interaction models where users already had established expectations. Interface references served as design inputs, evaluated through team reviews and testing rather than treated as direct evidence of user behaviour.",
-    },
-    {
-      type: "full-image",
-      heading: "Pattern research and early product exploration",
-      images: [
-        {
-          src: "/images/case-studies/credlane-pattern-research.webp",
-          alt: "Interface pattern research and early product exploration for Credlane.",
-        },
-      ],
-    },
-
-    /* 8. The assessment system */
+    /* 4. The assessment system */
     {
       type: "text",
       heading: "The assessment system",
-      body: "<strong>Three assessments determine readiness.</strong> A talent user needed to pass personal, skill, and advanced assessments to earn Job Ready status and become discoverable to employers.\n\n<strong>Job Ready is a starting point.</strong> We positioned it as a qualification state within Credlane — not a guarantee that someone was appropriate for every role. The status showed progress toward visibility, explained incomplete requirements, made failure feel recoverable, and directed users toward resources during the retake waiting period.\n\n<strong>The Employability Score needs context.</strong> Determined by skill and advanced assessment performance, the score was visible to both talent and employers. The design risk was allowing it to become the only signal employers considered. The score sat alongside assessment breakdowns, candidate experience, skills, profile information, and role relevance — making it interpretable rather than reductive.\n\n<strong>Assessments support multiple formats.</strong> Credlane assessments included multiple-choice, written responses, coding questions, file uploads, timed questions, and scenario-based questions. Tab-switch warnings communicated integrity concerns without being unnecessarily threatening, and the interface showed progress, remaining time, flagged questions, and submission confirmation.",
+      navLabel: "Assessment",
+      chapter: "solution",
+      body: "<strong>Three assessments determine readiness.</strong> Talent passes personal, skill, and advanced assessments to earn Job Ready status. Two paths exist: open assessments for self-directed progress, and employer-assigned evaluations for role-specific candidates.\n\n<strong>Job Ready is a starting point, not a guarantee.</strong> I positioned it as a qualification state that shows progress, explains incomplete requirements, makes failure feel recoverable, and directs users toward retake resources.\n\n<strong>The Employability Score needs context.</strong> Determined by skill and advanced assessment performance, the score sits alongside breakdowns, experience, skills, and role relevance. I designed it to keep employers interpreting the full picture rather than reducing candidates to a single number.\n\n<strong>Multiple question formats.</strong> Assessments support multiple-choice, written responses, coding questions, file uploads, timed questions, and scenario-based questions. Tab-switch warnings communicate integrity without being threatening.",
     },
     {
-      type: "comparison",
-      heading: "Two assessment models",
-      comparisonItems: [
+      type: "carousel",
+      heading: "Assessment workflow",
+      chapter: "solution",
+      images: [
         {
-          label: "Open assessments",
-          content:
-            "Talent take available assessments as part of their journey toward Job Ready status. The motivation is profile improvement and discoverability.",
+          src: "/images/case-studies/credlane/carousel/travecs-assessment-01-personal-summary.png",
+          alt: "SkillBridge-stage personal assessment summary with the next assessment in the talent roadmap",
+          caption: "Personal assessment: the summary unlocks the next step in the roadmap",
+          width: 1360,
+          height: 967,
+          scroll: true,
         },
         {
-          label: "Employer-assigned assessments",
-          content:
-            "Employers create or assign assessments to evaluate candidates for a particular role. The motivation is responding to a specific opportunity.",
-        },
-      ],
-    },
-    {
-      type: "sequence",
-      heading: "Assessment flow",
-      sequenceItems: [
-        {
-          step: 1,
-          label: "Assessment details",
-          description:
-            "Understand what the assessment covers, how long it takes, and what question types to expect.",
-          src: "/images/case-studies/credlane-assessment-details.webp",
-          alt: "Credlane assessment instructions and details screen",
+          src: "/images/case-studies/credlane/carousel/travecs-assessment-02-advanced-preview.png",
+          alt: "SkillBridge-stage advanced assessment preview with timing, expectations, and retake guidance",
+          caption: "Advanced assessment preview: expectations and guidance before starting",
+          width: 1360,
+          height: 1085,
+          scroll: true,
         },
         {
-          step: 2,
-          label: "Active question",
-          description:
-            "Answer questions with support for multiple-choice, written responses, coding, file uploads, and timed questions.",
-          src: "/images/case-studies/credlane-assessment-question.webp",
-          alt: "Credlane active assessment question screen",
+          src: "/images/case-studies/credlane/carousel/travecs-assessment-03-active.png",
+          alt: "SkillBridge-stage active assessment with question navigation, timer, progress, and submit action",
+          caption: "Active assessment: structured navigation, progress, and submission",
+          width: 1360,
+          height: 967,
+          scroll: true,
         },
         {
-          step: 3,
-          label: "Integrity warning",
-          description:
-            "Tab-switch warnings that explain the impact on assessment validity without being unnecessarily threatening.",
-          src: "/images/case-studies/credlane-assessment-integrity.webp",
-          alt: "Credlane assessment tab-switch integrity warning",
-        },
-        {
-          step: 4,
-          label: "Review and submit",
-          description:
-            "Review answers, check flagged questions, and submit the completed assessment.",
-          src: "/images/case-studies/credlane-assessment-review.webp",
-          alt: "Credlane assessment review and submit screen",
-        },
-        {
-          step: 5,
-          label: "Completion",
-          description:
-            "Successful submission state with clear confirmation and next steps.",
-          src: "/images/case-studies/credlane-assessment-complete.webp",
-          alt: "Credlane assessment completion screen",
+          src: "/images/case-studies/credlane/carousel/travecs-assessment-04-advanced-summary.png",
+          alt: "SkillBridge-stage advanced assessment summary confirming completion and explaining the results timeline",
+          caption: "Advanced assessment summary: completion confirmation and what happens next",
+          width: 1360,
+          height: 967,
+          scroll: true,
         },
       ],
     },
 
-    /* 9. Talent experience */
+    /* 5. Talent experience */
     {
       type: "text",
       heading: "Talent experience",
-      body: "<strong>Onboarding without friction.</strong> The talent onboarding collected enough information to personalise the platform without making account creation feel like an application form — establishing identity, professional interests, preferred skills, experience, assessment status, and profile completion.\n\n<strong>Assessment dashboard.</strong> The dashboard helped talent understand which assessments were available and required, view completed assessments and scores, check retake eligibility, and track progress toward Job Ready status.\n\n<strong>Two paths to opportunity.</strong> Talent could actively explore roles and indicate interest — allowing employers to review profiles and assessment evidence before moving forward. Alternatively, employers could proactively discover talent profiles and send job offers directly. These two entry paths supported both active and passive job discovery.",
+      navLabel: "Talent",
+      chapter: "solution",
+      body: "<strong>Onboarding without friction.</strong> I collected enough information to personalise the platform without making sign-up feel like a job application. Identity, interests, skills, and assessment status were established in one flow.\n\n<strong>Two paths to opportunity.</strong> Talent could actively explore roles and indicate interest. Alternatively, employers could discover profiles and send offers directly. Both active and passive discovery were supported.\n\n<strong>The dashboard drove daily use.</strong> Talent saw available assessments, completed results, retake eligibility, and progress toward Job Ready status in one view.",
     },
     {
-      type: "sequence",
+      type: "carousel",
       heading: "Talent journey",
-      sequenceItems: [
+      chapter: "solution",
+      images: [
         {
-          step: 1,
-          label: "Onboarding",
-          description:
-            "Collect identity, professional interests, preferred skills, and experience without making account creation feel like an application form.",
-          src: "/images/case-studies/credlane-talent-onboarding.webp",
-          alt: "Credlane talent onboarding screen",
+          src: "/images/case-studies/credlane/carousel/travecs-talent-01-generating.png",
+          alt: "SkillBridge-stage loading screen generating assessments before a new talent profile is created",
+          caption: "New talent: generating a personalised assessment path before profile creation",
+          width: 1360,
+          height: 967,
+          scroll: true,
         },
         {
-          step: 2,
-          label: "Assessment dashboard",
-          description:
-            "View available and required assessments, completed assessments, scores, retake eligibility, and progress toward Job Ready status.",
-          src: "/images/case-studies/credlane-talent-dashboard.webp",
-          alt: "Credlane talent assessment dashboard",
+          src: "/images/case-studies/credlane/carousel/travecs-talent-02-home.png",
+          alt: "SkillBridge-stage default talent homepage with profile progress and the assessment roadmap",
+          caption: "Default homepage: profile progress and the complete Job Ready roadmap",
+          width: 1360,
+          height: 1107,
+          scroll: true,
         },
         {
-          step: 3,
-          label: "Explore jobs",
-          description:
-            "Discover opportunities and indicate interest in roles, allowing employers to review profiles and assessment evidence.",
-          src: "/images/case-studies/credlane-talent-explore.webp",
-          alt: "Credlane talent job exploration screen",
+          src: "/images/case-studies/credlane/carousel/travecs-talent-03-resources-menu.png",
+          alt: "SkillBridge-stage resources page with learning resources and the account menu open",
+          caption: "Resources: learning content with account controls kept within reach",
+          width: 1360,
+          height: 1344,
+          scroll: true,
         },
         {
-          step: 4,
-          label: "Received opportunity",
-          description:
-            "Receive a job offer directly when an employer discovers the talent profile and reaches out.",
-          src: "/images/case-studies/credlane-talent-opportunity.webp",
-          alt: "Credlane talent received job opportunity screen",
+          src: "/images/case-studies/credlane/carousel/travecs-talent-04-job-ready.png",
+          alt: "Credlane-stage Job Ready talent homepage with verified status, skill breakdown, and recommendations",
+          caption: "Job Ready homepage: verified status, score context, and next opportunities",
+          width: 1360,
+          height: 1215,
+          scroll: true,
         },
       ],
     },
 
-    /* 10. Employer experience */
+    /* 6. Employer experience */
     {
       type: "text",
       heading: "Employer experience",
-      body: "<strong>Role creation.</strong> Employers defined opportunities with job information, required skills, experience expectations, assessment requirements, hiring preferences, and candidate criteria.\n\n<strong>Talent discovery.</strong> Employers explored Job Ready talent and evaluated profiles based on skills, Employability Score, assessment performance, experience, role relevance, and profile information. Filtering narrowed the pool without manually reviewing every profile.\n\n<strong>Candidate management.</strong> Employers could invite talent, send offers, shortlist or reject candidates, schedule interviews, send assessment invitations, review results, and move candidates through hiring stages.\n\n<strong>Assessment results as workflow input.</strong> This made Credlane more than an assessment tool. Assessment results became part of a broader decision-making workflow that connected discovery, evaluation, and hiring.",
+      navLabel: "Employer",
+      chapter: "solution",
+      body: "<strong>Role creation.</strong> Employers defined opportunities with job details, required skills, assessment requirements, and hiring preferences.\n\n<strong>Talent discovery.</strong> I designed the employer dashboard to surface Job Ready talent with profiles, Employability Score, assessment performance, and role relevance. Filtering narrowed the pool without manual review.\n\n<strong>Candidate management.</strong> Employers could invite, shortlist, reject, send offers, schedule interviews, and move candidates through hiring stages. Assessment results sat within the broader decision-making workflow.",
     },
     {
-      type: "sequence",
+      type: "carousel",
       heading: "Employer journey",
-      sequenceItems: [
-        {
-          step: 1,
-          label: "Employer dashboard",
-          description:
-            "Overview of roles, candidate activity, assessment results, and hiring pipeline.",
-          src: "/images/case-studies/credlane-employer-dashboard.webp",
-          alt: "Credlane employer dashboard",
-        },
-        {
-          step: 2,
-          label: "Create role",
-          description:
-            "Define job information, required skills, experience expectations, assessment requirements, and hiring preferences.",
-          src: "/images/case-studies/credlane-employer-create-role.webp",
-          alt: "Credlane employer role creation screen",
-        },
-        {
-          step: 3,
-          label: "Discover talent",
-          description:
-            "Explore Job Ready talent, evaluate profiles, and filter by skills, score, and role relevance.",
-          src: "/images/case-studies/credlane-employer-discover.webp",
-          alt: "Credlane employer talent discovery screen",
-        },
-        {
-          step: 4,
-          label: "Candidate management",
-          description:
-            "Invite talent, send offers, shortlist candidates, and move them through hiring stages.",
-          src: "/images/case-studies/credlane-employer-candidates.webp",
-          alt: "Credlane employer candidate management screen",
-        },
-      ],
-    },
-    {
-      type: "full-image",
-      heading: "Candidate review with annotations",
+      chapter: "solution",
       images: [
         {
-          src: "/images/case-studies/credlane-candidate-review-annotated.webp",
-          alt: "Credlane candidate profile with annotation callouts for score, Job Ready status, skills, experience, and employer actions.",
+          src: "/images/case-studies/credlane/carousel/credlane-employer-01-overview.webp",
+          alt: "SkillBridge-stage employer account creation screen",
+          caption: "Employer onboarding: creating an organisation account",
+          width: 1360,
+          height: 850,
+        },
+        {
+          src: "/images/case-studies/credlane/carousel/credlane-employer-02-roles.webp",
+          alt: "Credlane-stage employer dashboard showing hiring tools and pipeline overview",
+          caption: "Dashboard: hiring tools and pipeline overview",
+          width: 1360,
+          height: 850,
+        },
+        {
+          src: "/images/case-studies/credlane/carousel/credlane-employer-03-create-role.webp",
+          alt: "Credlane-stage talent discovery screen with filters and verified candidates",
+          caption: "Talent discovery: filtering verified candidates by role fit",
+          width: 1360,
+          height: 850,
+        },
+        {
+          src: "/images/case-studies/credlane/carousel/credlane-assessment-01-dashboard.webp",
+          alt: "Credlane-stage employer offer review with candidate assessment steps",
+          caption: "Hiring action: reviewing role details before sending an offer",
+          width: 1360,
+          height: 850,
         },
       ],
     },
 
-    /* 11. External assessments */
     {
       type: "text",
-      heading: "External assessments",
-      body: "<strong>Commercially significant.</strong> One of the most important employer features was the ability to assess people who were not part of the main talent platform. External assessment creation was planned as a paid feature gated behind an employer subscription tier.\n\n<strong>Employer creation flow.</strong> The employer selected whether the assessment was internal (for existing talent) or external (distributed through a shareable link). They created the assessment, added questions, set correct answers, established a pass benchmark, and generated the link. For the MVP, custom assessments supported multiple-choice questions.\n\n<strong>External applicant flow.</strong> The external journey was intentionally separated from the main talent experience. Users opened the shared link, registered via email, reviewed instructions and terms, completed the assessment, and received confirmation. Taking the assessment also represented consent to receive targeted marketing emails, as stated in the Terms and Conditions.\n\n<strong>Permission boundaries.</strong> External applicants had a dedicated user role — they could take the assessment but could not access the talent dashboard or enter the discoverable talent pool. This separation prevented external participants from unintentionally becoming regular Credlane users.",
+      heading: "Employer assessment engine",
+      navLabel: "Assessment engine",
+      chapter: "solution",
+      body: "<strong>Assessment creation supported both sourcing paths.</strong> Employers built reusable, role-specific assessments and defined the category, pass rate, deadline, and questions. They could attach an assessment to a Travecs role for talent sourced on the platform or share it with preferred candidates sourced elsewhere.\n\n<strong>One engine, separate candidate management.</strong> Internal and external candidates were managed separately within assessment details and analytics. This kept each candidate journey distinct while giving employers consistent evidence for deciding who to hire.",
     },
     {
-      type: "sequence",
-      heading: "Employer external assessment creation",
-      sequenceItems: [
-        {
-          step: 1,
-          label: "Create Assessment entry",
-          description:
-            "Enter the Create Assessment flow from the employer dashboard.",
-          src: "/images/case-studies/credlane-external-create-entry.webp",
-          alt: "Credlane Create Assessment entry point",
-        },
-        {
-          step: 2,
-          label: "Internal vs External",
-          description:
-            "Select whether the assessment is for existing talent or distributed through a shareable link.",
-          src: "/images/case-studies/credlane-external-toggle.webp",
-          alt: "Credlane assessment internal versus external toggle",
-        },
-        {
-          step: 3,
-          label: "Assessment builder",
-          description:
-            "Add questions, answer options, correct answers, and assessment settings.",
-          src: "/images/case-studies/credlane-external-builder.webp",
-          alt: "Credlane assessment builder screen",
-        },
-        {
-          step: 4,
-          label: "Benchmark and settings",
-          description:
-            "Establish a pass benchmark and configure assessment parameters.",
-          src: "/images/case-studies/credlane-external-benchmark.webp",
-          alt: "Credlane assessment benchmark and settings screen",
-        },
-        {
-          step: 5,
-          label: "Shareable link",
-          description:
-            "Generate and distribute the assessment through a shareable link.",
-          src: "/images/case-studies/credlane-external-shareable-link.webp",
-          alt: "Credlane shareable assessment link success state",
-        },
-      ],
-    },
-    {
-      type: "sequence",
-      heading: "External applicant journey",
-      sequenceItems: [
-        {
-          step: 1,
-          label: "Invitation",
-          description:
-            "Open the shared assessment link received from an employer.",
-          src: "/images/case-studies/credlane-external-invitation.webp",
-          alt: "Credlane external assessment invitation screen",
-        },
-        {
-          step: 2,
-          label: "Email sign-up",
-          description:
-            "Register using an email address to access the assessment.",
-          src: "/images/case-studies/credlane-external-signup.webp",
-          alt: "Credlane external applicant email registration screen",
-        },
-        {
-          step: 3,
-          label: "Terms and consent",
-          description:
-            "Review assessment instructions, terms, and consent to marketing communications.",
-          src: "/images/case-studies/credlane-external-terms.webp",
-          alt: "Credlane external assessment terms and consent screen",
-        },
-        {
-          step: 4,
-          label: "Assessment",
-          description:
-            "Complete the assigned assessment with supported question types.",
-          src: "/images/case-studies/credlane-external-assessment.webp",
-          alt: "Credlane external assessment question screen",
-        },
-        {
-          step: 5,
-          label: "Completion",
-          description:
-            "Receive confirmation that the assessment has been submitted successfully.",
-          src: "/images/case-studies/credlane-external-complete.webp",
-          alt: "Credlane external assessment completion screen",
-        },
-      ],
-    },
-
-    /* 12. Leading through change */
-    {
-      type: "text",
-      heading: "Leading through change",
-      body: "<strong>Repeated pivots.</strong> The central challenge was the repeated change in product direction. Credlane began as education-led, then expanded into job discovery, employer hiring tools, external assessments, subscriptions, and candidate management. Each change affected multiple connected areas.\n\n<strong>System-level thinking.</strong> Moving toward a semi-job board required revisiting talent navigation, employer navigation, profile visibility, Job Ready eligibility, role creation, candidate discovery, assessment entry points, platform permissions, and external user roles. I treated these as product-system changes rather than isolated screen requests.\n\n<strong>My process.</strong> Clarify the revised stakeholder decision, identify affected user journeys, map dependencies, break work into assignable flows, review output from other designers, update reusable patterns, present the revised direction, and align with product and engineering.\n\n<strong>Team coordination.</strong> With 24 people across product, engineering, marketing, and design, inconsistencies could appear easily when several flows were created simultaneously. The objective was not for every designer to create screens that looked similar — it was for the product to behave like one connected system.",
-    },
-    {
-      type: "diagram",
-      heading: "Change framework",
-      diagramType: "change-framework",
-      diagramData: {
-        changeRows: [
-          {
-            change: "Education platform became a semi-job board",
-            systems: "Navigation, profiles, roles, discovery",
-            response: "Reframed the information architecture around hiring journeys",
-          },
-          {
-            change: "Employers could assess external applicants",
-            systems: "Roles, permissions, sign-up, results, pricing",
-            response: "Added a distinct external applicant role and shareable assessment flow",
-          },
-          {
-            change: "Assessment results became a hiring signal",
-            systems: "Scores, profiles, candidate lists, filters",
-            response: "Added contextual performance breakdowns rather than relying on one number",
-          },
-        ],
-      },
-    },
-    {
-      type: "diagram",
-      heading: "Team coordination workflow",
-      diagramType: "team-workflow",
-      diagramData: {
-        workflowSteps: [
-          "Stakeholder direction",
-          "Product clarification",
-          "Flow assignment",
-          "Design review",
-          "System alignment",
-          "Engineering handoff",
-        ],
-      },
-    },
-
-    /* 13. Design system */
-    {
-      type: "text",
-      heading: "Design system",
-      body: "<strong>Reusable across a large surface.</strong> Credlane required consistent patterns across authentication, form fields, multi-step onboarding, buttons, navigation, assessment questions, progress states, warnings, modals, candidate cards, job cards, tables, filters, score displays, empty states, and responsive behaviour.\n\n<strong>Essential during change.</strong> Reusable components allowed us to revise shared patterns without redesigning each screen independently. As requirements changed, the system absorbed variation while maintaining consistency.\n\n<strong>Improved handoff quality.</strong> The design system gave developers clearer, repeatable interface behaviour — reducing ambiguity during the engineering implementation phase.",
-    },
-    {
-      type: "full-image",
-      heading: "Selected design-system components",
+      type: "carousel",
+      heading: "Employer assessment workflow",
+      chapter: "solution",
       images: [
         {
-          src: "/images/case-studies/credlane-design-system.webp",
-          alt: "Selected Credlane design-system components used across talent and employer experiences.",
+          src: "/images/case-studies/credlane/carousel/travecs-employer-assessment-01-create.png",
+          alt: "Credlane-stage employer modal for defining an assessment title, category, pass rate, and deadline",
+          caption: "Set up: define the assessment details, pass rate, and deadline",
+          width: 1360,
+          height: 850,
+        },
+        {
+          src: "/images/case-studies/credlane/carousel/travecs-employer-assessment-02-review-create.png",
+          alt: "Credlane-stage employer review screen with a Create assessment action",
+          caption: "Review: confirm the configuration before creating the assessment",
+          width: 1360,
+          height: 1136,
+          scroll: true,
+        },
+        {
+          src: "/images/case-studies/credlane/carousel/travecs-employer-assessment-03-manage.png",
+          alt: "Credlane-stage employer Assessments page showing active, completed, and draft assessments",
+          caption: "Manage: track active, completed, and draft assessments in one place",
+          width: 1360,
+          height: 850,
         },
       ],
     },
 
-    /* 14. Results */
+    /* 7. Results */
     {
       type: "results",
       heading: "Results",
+      navLabel: "Results",
+      chapter: "results",
       outcomeBullets: [
         {
-          label: "Comprehensive scope delivered",
+          label: "Complete multi-sided platform designed",
           description:
-            "Designed talent onboarding, assessment flows, Job Ready qualification, Employability Score, job discovery, employer hiring tools, custom assessment creation, external applicant assessment, results dashboards, and supporting components.",
+            "Delivered talent onboarding, assessment flows, Job Ready qualification, employer hiring tools, custom assessment creation, and external applicant assessment across two months.",
         },
         {
-          label: "Handed off to engineering",
+          label: "Engineering handoff with partial implementation",
           description:
-            "The work was delivered to the engineering team and partially implemented, establishing a clear foundation for Credlane's talent, employer, and external assessment experiences.",
+            "The design system, component library, and flow specifications were handed off to engineering. Key screens were implemented, establishing the foundation for Travecs' hiring experience.",
         },
         {
-          label: "Strong qualitative feedback",
+          label: "Design system survived repeated pivots",
           description:
-            "The design received positive feedback from the HNG chief mentor and cross-disciplinary mentors who commended its visual quality and completeness.",
+            "The information architecture and component system remained coherent despite the product shifting from education to hiring, then expanding to include external assessments.",
         },
         {
-          label: "System survived repeated pivots",
+          label: "Recognised for visual quality and completeness",
           description:
-            "The design system and information architecture remained coherent despite the product shifting from education to hiring, then expanding to include external assessments and candidate management.",
+            "The design received positive feedback from the HNG chief mentor and cross-disciplinary mentors who commended its visual quality and scope.",
         },
       ],
     },
 
-    /* 15. Constraints */
+    /* 8. Constraints */
     {
       type: "constraints",
       heading: "Constraints",
+      chapter: "reflection",
       outcomeBullets: [
         {
-          label: "Two-month timeline",
+          label: "Two months, three product pivots",
           description:
-            "The entire talent, employer, and external experience needed to be designed within two months, requiring rapid iteration and decisive trade-offs.",
+            "The entire platform needed to be designed in two months while the product direction changed from education to hiring to external assessments.",
         },
         {
-          label: "Shifting product definition",
+          label: "24-person cross-functional team",
           description:
-            "The product direction changed multiple times — from education to hiring to external assessments — requiring constant re-alignment of navigation, permissions, and user journeys.",
+            "Coordinating design across product, engineering, marketing, and design required system-level thinking and consistent communication of evolving requirements.",
         },
         {
-          label: "Large cross-functional team",
+          label: "Design system under pressure",
           description:
-            "Coordinating design across 24 people in product, engineering, marketing, and design demanded strong system-level thinking and consistent communication of evolving requirements.",
+            "The component library and information architecture had to remain coherent while the product scope tripled and the timeline stayed fixed.",
         },
       ],
     },
 
-    /* 16. Key decisions */
+    /* 9. Key decisions */
     {
       type: "key-decisions",
       heading: "Key decisions",
+      navLabel: "Decisions",
+      chapter: "reflection",
       outcomeBullets: [
         {
-          label: "Pivoted from education to hiring",
+          label: "Reframed the IA around hiring, not learning",
           description:
-            "Reframed the entire information architecture around assessment readiness, employer discovery, and hiring workflows — rather than learning and skill development.",
-        },
-        {
-          label: "Created a dedicated external applicant role",
-          description:
-            "Separated external assessment participants from the main talent pool with distinct permissions, preventing unintended access to the job-seeker product.",
+            "When the product pivoted from education to hiring, I restructured the entire information architecture around assessment readiness, employer discovery, and hiring workflows instead of course completion and skill development.",
         },
         {
           label: "Score as context, not verdict",
           description:
-            "Positioned the Employability Score as one input alongside assessment breakdowns, profile information, and role relevance — reducing the risk of employers treating a single number as a complete hiring signal.",
+            "I positioned the Employability Score as one input alongside assessment breakdowns, profile information, and role relevance. This reduced the risk of employers treating a single number as a complete hiring signal.",
+        },
+        {
+          label: "Separated external applicants from the talent pool",
+          description:
+            "I created a distinct user type with restricted permissions for external assessment participants, preventing unintended access to the job-seeker product.",
+        },
+        {
+          label: "Kept the design system coherent under pressure",
+          description:
+            "With 24 people across product, engineering, marketing, and design, I helped the team understand what the product was becoming so each change in direction was reflected consistently across the platform.",
+        },
+        {
+          label: "Planned for features beyond the MVP",
+          description:
+            "Open-ended assessments were considered for a later phase. Accounting for them during planning prevented the assessment system from being designed too narrowly, even though they were not part of the initial build.",
         },
       ],
-    },
-
-    /* 17. Future-state assessments */
-    {
-      type: "future-state",
-      heading: "Open-ended assessments",
-      futureStateData: [
-        {
-          label: "Planned feature",
-          description:
-            "Open-ended questions were considered for a later phase rather than the MVP. Unlike multiple-choice assessments, open-ended responses would require manual review by the Credlane team.",
-        },
-        {
-          label: "Manual review over AI",
-          description:
-            "Manual review was chosen to avoid unpredictable AI evaluation, grading inconsistency, token costs, reduced employer trust, and difficulty explaining how scores were generated.",
-        },
-        {
-          label: "System design impact",
-          description:
-            "Although not part of the MVP, accounting for open-ended assessments during planning helped prevent the assessment system from being designed too narrowly.",
-        },
-      ],
-    },
-
-    /* 18. Reflection */
-    {
-      type: "text",
-      heading: "Reflection",
-      body: "<strong>Product clarity is a design dependency.</strong> Interface quality cannot compensate for an unclear product definition. When the product changed from education-led to hiring-led, the most important work was understanding what the new direction meant for each user, permission, action, and journey — not immediately redesigning screens.\n\n<strong>Changes must be evaluated across the system.</strong> A decision within one flow can affect several others. Adding external assessments introduced questions about pricing, user roles, permissions, consent, results reporting, marketing access, and talent-pool visibility. Treating the feature as only a new assessment screen would have missed most of the product work.\n\n<strong>Leadership requires shared understanding.</strong> Assigning screens was only part of leading the design team. The more important responsibility was helping designers understand the product well enough to make consistent decisions across separate flows.\n\n<strong>Scores need context.</strong> Assessment scores can help employers make decisions, but they can also create false certainty. The Employability Score needed to sit within a broader candidate profile rather than serve as a complete definition of talent quality.",
     },
   ],
   nextSlug: "todo-app",
@@ -863,7 +611,6 @@ export const testground: CaseStudy = {
   role: "Product design — UX, UI",
   timeline: "2026",
   overview: "Case study content coming soon.",
-  coverSrc: "/images/case-studies/testground-cover.webp",
   sections: [
     {
       type: "text",
@@ -879,15 +626,387 @@ export const draftly: CaseStudy = {
   slug: "draftly",
   title: "Draftly",
   category: "Content Creation",
-  role: "Product design — UX, UI",
-  timeline: "2026",
-  overview: "Case study content coming soon.",
+  role: "Design Lead and Sole Designer",
+  timeline: "3 days",
+  overview:
+    "Draftly is an AI writing coach designed for high-school students. Unlike general-purpose AI tools that generate content, Draftly helps students understand how to improve their writing while preserving ownership of their work. I completed the project as a three-day solo design sprint — defining product direction, developing the visual identity, designing the responsive landing page, and creating product previews for the AI Idea Starter and Writing Assistant. The final prototype was used to demonstrate the concept to potential investors and collaborators.",
   coverSrc: "/images/case-studies/draftly-cover.webp",
+  heroMedia: {
+    src: "/images/draftly/draftly-hero-1440x900.webp",
+    alt: "Draftly landing page hero showing the AI writing coach positioning and product interface preview",
+  },
+  meta: {
+    role: "Design Lead and Sole Designer",
+    timeline: "3 days",
+    date: "February 2026",
+    platform: "Responsive Web",
+    team: "Solo",
+    scope: "Landing page, AI Idea Starter preview, Writing Assistant preview",
+    status: "Prototype presented to potential investors and collaborators",
+  },
   sections: [
+    /* 1. Executive summary */
+    {
+      type: "executive-summary",
+      executiveSummary: {
+        problem:
+          "Students have access to AI tools, but most are designed to generate content rather than help students learn. Starting is difficult, corrections lack explanation, and AI can weaken student ownership of their work.",
+        solution:
+          "Draftly positions itself as an AI writing coach — not an essay generator. It helps students brainstorm, structure, revise, and understand their work through an explanation loop that turns every correction into a learning moment.",
+        outcome:
+          "A responsive landing page with product previews for the AI Idea Starter and Writing Assistant, presented to potential investors and collaborators as a clear articulation of the product opportunity.",
+      },
+    },
+
+    /* 2. What I designed */
+    {
+      type: "what-i-designed",
+      heading: "What I designed",
+      designedFeatures: [
+        {
+          name: "Landing page",
+          description:
+            "A responsive marketing page that introduces the product category, explains the learning-first approach, and builds trust with students, parents, and teachers.",
+        },
+        {
+          name: "AI Idea Starter",
+          description:
+            "A brainstorming tool that helps students move from assignment prompt to thesis, outline, or first paragraph — without generating the essay for them.",
+        },
+        {
+          name: "Writing Assistant",
+          description:
+            "A real-time revision tool that provides feedback on grammar, clarity, tone, vocabulary, and sentence flow — with explanations that teach rather than just correct.",
+        },
+        {
+          name: "Explain My Mistake",
+          description:
+            "A correction-plus-explanation flow that answers what is wrong, why it is wrong, and how to avoid the same mistake next time.",
+        },
+      ],
+    },
+
+    /* 3. The problem */
     {
       type: "text",
-      heading: "Coming soon",
-      body: "This case study is being prepared. Check back for the full story.",
+      heading: "The problem",
+      navLabel: "Problem",
+      chapter: "context",
+      body: `<strong>Students already have access to AI tools, but most are not designed around learning.</strong> Many struggle to move from an assignment prompt to a clear thesis, outline, or first paragraph.\n<strong>Corrections often lack explanation.</strong> Grammar tools may improve a sentence without helping the student understand what was wrong.\n<strong>AI can weaken student ownership.</strong> When tools generate complete responses, students can submit better-looking work without developing stronger writing skills.\n<strong>Academic trust is fragile.</strong> Parents, teachers, and schools need reassurance that AI is supporting the writing process rather than completing assignments on the student's behalf.\n<strong>Draftly needed to feel useful enough for students to adopt while clearly communicating that it was a coach, not an essay generator.</strong>`,
+    },
+
+    /* 4. Product positioning */
+    {
+      type: "text",
+      heading: "Product positioning",
+      body: `<strong>Learn while you write.</strong> The central product promise shaped both the landing-page messaging and the product concepts shown inside it.\n<strong>Draftly was positioned as an AI writing coach, a guided essay builder, and a learning companion.</strong> It was deliberately not positioned as an essay generator, a homework shortcut, or a tool that thinks on behalf of students.\n<strong>This distinction was the foundation of every design decision.</strong>`,
+    },
+    {
+      type: "full-image",
+      heading: "Product positioning",
+      images: [
+        {
+          src: "/images/draftly/draftly-positioning-1200x760.webp",
+          alt: "Draftly product positioning section contrasting learning support with generic AI writing tools",
+          width: 1200,
+          height: 760,
+        },
+      ],
+    },
+
+    /* 5. Landing page */
+    {
+      type: "text",
+      heading: "Landing page",
+      navLabel: "Landing page",
+      chapter: "solution",
+      body: `<strong>A page that explains before it sells.</strong> The landing page needed to introduce a new category without overwhelming the audience with educational-technology language.\n<strong>The structure followed a simple sequence:</strong> introduce the writing problem, explain Draftly's learning-first approach, demonstrate the product, show how different users benefit, build trust around originality and AI use, present pricing, answer common objections, and end with a direct invitation to start writing.\n<strong>The hero message — "Write better essays. Learn while you do it." — communicated both the immediate student benefit and the longer-term educational value.</strong>`,
+    },
+    {
+      type: "full-image",
+      heading: "Landing page hero",
+      images: [
+        {
+          src: "/images/draftly/draftly-landing-hero-1440x960.webp",
+          alt: "Complete Draftly landing-page hero with headline, CTA buttons, and product preview",
+          width: 1440,
+          height: 960,
+        },
+      ],
+    },
+
+    /* 6. AI Idea Starter */
+    {
+      type: "text",
+      heading: "AI Idea Starter",
+      body: `<strong>Addressing blank-page anxiety without creating the assignment.</strong> Instead of asking Draftly to write an essay, students could use it to brainstorm possible directions, explore different arguments, generate thesis options, organize ideas into an outline, and identify useful questions before drafting.\n<strong>The distinction was important.</strong> Draftly could help a student decide what to write, but the student would remain responsible for the final expression and argument.\n<strong>Familiar school topics made the tool approachable.</strong> Prompts like "The effect of social media on teenagers' mental health" or "Whether school uniforms should be mandatory" helped students understand the tool without a long explanation.`,
+    },
+    {
+      type: "image-pair",
+      heading: "Idea Starter flow",
+      images: [
+        {
+          src: "/images/draftly/draftly-idea-starter-input-1280x800.webp",
+          alt: "Draftly AI Idea Starter prompt-entry state",
+          width: 1280,
+          height: 800,
+        },
+        {
+          src: "/images/draftly/draftly-idea-starter-output-1280x800.webp",
+          alt: "Draftly AI Idea Starter generated outline or idea state",
+          width: 1280,
+          height: 800,
+        },
+      ],
+    },
+
+    /* 7. Writing Assistant */
+    {
+      type: "text",
+      heading: "Writing Assistant",
+      navLabel: "Writing",
+      body: `<strong>Real-time revision with explanation.</strong> The Writing Assistant preview demonstrated how Draftly could support revision in real time — providing feedback for grammar, clarity, tone, vocabulary, sentence flow, and punctuation.\n<strong>Each suggestion included the highlighted issue, a corrected version, a short explanation, and Accept and Ignore actions.</strong> The explanation layer was the key difference.\n<strong>Rather than only replacing a sentence, Draftly would tell the student why the original version was weak or incorrect.</strong> This allowed each correction to act as a small learning moment.`,
+    },
+    {
+      type: "full-image",
+      heading: "Writing Assistant",
+      images: [
+        {
+          src: "/images/draftly/draftly-writing-assistant-1440x900.webp",
+          alt: "Draftly writing editor showing highlighted text, a suggested correction, explanation, and actions",
+          width: 1440,
+          height: 900,
+        },
+      ],
+    },
+
+    /* 8. Explain My Mistake */
+    {
+      type: "text",
+      heading: "Explain My Mistake",
+      body: `<strong>Correction plus instruction.</strong> Although not designed as a separate product flow, Explain My Mistake was one of the strongest concepts presented in the landing page. It was built around three questions: what is wrong, why is it wrong, and how can the student avoid the same mistake next time.\n<strong>This moved Draftly beyond correction and into instruction.</strong> A conventional writing tool might improve a sentence. Draftly would correct it while explaining subject–verb agreement, preposition choice, and possessive nouns.\n<strong>The student would not only receive a better sentence. They would receive a reason.</strong>`,
+    },
+    {
+      type: "full-image",
+      heading: "Explain My Mistake",
+      images: [
+        {
+          src: "/images/draftly/draftly-explain-mistake-1000x700.webp",
+          alt: "Focused Draftly suggestion panel showing a correction and the reason behind it",
+          width: 1000,
+          height: 700,
+        },
+      ],
+    },
+
+    /* 9. Use cases */
+    {
+      type: "what-i-designed",
+      heading: "Use cases",
+      designedFeatures: [
+        {
+          name: "Break through the blank page",
+          description:
+            "Students explore possible angles, generate thesis options, and build an outline before drafting.",
+        },
+        {
+          name: "Improve a working draft",
+          description:
+            "Students receive feedback on grammar, sentence flow, clarity, vocabulary, and tone without losing their original voice.",
+        },
+        {
+          name: "Understand every correction",
+          description:
+            "Students learn which rule applies and why the suggestion improves the sentence.",
+        },
+        {
+          name: "Submit with confidence",
+          description:
+            "Students perform a final review of structure, clarity, originality, and overall writing quality before turning in their work.",
+        },
+      ],
+    },
+
+    /* 10. Visual direction */
+    {
+      type: "text",
+      heading: "Visual direction",
+      body: `<strong>Youthful without appearing childish.</strong> Draftly's visual identity uses bright purple, rounded cards, soft shadows, generous spacing, and large interface previews.\n<strong>The direction was chosen to feel modern without resembling a generic AI dashboard, academic without feeling institutional, and energetic without making the writing experience more stressful.</strong>\n<strong>The dark, angled sections introduce contrast and momentum,</strong> while the purple palette provides a recognizable brand system across the page. This was a deliberate departure from traditional education software, which often feels administrative, dense, or overly formal.`,
+    },
+    {
+      type: "full-image",
+      heading: "Visual system",
+      images: [
+        {
+          src: "/images/draftly/draftly-visual-system-1200x1000.webp",
+          alt: "Draftly landing-page crop showing the transition between light and dark branded sections",
+          width: 1200,
+          height: 1000,
+        },
+      ],
+    },
+
+    /* 11. Pricing */
+    {
+      type: "text",
+      heading: "Pricing",
+      body: `<strong>Four tiers for multiple stages of adoption.</strong> Free introduced the product through limited feedback and basic essay-building support. Pro unlocked unlimited essays, advanced feedback, explanations, originality checking, progress tracking, and the Smart Writing Score. Business extended the concept to teachers and tutoring organizations. Enterprise represented a future school and district offering with integrations, administration, analytics, and onboarding support.\n<strong>The pricing structure communicated the broader product vision,</strong> even though the teacher, school, and administration products were roadmap concepts rather than completed interfaces.`,
+    },
+    {
+      type: "full-image",
+      heading: "Pricing",
+      images: [
+        {
+          src: "/images/draftly/draftly-pricing-1440x900.webp",
+          alt: "Draftly pricing section showing Free, Pro, Business, and Enterprise plans",
+          width: 1440,
+          height: 900,
+        },
+      ],
+    },
+
+    /* 12. Trust and academic integrity */
+    {
+      type: "text",
+      heading: "Trust and academic integrity",
+      body: `<strong>The most important product risk was the perception that Draftly could become another shortcut for schoolwork.</strong> The landing page addressed this directly through messages such as "Built for learning — not shortcuts."\n<strong>The product principles reinforced this position:</strong> explain every suggestion, preserve student ownership, encourage critical thinking, make AI assistance visible, avoid automatic essay generation, and support originality by default.\n<strong>This trust layer was intended for students, but it was equally important for parents, teachers, and schools</strong> evaluating whether the product belonged in an academic environment.`,
+    },
+    {
+      type: "full-image",
+      heading: "Trust and integrity",
+      images: [
+        {
+          src: "/images/draftly/draftly-integrity-1200x760.webp",
+          alt: "Draftly trust and academic-integrity section",
+          width: 1200,
+          height: 760,
+        },
+      ],
+    },
+
+    /* 13. Results */
+    {
+      type: "results",
+      heading: "What was delivered",
+      navLabel: "Results",
+      chapter: "results",
+      outcomeBullets: [
+        {
+          label: "Responsive landing page",
+          description:
+            "A complete marketing page introducing the product category, explaining the learning-first approach, and building trust with students, parents, and teachers.",
+        },
+        {
+          label: "Product previews",
+          description:
+            "Interface concepts for the AI Idea Starter and Writing Assistant that made the product concrete rather than relying only on marketing copy.",
+        },
+        {
+          label: "Brand and visual identity",
+          description:
+            "A distinctive visual system using bright purple, rounded cards, and dark angled sections — designed to feel youthful and modern without resembling generic AI tooling.",
+        },
+        {
+          label: "Investor-ready prototype",
+          description:
+            "A presentation-ready articulation of the product opportunity and its differentiation from general-purpose AI writing tools, completed in three days.",
+        },
+      ],
+    },
+
+    /* 14. Constraints */
+    {
+      type: "constraints",
+      heading: "What I had to work with",
+      outcomeBullets: [
+        {
+          label: "Three-day timeline",
+          description:
+            "The project required rapid product definition, visual exploration, interface design, copy structure, and responsive page design within a compressed schedule.",
+        },
+        {
+          label: "New product category",
+          description:
+            "Draftly was my first attempt at designing an AI education product centered on writing development, requiring fast learning and confident direction-setting.",
+        },
+        {
+          label: "No direct student testing",
+          description:
+            "The direction was informed by product logic, competitive analysis, and market references rather than validated student behaviour.",
+        },
+      ],
+    },
+
+    /* 15. Key decisions */
+    {
+      type: "key-decisions",
+      heading: "Key decisions",
+      navLabel: "Decisions",
+      outcomeBullets: [
+        {
+          label: "Teach before automating",
+          description:
+            "Draftly was positioned around helping students understand their writing rather than generating completed work.",
+        },
+        {
+          label: "Make explanation the differentiator",
+          description:
+            "Corrections alone are easy to reproduce. Explaining the rule and helping students avoid future mistakes creates a stronger educational product.",
+        },
+        {
+          label: "Show the product early",
+          description:
+            "The landing page used interface previews to make the concept concrete rather than relying only on marketing copy.",
+        },
+        {
+          label: "Design for trust beyond the student",
+          description:
+            "The message needed to reassure parents, teachers, and schools that Draftly supported learning and academic integrity.",
+        },
+        {
+          label: "Keep future scope visible but separate",
+          description:
+            "Teacher, parent, and school features were shown as part of the roadmap without presenting them as completed product work.",
+        },
+      ],
+    },
+
+    /* 16. Simulated review */
+    {
+      type: "future-state",
+      heading: "Simulated investor and design-engineering review",
+      futureStateData: [
+        {
+          label: "Clear product wedge",
+          description:
+            "Draftly has a clearer wedge than many generic AI writing products because it treats explanation and student ownership as the product rather than as secondary safety messaging.",
+        },
+        {
+          label: "Strongest opportunity",
+          description:
+            "The explanation loop — identifying an issue, showing an improved version, explaining the rule, and tracking whether the student improves over time — is the most important feature to develop further.",
+        },
+        {
+          label: "Before investment",
+          description:
+            "The most important evidence would not be whether students accept more suggestions, but whether their unaided writing improves after repeated use.",
+        },
+      ],
+    },
+
+    /* 17. What I would improve */
+    {
+      type: "text",
+      heading: "What I would improve next",
+      chapter: "reflection",
+      body: `<strong>Move beyond the marketing page and validate the core learning experience.</strong> The next version should prioritize designing the complete writing-editor journey, testing the AI Idea Starter with students experiencing blank-page anxiety, and evaluating whether explanations are understandable and measurable.\n<strong>The most important metric would not be the number of AI corrections accepted.</strong> It would be whether students gradually need fewer corrections and produce stronger independent writing.`,
+    },
+
+    /* 18. Closing reflection */
+    {
+      type: "text",
+      heading: "Closing reflection",
+      body: `<strong>Draftly was a short project, but it introduced a meaningful design problem:</strong> how to make AI useful without making the student less responsible for the work.\n<strong>The final concept established a clear product promise, a distinctive visual identity, and a credible initial view</strong> of how guided AI could support writing development.\n<strong>The next challenge would be proving that the product does more than make essays look better</strong> — that it actually helps students become better writers.`,
     },
   ],
   nextSlug: null,
@@ -916,16 +1035,21 @@ export function getNavAdjacent(currentSlug: string): {
   prevProject: Project | null;
   nextProject: Project | null;
 } {
-  const cs = getCaseStudy(currentSlug);
-  if (!cs)
+  const publishedProjects = projects.filter(
+    (project) => project.status === "published" && getCaseStudy(project.slug),
+  );
+  const currentIndex = publishedProjects.findIndex(
+    (project) => project.slug === currentSlug,
+  );
+
+  if (currentIndex === -1) {
     return { prev: null, next: null, prevProject: null, nextProject: null };
-  const prev = cs.prevSlug ? getCaseStudy(cs.prevSlug) ?? null : null;
-  const next = cs.nextSlug ? getCaseStudy(cs.nextSlug) ?? null : null;
-  const prevProject = cs.prevSlug
-    ? getProjectBySlug(cs.prevSlug) ?? null
-    : null;
-  const nextProject = cs.nextSlug
-    ? getProjectBySlug(cs.nextSlug) ?? null
-    : null;
+  }
+
+  const prevProject = publishedProjects[currentIndex - 1] ?? null;
+  const nextProject = publishedProjects[currentIndex + 1] ?? null;
+  const prev = prevProject ? getCaseStudy(prevProject.slug) ?? null : null;
+  const next = nextProject ? getCaseStudy(nextProject.slug) ?? null : null;
+
   return { prev, next, prevProject, nextProject };
 }

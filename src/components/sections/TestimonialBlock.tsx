@@ -23,7 +23,7 @@ export function TestimonialBlock({
               {attribution}
             </span>
             {role && (
-              <span className="font-sans text-sm text-[#757575]">
+              <span className="font-sans text-sm text-[var(--color-text-muted)]">
                 , {role}
               </span>
             )}

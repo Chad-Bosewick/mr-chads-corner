@@ -1,12 +1,13 @@
 import Link from "next/link";
+import { PageShell } from "@/components/layout/PageShell";
 
 export default function NotFound() {
   return (
-    <div className="mx-auto max-w-[1038px] px-4 py-24 text-center">
+    <PageShell className="py-24 text-center">
       <h1 className="text-[clamp(2rem,5vw,3rem)] font-medium leading-[1.5]">
         Page not found
       </h1>
-      <p className="mt-4 text-[#757575]">
+      <p className="mt-4 text-[var(--color-text-muted)]">
         This page doesn&rsquo;t exist yet &mdash; or has moved.
       </p>
       <Link
@@ -15,6 +16,6 @@ export default function NotFound() {
       >
         Go back home
       </Link>
-    </div>
+    </PageShell>
   );
 }

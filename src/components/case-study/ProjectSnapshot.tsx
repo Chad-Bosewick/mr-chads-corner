@@ -18,11 +18,11 @@ export function ProjectSnapshot({ meta }: ProjectSnapshotProps) {
 
   return (
     <SectionReveal>
-      <section className="my-12 md:my-16">
+      <section>
         <div className="grid grid-cols-[auto_1fr] gap-x-8 gap-y-3">
           {rows.map(([label, value]) => (
             <div key={label} className="contents">
-              <span className="font-sans text-sm font-medium text-[#757575]">{label}</span>
+              <span className="font-sans text-sm font-medium text-[var(--color-text-muted)]">{label}</span>
               <span className="font-sans text-sm text-[#151515]/70">{value}</span>
             </div>
           ))}

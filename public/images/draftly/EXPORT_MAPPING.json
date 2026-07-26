@@ -1,0 +1,17 @@
+{
+  "source_file": "https://www.figma.com/design/ij6f8NbOKFMGqdBHya6BNV/HNG-14?node-id=6-4",
+  "quality": 95,
+  "assets": {
+    "draftly-hero-1440x900.webp": "Figma Hero section, cropped to 16:10",
+    "draftly-positioning-1200x760.webp": "Figma Services/main differentiator section, cropped to 30:19",
+    "draftly-landing-hero-1440x960.webp": "Figma Hero section, cropped to 3:2",
+    "draftly-idea-starter-input-1280x800.webp": "Figma AI Idea starter frame, contained in 16:10 canvas",
+    "draftly-idea-starter-output-1280x800.webp": "Closest-match generated composite from Draftly Idea Starter visual language because exact output frame was not present",
+    "draftly-writing-assistant-1440x900.webp": "Figma Product section, cropped to writing assistant preview",
+    "draftly-explain-mistake-1000x700.webp": "Crop from Figma Product section focused on suggestion/explanation UI",
+    "draftly-visual-system-1200x1000.webp": "Figma Case Study section showing light/dark branded transition",
+    "draftly-pricing-1440x900.webp": "Figma Pricing section, cropped to 16:10",
+    "draftly-integrity-1200x760.webp": "Composite from Figma FAQ and CTA trust/accountability sections",
+    "draftly-cover.webp": "Project-index cover composite from Figma Hero section"
+  }
+}

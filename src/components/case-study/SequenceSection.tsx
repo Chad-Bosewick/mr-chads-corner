@@ -1,4 +1,5 @@
 import { SectionReveal } from "@/components/sections/SectionReveal";
+import Image from "next/image";
 
 interface SequenceItem {
   step: number;
@@ -33,7 +34,7 @@ export function SequenceSection({ heading, items }: SequenceSectionProps) {
 
   return (
     <SectionReveal>
-      <section className="my-12 md:my-16" aria-label={heading ?? "Sequence"}>
+      <section aria-label={heading ?? "Sequence"}>
         {heading && (
           <h2 className="mb-6 font-sans text-[clamp(1.25rem,3vw,1.5rem)] font-medium text-[#151515]">
             {heading}
@@ -64,23 +65,26 @@ export function SequenceSection({ heading, items }: SequenceSectionProps) {
               {/* Optional image */}
               {item.src && (
                 <figure className="mb-3">
-                  <img
-                    src={item.src}
-                    alt={item.alt ?? ""}
-                    className="aspect-[4/3] w-full rounded-md object-contain"
-                    loading="lazy"
-                  />
+                  <div className="relative aspect-[4/3] w-full overflow-hidden rounded-md bg-[#f0f0f0]">
+                    <Image
+                      src={item.src}
+                      alt={item.alt ?? ""}
+                      fill
+                      className="object-contain"
+                      sizes="(max-width: 640px) 280px, (max-width: 768px) 50vw, 20vw"
+                    />
+                  </div>
                 </figure>
               )}
 
               {/* Label */}
-              <h4 className="font-sans text-sm font-medium text-[#151515]">
+              <h3 className="font-sans text-sm font-medium text-[#151515]">
                 {item.label}
-              </h4>
+              </h3>
 
               {/* Optional description */}
               {item.description && (
-                <p className="mt-1 font-sans text-[clamp(0.8125rem,1.5vw,0.875rem)] leading-relaxed text-[#757575]">
+                <p className="mt-1 font-sans text-[clamp(0.8125rem,1.5vw,0.875rem)] leading-relaxed text-[var(--color-text-muted)]">
                   {item.description}
                 </p>
               )}

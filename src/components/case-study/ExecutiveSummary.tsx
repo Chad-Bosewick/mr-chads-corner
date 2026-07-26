@@ -14,17 +14,19 @@ export function ExecutiveSummary({ problem, solution, outcome }: ExecutiveSummar
   ];
 
   return (
-    <SectionReveal>
-      <section className="my-12 md:my-16">
-        <div className="space-y-4">
-          {items.map((item) => (
-            <p key={item.label} className="font-sans text-[clamp(0.875rem,2vw,1rem)] leading-relaxed text-[#151515]/70">
-              <strong className="font-medium text-[#151515]">{item.label}.</strong>{" "}
+    <section>
+      <div className="space-y-4">
+        {items.map((item, i) => (
+          <SectionReveal key={item.label} delay={i * 120}>
+            <p className="font-sans text-[clamp(0.875rem,2vw,1rem)] leading-relaxed text-[#151515]/70">
+              <strong className="font-semibold text-[#151515]">
+                {item.label}.
+              </strong>{" "}
               {item.text}
             </p>
-          ))}
-        </div>
-      </section>
-    </SectionReveal>
+          </SectionReveal>
+        ))}
+      </div>
+    </section>
   );
 }

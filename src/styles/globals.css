@@ -5,7 +5,7 @@
   /* Colours */
   --color-text-primary: #151515;
   --color-accent: #A43718;
-  --color-text-muted: #757575;
+  --color-text-muted: #6F6F6F;
   --color-bg-footer: #0F0F0F;
   --color-text-on-dark: #FFFFFF;
 
@@ -25,9 +25,11 @@
   --duration-fast: 150ms;
   --duration-standard: 300ms;
   --duration-slow: 500ms;
-  --duration-reveal: 700ms;
-  --ease-out: cubic-bezier(0.33, 1, 0.68, 1);
+  --duration-reveal: 800ms;
+  --ease-out: cubic-bezier(0.25, 0.1, 0.25, 1);
   --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-fluid: cubic-bezier(0.45, 0, 0.15, 1);
   --motion-reduced: 0;
 }
 
@@ -40,6 +42,7 @@
 /* ===== Base Styles ===== */
 html {
   scroll-behavior: smooth;
+  overflow-x: clip;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -53,6 +56,29 @@ body {
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overflow-x: clip;
+}
+
+/* Native inspection for full-height case-study screenshots. */
+.case-study-slide-scroll {
+  -webkit-overflow-scrolling: touch;
+  scrollbar-color: rgb(21 21 21 / 35%) transparent;
+  scrollbar-width: thin;
+}
+
+.case-study-slide-scroll::-webkit-scrollbar {
+  width: 6px;
+}
+
+.case-study-slide-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.case-study-slide-scroll::-webkit-scrollbar-thumb {
+  background: rgb(21 21 21 / 35%);
+  border: 2px solid transparent;
+  border-radius: 999px;
+  background-clip: padding-box;
 }
 
 /* ===== Focus Styles ===== */

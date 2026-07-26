@@ -4,7 +4,12 @@ export interface Project {
   category: string;
   hook: string;
   description: string;
-  coverSrc: string;
+  coverSrc?: string;
+  coverScroll?: {
+    src: string;
+    alt: string;
+    sections?: { label: string; start: number }[];
+  };
   status: "published" | "coming-soon";
   device: "laptop" | "phone";
 }
@@ -12,12 +17,25 @@ export interface Project {
 export const projects: Project[] = [
   {
     slug: "credlane",
-    title: "Credlane",
+    title: "Travecs",
     category: "Talent Platform",
-    hook: "Making credit accessible through better design.",
+    hook: "Designing a hiring platform where talent can prove readiness and employers can evaluate candidates with stronger evidence.",
     description:
-      "I led the design of Credlane, a responsive talent-assessment and hiring platform connecting job readiness, employer discovery, custom assessments, and candidate evaluation.",
-    coverSrc: "/images/case-studies/credlane-cover.webp",
+      "I led the design of Travecs, a responsive talent-assessment and hiring platform connecting job readiness, employer discovery, custom assessments, and candidate evaluation.",
+    coverSrc: "/images/case-studies/credlane/credlane-hero.webp",
+    coverScroll: {
+      src: "/images/case-studies/credlane/credlane-landing-page-full.webp",
+      alt: "Travecs landing page",
+      sections: [
+        { label: "Meet Travecs", start: 0 },
+        { label: "What our users say", start: 0.19 },
+        { label: "Talent experience", start: 0.31 },
+        { label: "Employer experience", start: 0.49 },
+        { label: "Verified talent", start: 0.7 },
+        { label: "Frequently asked questions", start: 0.78 },
+        { label: "Find talent, get hired", start: 0.9 },
+      ],
+    },
     status: "published",
     device: "laptop",
   },
@@ -50,8 +68,7 @@ export const projects: Project[] = [
     hook: "Testing infrastructure that teams actually enjoy using.",
     description:
       "A testing platform designed for collaboration, speed, and developer happiness.",
-    coverSrc: "/images/case-studies/testground-cover.webp",
-    status: "published",
+    status: "coming-soon",
     device: "laptop",
   },
   {

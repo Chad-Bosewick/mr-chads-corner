@@ -1,15 +1,15 @@
-import Image from "next/image";
 import { SectionReveal } from "@/components/sections/SectionReveal";
+import { CinematicImage } from "@/components/ui/CinematicImage";
 
 interface ImagePairProps {
   heading?: string;
-  images: { src: string; alt: string; caption?: string }[];
+  images: { src: string; alt: string; caption?: string; width?: number; height?: number }[];
 }
 
 export function ImagePair({ heading, images }: ImagePairProps) {
   return (
     <SectionReveal>
-      <section className="my-12 md:my-16">
+      <section>
         {heading && (
           <h2 className="mb-6 font-sans text-[clamp(1.25rem,3vw,1.5rem)] font-medium text-[#151515]">
             {heading}
@@ -24,17 +24,15 @@ export function ImagePair({ heading, images }: ImagePairProps) {
         >
           {images.map((img, i) => (
             <figure key={i}>
-              <div className="relative aspect-[4/3] w-full overflow-hidden bg-[#f0f0f0]">
-                <Image
-                  src={img.src}
-                  alt={img.alt}
-                  fill
-                  className="object-cover"
-                  sizes="(max-width: 768px) 100vw, 50vw"
-                />
-              </div>
+              <CinematicImage
+                src={img.src}
+                alt={img.alt}
+                aspectRatio="auto"
+                sizes="(max-width: 768px) 100vw, 680px"
+                {...(img.width && img.height ? { width: img.width, height: img.height } : {})}
+              />
               {img.caption && (
-                <figcaption className="mt-2 font-sans text-sm text-[#757575]">
+                <figcaption className="mt-2 font-sans text-sm text-[var(--color-text-muted)]">
                   {img.caption}
                 </figcaption>
               )}

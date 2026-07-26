@@ -13,22 +13,27 @@ import { EditorialCard } from "@/components/case-study/EditorialCard";
 import { SectionDivider } from "@/components/case-study/SectionDivider";
 import { ExecutiveSummary } from "@/components/case-study/ExecutiveSummary";
 import { CaseStudyNav } from "@/components/case-study/CaseStudyNav";
+import { CoverScroll } from "@/components/case-study/CoverScroll";
+import { CarouselSection } from "@/components/case-study/CarouselSection";
 import { PageShell, ReadingColumn } from "@/components/layout/PageShell";
 import type { CaseStudy, ContentSection as ContentSectionType } from "@/content/case-studies";
 import type { Project } from "@/content/projects";
 
-/* ─── In-page navigation items ─── */
-const caseStudyNavItems = [
-  { label: "Overview", id: "overview" },
-  { label: "Problem", id: "problem" },
-  { label: "What I designed", id: "what-i-designed" },
-  { label: "Assessment system", id: "assessment-system" },
-  { label: "Talent", id: "talent-experience" },
-  { label: "Employer", id: "employer-experience" },
-  { label: "External", id: "external-assessments" },
-  { label: "Results", id: "results" },
-  { label: "Decisions", id: "key-decisions" },
-];
+/* ─── Generate nav items from sections ─── */
+function generateNavItems(sections: ContentSectionType[]) {
+  const items: { label: string; id: string }[] = [
+    { label: "Overview", id: "overview" },
+  ];
+  for (const section of sections) {
+    if (section.navLabel && section.heading) {
+      const id = sectionId(section.heading);
+      if (id) {
+        items.push({ label: section.navLabel, id });
+      }
+    }
+  }
+  return items;
+}
 
 /* ─── Section ID helper ─── */
 function sectionId(heading?: string): string | undefined {
@@ -39,25 +44,41 @@ function sectionId(heading?: string): string | undefined {
     .replace(/[^a-z0-9-]/g, "");
 }
 
-/* ─── Divider placement ─── */
-function shouldInsertDividerAfter(section: ContentSectionType): boolean {
-  if (!section.heading) return false;
-  const h = section.heading.toLowerCase();
-  return (
-    h === "the problem" ||
-    h === "product evolution" ||
-    h === "product ecosystem" ||
-    h === "the assessment system" ||
-    h === "designing the talent experience" ||
-    h === "designing the employer experience" ||
-    h === "designing external assessments" ||
-    h === "maintaining the design system"
-  );
+/* ─── Divider placement (chapter-based) ─── */
+function shouldInsertDivider(
+  prev: ContentSectionType | undefined,
+  next: ContentSectionType,
+): boolean {
+  if (!prev || !prev.chapter || !next.chapter) return false;
+  return prev.chapter !== next.chapter;
 }
 
-function shouldInsertDividerBefore(section: ContentSectionType): boolean {
-  if (!section.heading) return false;
-  return section.heading.toLowerCase() === "results";
+/* ─── Chapter-aware section spacing ─── */
+function sectionSpacingClass(
+  section: ContentSectionType,
+  prevSection?: ContentSectionType,
+): string {
+  // Chapter break → generous spacing
+  if (prevSection?.chapter && section.chapter && prevSection.chapter !== section.chapter) {
+    return "my-20 md:my-28";
+  }
+  // First section after hero/nav → moderate spacing
+  if (!prevSection) {
+    return "my-12 md:my-16";
+  }
+  // Image/carousel following its parent text → tighter
+  if (
+    (section.type === "image-pair" || section.type === "carousel" || section.type === "full-image") &&
+    prevSection?.type === "text"
+  ) {
+    return "mt-6 md:mt-8";
+  }
+  // Results or key decisions → generous
+  if (section.type === "results" || section.type === "key-decisions" || section.type === "constraints") {
+    return "my-16 md:my-20";
+  }
+  // Default
+  return "my-12 md:my-16";
 }
 
 /* ─── WhatIDesigned helper component ─── */
@@ -70,7 +91,7 @@ function WhatIDesigned({
 }) {
   return (
     <SectionReveal>
-      <section className="my-12 md:my-16" id="what-i-designed">
+      <section id="what-i-designed">
         {heading && (
           <h2 className="mb-6 font-sans text-[clamp(1.25rem,3vw,1.5rem)] font-medium text-[#151515]">
             {heading}
@@ -105,7 +126,7 @@ function OutcomeList({
 }) {
   return (
     <SectionReveal>
-      <section className="my-12 md:my-16" id={id}>
+      <section id={id} className="scroll-mt-16">
         {heading && (
           <h2 className="mb-6 font-sans text-[clamp(1.25rem,3vw,1.5rem)] font-medium text-[#151515]">
             {heading}
@@ -134,15 +155,17 @@ function renderSection(
   section: ContentSectionType,
   index: number,
   caseStudy: CaseStudy,
+  prevSection?: ContentSectionType,
 ) {
   const id = sectionId(section.heading);
+  const spacing = sectionSpacingClass(section, prevSection);
 
   switch (section.type) {
     case "text":
       return (
-        <ReadingColumn key={index}>
-          <ContentSection heading={section.heading}>
-            <div id={id}>
+        <ReadingColumn key={index} className={spacing}>
+          <ContentSection heading={section.heading} id={id}>
+            <div>
               {section.body?.split("\n").map((p, i) => (
                 <p key={i} dangerouslySetInnerHTML={{ __html: p }} />
               ))}
@@ -152,49 +175,69 @@ function renderSection(
       );
     case "image-pair":
       return (
+        <ReadingColumn key={index} className={spacing}>
+          <ImagePair
+            heading={section.heading}
+            images={section.images || []}
+          />
+        </ReadingColumn>
+      );
+    case "full-image": {
+      const isFullBleed = section.width === "full-bleed";
+      const pair = (
         <ImagePair
-          key={index}
           heading={section.heading}
           images={section.images || []}
         />
       );
-    case "full-image":
+      return isFullBleed ? (
+        <div key={index} className={spacing}>{pair}</div>
+      ) : (
+        <ReadingColumn key={index} className={spacing}>{pair}</ReadingColumn>
+      );
+    }
+    case "carousel":
       return (
-        <ImagePair
-          key={index}
-          heading={section.heading}
-          images={section.images || []}
-        />
+        <ReadingColumn key={index} className={spacing}>
+          <CarouselSection
+            heading={section.heading}
+            slides={section.images || []}
+          />
+        </ReadingColumn>
       );
     case "metrics":
       return (
-        <ReadingColumn key={index}>
+        <ReadingColumn key={index} className={spacing}>
           <MetricBar
             heading={section.heading}
             metrics={section.metrics || []}
           />
         </ReadingColumn>
       );
-    case "hero-media":
+    case "hero-media": {
+      const heroSrc = section.images?.[0]?.src ?? caseStudy.coverSrc;
+      if (!heroSrc) return null;
+
       return (
         <HeroMedia
           key={index}
-          src={section.images?.[0]?.src ?? caseStudy.coverSrc}
+          src={heroSrc}
           alt={
             section.images?.[0]?.alt ??
             `${caseStudy.title} hero`
           }
         />
       );
+    }
     case "snapshot":
       return (
-        <ReadingColumn key={index}>
+        <ReadingColumn key={index} className={spacing}>
           <ProjectSnapshot meta={caseStudy.meta!} />
         </ReadingColumn>
       );
     case "diagram":
       return (
-        <ReadingColumn key={index}>
+        <ReadingColumn key={index} className={spacing}>
           <DiagramSection
             heading={section.heading}
             diagramType={section.diagramType!}
@@ -204,7 +247,7 @@ function renderSection(
       );
     case "comparison":
       return (
-        <ReadingColumn key={index}>
+        <ReadingColumn key={index} className={spacing}>
           <ComparisonSection
             heading={section.heading}
             items={section.comparisonItems || []}
@@ -213,7 +256,7 @@ function renderSection(
       );
     case "sequence":
       return (
-        <ReadingColumn key={index}>
+        <ReadingColumn key={index} className={spacing}>
           <SequenceSection
             heading={section.heading}
             items={section.sequenceItems || []}
@@ -222,7 +265,7 @@ function renderSection(
       );
     case "future-state":
       return (
-        <ReadingColumn key={index}>
+        <ReadingColumn key={index} className={spacing}>
           <EditorialCard
             label="Future consideration"
             heading={section.heading}
@@ -237,7 +280,7 @@ function renderSection(
       );
     case "executive-summary":
       return (
-        <ReadingColumn key={index}>
+        <ReadingColumn key={index} className={spacing}>
           <ExecutiveSummary
             problem={section.executiveSummary?.problem ?? ""}
             solution={section.executiveSummary?.solution ?? ""}
@@ -247,7 +290,7 @@ function renderSection(
       );
     case "what-i-designed":
       return (
-        <ReadingColumn key={index}>
+        <ReadingColumn key={index} className={spacing}>
           <WhatIDesigned
             features={section.designedFeatures || []}
             heading={section.heading}
@@ -256,7 +299,7 @@ function renderSection(
       );
     case "results":
       return (
-        <ReadingColumn key={index}>
+        <ReadingColumn key={index} className={spacing}>
           <OutcomeList
             items={section.outcomeBullets || []}
             heading={section.heading}
@@ -266,7 +309,7 @@ function renderSection(
       );
     case "constraints":
       return (
-        <ReadingColumn key={index}>
+        <ReadingColumn key={index} className={spacing}>
           <OutcomeList
             items={section.outcomeBullets || []}
             heading={section.heading}
@@ -276,7 +319,7 @@ function renderSection(
       );
     case "key-decisions":
       return (
-        <ReadingColumn key={index}>
+        <ReadingColumn key={index} className={spacing}>
           <OutcomeList
             items={section.outcomeBullets || []}
             heading={section.heading}
@@ -301,75 +344,132 @@ export function CaseStudyLayout({
   prevProject,
   nextProject,
 }: CaseStudyLayoutProps) {
+  const navItems = generateNavItems(caseStudy.sections);
+
   return (
     <PageShell>
       <article>
-        {/* Header */}
-        <ReadingColumn>
-          <SectionReveal>
-            <header id="overview">
-              <p className="font-sans text-sm uppercase tracking-wider text-[#757575]">
-                {caseStudy.category} &middot; {caseStudy.timeline}
-              </p>
-              <h1 className="mt-2 font-sans text-[clamp(2rem,5vw,3rem)] font-medium text-[#151515]">
-                {caseStudy.title}
-              </h1>
-              <p className="mt-2 font-sans text-sm text-[#757575]">
-                {caseStudy.role}
-              </p>
-              <p className="mt-6 font-sans text-[clamp(0.875rem,2vw,1rem)] leading-relaxed text-[#151515]/70">
-                {caseStudy.overview}
-              </p>
-            </header>
-          </SectionReveal>
-        </ReadingColumn>
+        {/* Nav + header side-by-side on desktop, stacked on mobile */}
+        {/* Compact section navigation below the desktop-sidebar breakpoint */}
+        <div className="sticky top-0 z-30 -mx-5 mb-10 sm:-mx-6 xl:hidden">
+          <CaseStudyNav items={navItems} variant="mobile" />
+        </div>
 
-        {/* Hero media */}
-        {caseStudy.heroMedia && (
-          <HeroMedia
-            src={caseStudy.heroMedia.src}
-            alt={caseStudy.heroMedia.alt}
-          />
-        )}
+        <div className="grid grid-cols-1 xl:grid-cols-[208px_1fr] xl:gap-12">
+          {/* Desktop sidebar */}
+          <div className="hidden xl:block">
+            <CaseStudyNav items={navItems} />
+          </div>
 
-        {/* In-page navigation */}
-        <CaseStudyNav items={caseStudyNavItems} />
+          {/* Header + hero + content column */}
+          <div className="xl:-ml-[108px]">
+            {/* Header */}
+            <ReadingColumn>
+              <SectionReveal>
+                <header id="overview" className="scroll-mt-16">
+                  {/* Metadata grid */}
+                  <div className="grid grid-cols-[auto_1fr] gap-x-6 gap-y-2">
+                    <span className="font-sans text-[clamp(0.875rem,2vw,1rem)] leading-relaxed font-medium uppercase tracking-wider text-[var(--color-text-muted)]">
+                      Role
+                    </span>
+                    <span className="font-sans text-[clamp(0.875rem,2vw,1rem)] leading-relaxed text-[#151515]/70">
+                      {caseStudy.role}
+                    </span>
 
-        {/* Content sections */}
-        {caseStudy.sections.flatMap(
-          (section: ContentSectionType, index: number) => {
-            const items: React.ReactNode[] = [];
-            if (shouldInsertDividerBefore(section)) {
-              items.push(
-                <SectionDivider key={`div-before-${index}`} />,
-              );
-            }
-            items.push(renderSection(section, index, caseStudy));
-            if (shouldInsertDividerAfter(section)) {
-              items.push(
-                <SectionDivider key={`div-after-${index}`} />,
-              );
-            }
-            return items;
-          },
-        )}
+                    <span className="font-sans text-[clamp(0.875rem,2vw,1rem)] leading-relaxed font-medium uppercase tracking-wider text-[var(--color-text-muted)]">
+                      Timeline
+                    </span>
+                    <span className="font-sans text-[clamp(0.875rem,2vw,1rem)] leading-relaxed text-[#151515]/70">
+                      {caseStudy.timeline}
+                    </span>
 
-        {/* Back link */}
-        <ReadingColumn>
-          <SectionReveal>
-            <div className="mt-16 text-center md:mt-20">
-              <Link
-                href="/featured-case-studies"
-                className="font-sans text-sm font-medium text-[#A43718] transition-colors duration-[var(--duration-fast)] hover:text-[#A43718]/70"
-              >
-                &larr; All case studies
-              </Link>
+                    {caseStudy.meta?.scope && (
+                      <>
+                        <span className="font-sans text-[clamp(0.875rem,2vw,1rem)] leading-relaxed font-medium uppercase tracking-wider text-[var(--color-text-muted)]">
+                          Scope
+                        </span>
+                        <span className="font-sans text-[clamp(0.875rem,2vw,1rem)] leading-relaxed text-[#151515]/70">
+                          {caseStudy.meta.scope}
+                        </span>
+                      </>
+                    )}
+                  </div>
+
+                  {/* Title */}
+                  <h1 className="mt-10 font-sans text-[clamp(2rem,5vw,3rem)] font-medium text-[#151515]">
+                    {caseStudy.title}
+                  </h1>
+
+                  {/* Subtitle / hook */}
+                  {caseStudy.subtitle && (
+                    <p className="mt-3 font-sans text-[clamp(0.875rem,2vw,1rem)] leading-relaxed text-[#151515]/70">
+                      {caseStudy.subtitle}
+                    </p>
+                  )}
+
+                  {/* Overview */}
+                  <p className="mt-4 font-sans text-[clamp(0.875rem,2vw,1rem)] leading-relaxed text-[#151515]/70">
+                    {caseStudy.overview}
+                  </p>
+                </header>
+              </SectionReveal>
+            </ReadingColumn>
+
+            {/* Hero — full width */}
+            {caseStudy.coverScroll ? (
+              <ReadingColumn className="mt-6">
+                <CoverScroll
+                  src={caseStudy.coverScroll.src}
+                  alt={caseStudy.coverScroll.alt}
+                  sections={caseStudy.coverScroll.sections}
+                  maxWidth="680px"
+                  showLaptopFrame={false}
+                />
+              </ReadingColumn>
+            ) : caseStudy.heroMedia ? (
+              <HeroMedia
+                src={caseStudy.heroMedia.src}
+                alt={caseStudy.heroMedia.alt}
+              />
+            ) : null}
+
+            {/* Content sections */}
+            <div className="mt-12">
+              {caseStudy.sections.flatMap(
+                (section: ContentSectionType, index: number) => {
+                  const items: React.ReactNode[] = [];
+                  const prev =
+                    index > 0 ? caseStudy.sections[index - 1] : undefined;
+                  if (shouldInsertDivider(prev, section)) {
+                    items.push(<SectionDivider key={`div-${index}`} />);
+                  }
+                  items.push(renderSection(section, index, caseStudy, prev));
+                  return items;
+                },
+              )}
             </div>
-          </SectionReveal>
 
-          {/* Previous / Next navigation */}
-          <ProjectNav prevProject={prevProject} nextProject={nextProject} />
-        </ReadingColumn>
+            {/* Back link */}
+            <ReadingColumn>
+              <SectionReveal>
+                <div className="mt-16 text-center md:mt-20">
+                  <Link
+                    href="/featured-case-studies"
+                    className="font-sans text-sm font-medium text-[#A43718] transition-colors duration-[var(--duration-fast)] hover:text-[#A43718]"
+                  >
+                    &larr; All case studies
+                  </Link>
+                </div>
+              </SectionReveal>
+
+              {/* Previous / Next navigation */}
+              <ProjectNav
+                prevProject={prevProject}
+                nextProject={nextProject}
+              />
+            </ReadingColumn>
+          </div>
+        </div>
       </article>
     </PageShell>
   );

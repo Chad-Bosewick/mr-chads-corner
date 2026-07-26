@@ -10,7 +10,9 @@ export function HeroHeading({ title, subtitle }: HeroHeadingProps) {
         {title}
       </h1>
       {subtitle && (
-        <p className="mt-4 text-lg text-[#757575]">{subtitle}</p>
+        <p className="mt-4 max-w-[680px] break-words text-lg leading-relaxed text-[var(--color-text-muted)]">
+          {subtitle}
+        </p>
       )}
     </section>
   );

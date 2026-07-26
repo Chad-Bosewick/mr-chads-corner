@@ -42,15 +42,15 @@ export default function HomePage() {
       {/* Featured case studies */}
       <SectionReveal delay={80}>
         <div className="space-y-3">
-          <p className="font-sans text-[11px] font-medium uppercase tracking-[0.18em] text-[#757575]">
+          <p className="font-sans text-[11px] font-medium uppercase tracking-[0.18em] text-[var(--color-text-muted)]">
             SELECTED WORK
           </p>
           <h2 className="font-sans text-[clamp(1.5rem,4vw,2rem)] font-medium leading-[1.1] text-[#151515]">
             Featured case studies
           </h2>
-          <p className="font-sans text-[clamp(0.875rem,2vw,1rem)] leading-relaxed text-[#757575]">
-            A curation of recent product design work across productivity,
-            communication, fintech, and developer tools.
+          <p className="font-sans text-[clamp(0.875rem,2vw,1rem)] leading-relaxed text-[var(--color-text-muted)]">
+            A curation of recent product design work across talent platforms,
+            productivity, communication, and developer tools.
           </p>
         </div>
       </SectionReveal>
@@ -60,18 +60,19 @@ export default function HomePage() {
         {projects
           .filter((p) => p.status === "published")
           .map((project, index) => (
-          <ProjectRow
-            key={project.slug}
-            slug={project.slug}
-            title={project.title}
-            category={project.category}
-            hook={project.hook}
-            coverSrc={project.coverSrc}
-            status={project.status}
-            device={project.device}
-            delay={index * 100}
-          />
-        ))}
+            <ProjectRow
+              key={project.slug}
+              slug={project.slug}
+              title={project.title}
+              category={project.category}
+              hook={project.hook}
+              coverSrc={project.coverSrc}
+              coverScroll={project.coverScroll}
+              status={project.status}
+              device={project.device}
+              delay={index * 100}
+            />
+          ))}
       </div>
 
       {/* Divider */}
@@ -98,7 +99,7 @@ export default function HomePage() {
           </p>
           <Link
             href="/contact"
-            className="mt-6 inline-flex items-center gap-2 font-sans text-[clamp(1rem,2.5vw,1.125rem)] font-medium text-[#A43718] transition-colors duration-[var(--duration-fast)] hover:text-[#A43718]/70"
+            className="mt-6 inline-flex items-center gap-2 font-sans text-[clamp(1rem,2.5vw,1.125rem)] font-medium text-[#A43718] transition-colors duration-[var(--duration-fast)] hover:text-[#A43718]"
           >
             Get in touch
             <svg

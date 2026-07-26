@@ -1,16 +1,24 @@
+"use client";
+
 import Link from "next/link";
-import Image from "next/image";
 import { cn } from "@/lib/utils";
+import { DeviceMockup } from "@/components/ui/DeviceMockup";
+import { CoverScroll } from "@/components/case-study/CoverScroll";
 import { SectionReveal } from "./SectionReveal";
 
 interface ProjectRowProps {
   slug: string;
   title: string;
   category: string;
-  description: string;
-  coverSrc: string;
+  hook: string;
+  coverSrc?: string;
+  coverScroll?: {
+    src: string;
+    alt: string;
+    sections?: { label: string; start: number }[];
+  };
   status: "published" | "coming-soon";
-  /** Stagger delay in ms for sequential reveal */
+  device: "laptop" | "phone";
   delay?: number;
 }
 
@@ -18,65 +26,76 @@ export function ProjectRow({
   slug,
   title,
   category,
-  description,
+  hook,
   coverSrc,
+  coverScroll,
   status,
+  device,
   delay = 0,
 }: ProjectRowProps) {
-  const isComingSoon = status === "coming-soon";
+  const isPlaceholder = status === "coming-soon";
 
-  return (
-    <SectionReveal delay={delay}>
-      <Link
-        href={isComingSoon ? "#" : `/featured-case-studies/${slug}`}
-        className={cn(
-          "group grid gap-6 border-t border-[#151515]/10 py-8 transition-opacity md:grid-cols-[260px_1fr] md:gap-10 md:py-12",
-          isComingSoon && "cursor-default"
-        )}
-        aria-disabled={isComingSoon}
-        {...(isComingSoon ? { tabIndex: -1 } : {})}
-      >
-        {/* Cover image */}
-        <div className="relative aspect-[4/3] w-full overflow-hidden bg-[#f0f0f0] md:aspect-auto md:h-[180px]">
-          <Image
-            src={coverSrc}
-            alt={`${title} project cover`}
-            fill
-            className="object-cover transition-all duration-[var(--duration-standard)] ease-[var(--ease-out)] group-hover:scale-[1.03] group-hover:shadow-lg"
-            sizes="(max-width: 768px) 100vw, 260px"
-          />
-        </div>
+  const row = (
+    <div
+      className={cn(
+        "group grid gap-6 md:grid-cols-[1.6fr_1fr] md:items-center md:gap-12",
+        isPlaceholder && "cursor-default"
+      )}
+    >
+      {/* Image — CoverScroll or device mockup */}
+      {coverScroll && !isPlaceholder ? (
+        <CoverScroll
+          src={coverScroll.src}
+          alt={coverScroll.alt}
+          sections={coverScroll.sections}
+          autoScroll
+          className="transition-transform duration-[var(--duration-slow)] ease-[var(--ease-out)]"
+        />
+      ) : (
+        <DeviceMockup
+          type={device}
+          src={coverSrc}
+          alt={`${title} project cover`}
+          placeholder={isPlaceholder}
+          className={cn(
+            "transition-transform duration-[var(--duration-slow)] ease-[var(--ease-out)]",
+            !isPlaceholder && "group-hover:-translate-y-[2px]"
+          )}
+        />
+      )}
 
-        {/* Content */}
-        <div className="flex flex-col justify-center">
-          <p className="font-sans text-xs uppercase tracking-wider text-[#757575]">
-            {category}
-          </p>
+      {/* Text block */}
+      <div className="flex flex-col gap-3">
+        <p className="font-sans text-[11px] font-medium uppercase tracking-[0.18em] text-[var(--color-text-muted)]">
+          {category}
+        </p>
 
-          <h3 className="mt-1 font-sans text-[clamp(1.25rem,3vw,1.5rem)] font-medium text-[#151515]">
-            {title}
-          </h3>
+        <h3 className="font-sans text-[clamp(1.25rem,2.5vw,1.5rem)] font-medium leading-[1.2] text-[#151515] transition-colors duration-[var(--duration-standard)] ease-[var(--ease-out)] group-hover:text-[#A43718]">
+          {title}
+        </h3>
 
-          <p className="mt-2 font-sans text-[clamp(0.875rem,2vw,1rem)] leading-relaxed text-[#151515]/70">
-            {description}
-          </p>
+        <p className="font-sans text-[clamp(0.875rem,1.5vw,1rem)] leading-relaxed text-[#151515]/70">
+          {hook}
+        </p>
 
-          <span
-            className={cn(
-              "mt-4 inline-flex items-center gap-1 text-sm font-medium transition-colors duration-[var(--duration-fast)]",
-              isComingSoon
-                ? "text-[#757575]"
-                : "text-[#A43718] group-hover:text-[#A43718]/70"
-            )}
-          >
-            {isComingSoon ? "Coming soon" : "Read case study"}
+        {/* Read cue */}
+        <span
+          className={cn(
+            "mt-2 inline-flex items-center gap-2 text-sm font-medium transition-all duration-[var(--duration-fast)]",
+            isPlaceholder
+              ? "text-[var(--color-text-muted)]"
+              : "text-[#A43718] group-hover:gap-3"
+          )}
+        >
+          {isPlaceholder ? "Coming soon" : "Read case study"}
+          {!isPlaceholder && (
             <svg
               width="16"
               height="16"
               viewBox="0 0 16 16"
               fill="none"
               aria-hidden="true"
-              className="transition-transform duration-[var(--duration-fast)] group-hover:translate-x-1"
+              className="transition-transform duration-[var(--duration-standard)] ease-[var(--ease-out)] group-hover:translate-x-1"
             >
               <path
                 d="M5.5 3L10.5 8L5.5 13"
@@ -86,8 +105,23 @@ export function ProjectRow({
                 strokeLinejoin="round"
               />
             </svg>
-          </span>
-        </div>
+          )}
+        </span>
+      </div>
+    </div>
+  );
+
+  if (isPlaceholder) {
+    return <SectionReveal delay={delay}>{row}</SectionReveal>;
+  }
+
+  return (
+    <SectionReveal delay={delay}>
+      <Link
+        href={`/featured-case-studies/${slug}`}
+        className="block py-8 transition-opacity md:py-12"
+      >
+        {row}
       </Link>
     </SectionReveal>
   );

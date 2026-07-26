@@ -1,4 +1,55 @@
+# Dependencies and build output
 node_modules/
 .next/
+.next-dev/
+out/
+
+# OS files
 .DS_Store
+Thumbs.db
+
+# Raw design source images (Figma exports, working files)
 /Images/
+
+# Environment and IDE
+.env
+.env.local
+.env.*.local
+.vscode/
+.idea/
+
+# Tool directories (runtime, not project content)
+.agents/
+.claude/
+.supervisors/
+
+# Fonts (self-hosted by Next.js at build time)
+/public/fonts/
+
+# Media — exploration artifacts (not site assets)
+*.mp4
+*.mov
+
+# Root-level exploration PNGs (QA screenshots, animation frames, layout mockups)
+*.png
+!public/**/*.png
+!public/favicon.webp
+
+# Root-level markdown — one-off prompts, export specs, task notes
+CAROUSEL_IMAGE_EXPORT_PROMPT.md
+Claude_Code_Mascot_Animation_Prompt.md
+MICRO_INTERACTIONS_TASK.md
+TIMELINE_MILESTONES.md
+WRITING_SYSTEM.md
+credlane-*.md
+credline-*.md
+draftly-*.md
+talent-carousel-export-spec.md
+nav-inspection-prompt.md
+mr-chad-portfolio-redesign-claude-code-master-prompt.md
+
+# Root-level misc
+Base44 Web 94.png
+heart mascot (Favicon).svg
+timeline issue/
+Links/

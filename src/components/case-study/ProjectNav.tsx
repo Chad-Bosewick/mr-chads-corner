@@ -21,13 +21,13 @@ export function ProjectNav({ prevProject, nextProject }: ProjectNavProps) {
             href={`/featured-case-studies/${prevProject.slug}`}
             className="group flex flex-col"
           >
-            <span className="font-sans text-sm text-[#757575]">
+            <span className="font-sans text-sm text-[var(--color-text-muted)]">
               Previous
             </span>
-            <span className="mt-1 font-sans text-[clamp(1rem,2.5vw,1.125rem)] font-medium text-[#151515] transition-colors duration-[var(--duration-fast)] group-hover:text-[#A43718]">
+            <span className="mt-1 font-sans text-[clamp(1rem,2.5vw,1.125rem)] font-medium text-[#151515] transition-all duration-[300ms] ease-[var(--ease-spring)] group-hover:-translate-x-1 group-hover:text-[#A43718] motion-reduce:duration-0 motion-reduce:transform-none">
               {prevProject.title}
             </span>
-            <span className="mt-1 font-sans text-sm text-[#757575]">
+            <span className="mt-1 font-sans text-sm text-[var(--color-text-muted)]">
               {prevProject.category}
             </span>
           </Link>
@@ -40,14 +40,14 @@ export function ProjectNav({ prevProject, nextProject }: ProjectNavProps) {
             href={`/featured-case-studies/${nextProject.slug}`}
             className={cn(
               "group flex flex-col",
-              prevProject ? "text-right" : "md:col-start-2"
+              prevProject ? "md:text-right" : "md:col-start-2"
             )}
           >
-            <span className="font-sans text-sm text-[#757575]">Next</span>
-            <span className="mt-1 font-sans text-[clamp(1rem,2.5vw,1.125rem)] font-medium text-[#151515] transition-colors duration-[var(--duration-fast)] group-hover:text-[#A43718]">
+            <span className="font-sans text-sm text-[var(--color-text-muted)]">Next</span>
+            <span className="mt-1 font-sans text-[clamp(1rem,2.5vw,1.125rem)] font-medium text-[#151515] transition-all duration-[300ms] ease-[var(--ease-spring)] group-hover:translate-x-1 group-hover:text-[#A43718] motion-reduce:duration-0 motion-reduce:transform-none">
               {nextProject.title}
             </span>
-            <span className="mt-1 font-sans text-sm text-[#757575]">
+            <span className="mt-1 font-sans text-sm text-[var(--color-text-muted)]">
               {nextProject.category}
             </span>
           </Link>
