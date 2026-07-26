@@ -8,6 +8,24 @@ PHASE-D-001
 
 Remove font mocking system and fix carousel touch targets — prepare for Netlify deployment
 
+---
+
+## MANDATORY REPORT-BACK INSTRUCTION
+
+> **When this task is complete, you MUST generate a report file.**
+>
+> **File path:** `docs/qa/2026-07-26-codex-phase-d-report.md`
+>
+> **This is not optional.** Claude Code cannot resume coordination without your report.
+>
+> The report must be a complete, self-contained `.md` file that Claude Code can read to understand everything you did, everything that passed, and everything that failed — without asking you follow-up questions.
+>
+> **Use the REPORT TEMPLATE at the bottom of this task file.** Copy it, fill in every section, write it to `docs/qa/2026-07-26-codex-phase-d-report.md`, and commit it.
+>
+> **Do not end your session without writing this file.**
+
+---
+
 ## Objective
 
 Remove the font mocking system that disguises macOS system fonts (Arial/Georgia) as the project's brand fonts (Plus Jakarta Sans/Lora), verify the carousel pagination meets WCAG target-size requirements, and ensure the project builds cleanly for Netlify deployment.
@@ -157,15 +175,101 @@ grep -n 'h-11 w-11' src/components/case-study/CarouselImage.tsx
 - Existing test suite must pass unchanged
 - Visual verification: open `out/index.html` in browser and confirm Plus Jakarta Sans renders (not Arial)
 
-## Required output
+---
 
-Return:
+# REPORT TEMPLATE
 
-1. Implementation summary (what was changed and why)
-2. Files changed (with before/after for package.json scripts)
-3. Important technical decisions (any issues encountered with font self-hosting)
-4. Deviations or assumptions (anything that didn't work as expected)
-5. Tests performed (build, typecheck, test suite results)
-6. Screenshots or preview instructions (how to verify fonts loaded correctly)
-7. Known limitations (any remaining issues)
-8. Follow-up recommendations (sprint 2 items, deployment notes)
+> **Copy everything below this line into `docs/qa/2026-07-26-codex-phase-d-report.md` when the task is complete.**
+> **Fill in every section. Do not leave sections empty.**
+
+```markdown
+# Codex Phase D Deploy Prep Report
+
+Date: [DATE]
+Repository: `portfolio-website`
+Branch: `foundations`
+Role: `Codex — Senior UI Design Engineer`
+Task file: `TASKS/2026-07-26-codex-phase-d-deploy-prep.md`
+Status: [implementation complete / partially complete / blocked]
+
+## Purpose
+
+This report records the Phase D implementation completed by Codex. It is intended as a precise restart handoff for Claude Code so the next agent can resume without re-investigating completed work.
+
+## Files Changed
+
+| File | Action | Notes |
+|---|---|---|
+| [file path] | [created / modified / deleted] | [what changed] |
+
+## What Was Done
+
+### Font Mocking Removal
+
+- [Describe exactly what you deleted and changed]
+- [State the before/after of package.json scripts]
+
+### Build Verification
+
+| Check | Command | Result |
+|---|---|---|
+| `npx next build` | [command] | [pass/fail + output summary] |
+| `npx vitest run` | [command] | [pass/fail + test count] |
+| `npx tsc --noEmit` | [command] | [pass/fail] |
+
+### Font Self-Hosting Verification
+
+| Check | Result |
+|---|---|
+| `.woff2` files exist in `.next/static/media/` | [yes/no — list file names] |
+| Built HTML references self-hosted fonts | [yes/no — show grep output] |
+| OG/Twitter metadata present in built HTML | [yes/no] |
+
+### Carousel Touch Target Verification
+
+| Check | Result |
+|---|---|
+| Arrow button size | [state actual class — e.g., `h-11 w-11` = 44×44px] |
+| Dot indicator size | [state actual class — e.g., `h-11 w-6` = 44×24px] |
+| WCAG 2.5.8 compliant | [yes/no] |
+
+## Technical Decisions
+
+- [List any decisions you made that differ from the task spec]
+- [Explain why if you deviated]
+
+## Deviations or Assumptions
+
+- [Anything that didn't work as expected]
+- [Any assumptions you made]
+
+## Known Limitations
+
+- [Any remaining issues or risks]
+- [Anything that still needs follow-up]
+
+## Acceptance Criteria Status
+
+- [ ] `scripts/google-font-mocks.cjs` deleted
+- [ ] `scripts/with-font-mocks.cjs` deleted
+- [ ] `package.json` scripts updated
+- [ ] `npx next build` passes
+- [ ] Self-hosted `.woff2` fonts present
+- [ ] `npx vitest run` passes
+- [ ] `npx tsc --noEmit` passes
+- [ ] Built HTML has correct font references
+- [ ] OG/Twitter metadata intact
+- [ ] Carousel buttons ≥ 44×44px
+- [ ] No typography regression
+
+## Follow-up Recommendations
+
+- [What Claude Code should do next]
+- [Any sprint 2 items that need attention]
+- [Deployment notes]
+
+## How to Verify This Work
+
+[Exact steps Claude Code or the Owner should take to verify the fix works]
+```
+```
