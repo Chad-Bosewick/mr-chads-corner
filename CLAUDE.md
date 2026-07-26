@@ -31,19 +31,34 @@ You must operate as the central decision-making and coordination layer for the e
 | Phase C | Root metadata (`metadataBase`, OG, Twitter), social preview image, stable sitemap dates, case-study index copy fix | `docs/qa/2026-07-26-codex-ui-cleanup-phase-c-report.md` |
 | Phase D | Font mocking removal — real Plus Jakarta Sans + Lora now self-hosted | `docs/qa/2026-07-26-codex-phase-d-report.md` |
 | Content fixes | Bio: architecture → biochemistry (UoL). Location: London → Lagos | Verified in source |
+| UI-001 | CoverScroll viewport-gated animation start | `tasks/2026-07-26-codex-cover-scroll-viewport-gate.md` |
+| UI-002 | Bezel standardisation — all device mockups now use `p-[1.5px]` stroke, matching CoverScroll | `docs/qa/2026-07-26-codex-ui-002-report.md` |
+| UI-003 | Letters App dual-phone layout — 3 Codex iterations (positioning fix, left-alignment, 440px stage) | `docs/qa/2026-07-26-codex-ui-003-left-aligned-bezel-handoff.md` |
 
 ## What's Next (Priority Order)
 
 | Priority | Task | Why |
 |---|---|---|
-| **UI-001** | CoverScroll viewport-gated animation start | ✅ Done |
-| **UI-002** | Bezel standardisation + Letters App dual-phone layout | Inconsistent bezel strokes (1.5px vs 3px), Letters App wastes column space |
+| **UI-003** | Owner visual confirmation of dual-phone composition | Code complete, 32/32 tests pass, build passes. Awaiting desktop/mobile screenshot review. |
+| **UI-003** | Commit uncommitted changes (7 modified + 6 new files) | All UI-002/003 work is uncommitted |
+| **UI-003** | ChatGPT QA review of dual-phone composition | Independent review before marking complete |
 | ~~**P1**~~ | ~~Remove font mocking system~~ | ~~Done — Phase D (c1b6af6)~~ |
 | ~~**P1**~~ | ~~Fix carousel pagination touch targets~~ | ~~Done — already 44×44px~~ |
-| **P1** | Deploy foundations branch to Netlify | After UI observations are resolved. |
+| **P1** | Deploy foundations branch to Netlify | After UI-003 visual confirmation and commit. |
 | **P2** | Add visible animation pause/stop controls (WCAG 2.2.2) | Sprint 2. |
 | **P2** | Add screen-reader-accessible career timeline alternative | Sprint 2 — canvas content invisible to assistive tech. |
 | **P2** | Test coverage for risky behaviour (carousels, animations, navigation) | Sprint 2. |
+
+## UI-003 Key Context (for next session)
+
+The dual-phone layout went through 3 Codex iterations due to a Tailwind class conflict:
+1. **Initial implementation**: `DeviceMockup` rebuilt with dual-phone variant, bezels standardised
+2. **Positioning fix**: `relative` + `absolute` conflict in shared phone shell caused vertical stacking. Fixed by removing `relative` from shell helper, assigning position mode per caller.
+3. **Left-alignment + wider stage**: Stage widened to 440px, left-aligned to match laptop bezel, phones at 240px/225px with ~25px overlap.
+
+Final specs: stage `max-w-[440px] h-[540px]`, front `w-[240px] absolute left-0 top-0`, back `w-[225px] absolute right-0 top-12`. Page-level `coverSrcSecondary` prop wiring fixed in both `page.tsx` and `featured-case-studies/page.tsx`.
+
+**⚠️ Visual confirmation required.** Run dev server, capture desktop and mobile screenshots of Letters App row, compare against acceptance criteria in `docs/qa/2026-07-26-codex-ui-003-left-aligned-bezel-handoff.md`.
 
 ## Known Issues
 

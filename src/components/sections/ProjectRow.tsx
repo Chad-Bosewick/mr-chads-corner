@@ -12,13 +12,14 @@ interface ProjectRowProps {
   category: string;
   hook: string;
   coverSrc?: string;
+  coverSrcSecondary?: string;
   coverScroll?: {
     src: string;
     alt: string;
     sections?: { label: string; start: number }[];
   };
   status: "published" | "coming-soon";
-  device: "laptop" | "phone";
+  device: "laptop" | "phone" | "dual-phone";
   delay?: number;
 }
 
@@ -28,6 +29,7 @@ export function ProjectRow({
   category,
   hook,
   coverSrc,
+  coverSrcSecondary,
   coverScroll,
   status,
   device,
@@ -55,7 +57,9 @@ export function ProjectRow({
         <DeviceMockup
           type={device}
           src={coverSrc}
+          srcSecondary={coverSrcSecondary}
           alt={`${title} project cover`}
+          altSecondary={device === "dual-phone" ? `${title} supporting screen` : undefined}
           placeholder={isPlaceholder}
           className={cn(
             "transition-transform duration-[var(--duration-slow)] ease-[var(--ease-out)]",

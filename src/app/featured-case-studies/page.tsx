@@ -32,6 +32,7 @@ export default function CaseStudiesPage() {
               category={project.category}
               hook={project.hook}
               coverSrc={project.coverSrc}
+              coverSrcSecondary={project.coverSrcSecondary}
               status={project.status}
               device={project.device}
               delay={index * 100}

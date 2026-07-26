@@ -67,6 +67,7 @@ export default function HomePage() {
               category={project.category}
               hook={project.hook}
               coverSrc={project.coverSrc}
+              coverSrcSecondary={project.coverSrcSecondary}
               coverScroll={project.coverScroll}
               status={project.status}
               device={project.device}

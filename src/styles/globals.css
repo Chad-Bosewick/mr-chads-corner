@@ -122,6 +122,16 @@ body {
   to { opacity: 1; transform: translateY(0); }
 }
 
+@keyframes device-float {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  50% { transform: translate3d(0, -3px, 0); }
+}
+
+@keyframes device-float-secondary {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  50% { transform: translate3d(0, -2px, 0); }
+}
+
 /* Motion-controlled animation utilities */
 @media (prefers-reduced-motion: no-preference) {
   .animate-slide-in-left {

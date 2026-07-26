@@ -5,13 +5,14 @@ export interface Project {
   hook: string;
   description: string;
   coverSrc?: string;
+  coverSrcSecondary?: string;
   coverScroll?: {
     src: string;
     alt: string;
     sections?: { label: string; start: number }[];
   };
   status: "published" | "coming-soon";
-  device: "laptop" | "phone";
+  device: "laptop" | "phone" | "dual-phone";
 }
 
 export const projects: Project[] = [
@@ -78,8 +79,9 @@ export const projects: Project[] = [
     hook: "Thoughtful correspondence for the modern world.",
     description:
       "Designing a thoughtful correspondence platform that reintroduces pause and intentionality into digital messaging — combining the warmth of letter-writing with the practicality of modern communication.",
-    coverSrc: "/images/case-studies/letters-app-cover.webp",
+    coverSrc: "/images/case-studies/letters-app-homepage-post-1.webp",
+    coverSrcSecondary: "/images/case-studies/letters-app-showcase.webp",
     status: "published",
-    device: "phone",
+    device: "dual-phone",
   },
 ];
