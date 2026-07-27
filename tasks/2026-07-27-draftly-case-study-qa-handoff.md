@@ -135,7 +135,7 @@ The Draftly case study introduces new visual assets that should be assessed for 
 
 ### Writing Journey four-stage illustration progression
 
-- The Writing Journey (pre-writing → drafting → revising → polishing) is described in the "Make progress visible" text section and appears within the Visual & Brand System board.
+- The Writing Journey maps to four student moments: break through the blank page → improve a working draft → understand every correction → submit with confidence. These are described in the "Make progress visible" text section and appear within the Visual & Brand System board.
 - **QA check:** Is the four-stage colour/illustration progression visible and distinguishable within the brand board? Does the progression feel intentional and visually coherent?
 
 ### Visual & Brand System board
