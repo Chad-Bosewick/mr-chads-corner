@@ -19,6 +19,10 @@ interface CarouselImageProps {
   heading?: string;
   /** Auto-advance interval in ms. Set to 0 or undefined to disable. */
   autoAdvanceMs?: number;
+  /** Optional source aspect ratio for a carousel whose slides do not use the default 16:10 frame. */
+  aspectRatio?: number;
+  /** Optional carousel transition surface, matched to the source artwork's edge colour. */
+  background?: string;
 }
 
 const FRAME_WIDTH = 680;
@@ -38,6 +42,8 @@ export function CarouselImage({
   slides,
   heading,
   autoAdvanceMs,
+  aspectRatio = FRAME_WIDTH / FRAME_HEIGHT,
+  background = "#f0f0f0",
 }: CarouselImageProps) {
   const [activeIndex, setActiveIndex] = useState(0);
   const [direction, setDirection] = useState<"next" | "prev">("next");
@@ -146,12 +152,12 @@ export function CarouselImage({
       <div
         ref={frameRef}
         className={cn(
-          "relative w-full max-w-[680px] overflow-hidden bg-[#f0f0f0]",
+          "relative w-full max-w-[680px] overflow-hidden",
           "rounded-xl shadow-[0_8px_30px_rgba(21,21,21,0.08)]",
           "transition-shadow duration-[var(--duration-standard)] ease-[var(--ease-out)]",
           "hover:shadow-[0_12px_40px_rgba(21,21,21,0.12)] motion-reduce:duration-0",
         )}
-        style={{ aspectRatio: `${FRAME_WIDTH} / ${FRAME_HEIGHT}` }}
+        style={{ aspectRatio: String(aspectRatio), backgroundColor: background }}
         onKeyDown={handleKeyDown}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}

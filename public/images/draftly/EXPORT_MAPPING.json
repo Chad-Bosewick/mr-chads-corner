@@ -3,6 +3,10 @@
   "quality": 95,
   "assets": {
     "draftly-hero-1440x900.webp": "Figma Hero section, cropped to 16:10",
+    "draftly-landing-page-full.webp": "Figma Landing page frame (node 6:4), exported at 1x and resized to 1200px wide for CoverScroll",
+    "draftly-writing-assistant-feature.webp": "Figma Writing Assistant product feature frame (node 643:39), exported at 1x",
+    "draftly-idea-starter-feature.webp": "Figma AI Idea Starter product feature frame (node 213:296), exported at 1x",
+    "draftly-visual-brand-system.webp": "Figma Visual and Brand System frame (node 672:5), exported at 1x",
     "draftly-positioning-1200x760.webp": "Figma Services/main differentiator section, cropped to 30:19",
     "draftly-landing-hero-1440x960.webp": "Figma Hero section, cropped to 3:2",
     "draftly-idea-starter-input-1280x800.webp": "Figma AI Idea starter frame, contained in 16:10 canvas",

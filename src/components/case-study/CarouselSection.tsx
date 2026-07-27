@@ -15,9 +15,13 @@ interface CarouselSectionProps {
   slides: CarouselSlide[];
   /** Auto-advance interval in ms. Undefined = component default (4000ms). 0 = disabled. */
   autoAdvanceMs?: number;
+  /** Optional source aspect ratio for a carousel whose slides do not use the default 16:10 frame. */
+  aspectRatio?: number;
+  /** Optional carousel transition surface, matched to the source artwork's edge colour. */
+  background?: string;
 }
 
-export function CarouselSection({ heading, slides, autoAdvanceMs }: CarouselSectionProps) {
+export function CarouselSection({ heading, slides, autoAdvanceMs, aspectRatio, background }: CarouselSectionProps) {
   return (
     <SectionReveal>
       <section>
@@ -26,7 +30,7 @@ export function CarouselSection({ heading, slides, autoAdvanceMs }: CarouselSect
             {heading}
           </h2>
         )}
-        <CarouselImage slides={slides} heading={heading} autoAdvanceMs={autoAdvanceMs} />
+        <CarouselImage slides={slides} heading={heading} autoAdvanceMs={autoAdvanceMs} aspectRatio={aspectRatio} background={background} />
       </section>
     </SectionReveal>
   );

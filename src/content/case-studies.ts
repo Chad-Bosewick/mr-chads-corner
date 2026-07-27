@@ -28,6 +28,10 @@ export interface ContentSection {
   }[];
   // Image width: "text" (680px, within ReadingColumn) or "full-bleed" (1120px, breaks out)
   width?: "text" | "full-bleed";
+  /** Optional aspect ratio for carousel frames, derived from the source artwork. */
+  carouselAspectRatio?: number;
+  /** Optional carousel transition surface, matched to the source artwork's edge colour. */
+  carouselBackground?: string;
   metrics?: { label: string; value: string }[];
   // Diagram fields
   diagramType?: "problem" | "evolution" | "ecosystem" | "change-framework" | "team-workflow";
@@ -629,11 +633,25 @@ export const draftly: CaseStudy = {
   role: "Design Lead and Sole Designer",
   timeline: "3 days",
   overview:
-    "Draftly is an AI writing coach designed for high-school students. Unlike general-purpose AI tools that generate content, Draftly helps students understand how to improve their writing while preserving ownership of their work. I completed the project as a three-day solo design sprint — defining product direction, developing the visual identity, designing the responsive landing page, and creating product previews for the AI Idea Starter and Writing Assistant. The final prototype was used to demonstrate the concept to potential investors and collaborators.",
+    "Draftly is an AI writing coach for high-school students — a system that helps students brainstorm, structure, revise, and understand their writing through explanations that turn every correction into a learning moment. I designed the full product concept in a three-day solo sprint: product direction, visual identity, a responsive landing page, product previews for the AI Idea Starter and Writing Assistant, a brand and mascot system, and a set of Writing Journey illustration cards. The prototype was presented to potential investors and collaborators.",
   coverSrc: "/images/case-studies/draftly-cover.webp",
   heroMedia: {
     src: "/images/draftly/draftly-hero-1440x900.webp",
     alt: "Draftly landing page hero showing the AI writing coach positioning and product interface preview",
+  },
+  coverScroll: {
+    src: "/images/draftly/draftly-landing-page-full.webp",
+    alt: "Draftly landing page",
+    sections: [
+      { label: "Meet Draftly", start: 0 },
+      { label: "Product", start: 0.1353 },
+      { label: "Learning support", start: 0.2844 },
+      { label: "Writing journey", start: 0.4654 },
+      { label: "Pricing", start: 0.611 },
+      { label: "Questions", start: 0.7632 },
+      { label: "Start writing", start: 0.888 },
+      { label: "Footer", start: 0.9489 },
+    ],
   },
   meta: {
     role: "Design Lead and Sole Designer",
@@ -641,372 +659,104 @@ export const draftly: CaseStudy = {
     date: "February 2026",
     platform: "Responsive Web",
     team: "Solo",
-    scope: "Landing page, AI Idea Starter preview, Writing Assistant preview",
+    scope:
+      "Landing page, AI Idea Starter preview, Writing Assistant preview, Writing Journey illustration cards",
     status: "Prototype presented to potential investors and collaborators",
   },
   sections: [
-    /* 1. Executive summary */
     {
       type: "executive-summary",
       executiveSummary: {
         problem:
-          "Students have access to AI tools, but most are designed to generate content rather than help students learn. Starting is difficult, corrections lack explanation, and AI can weaken student ownership of their work.",
+          "Most AI writing tools generate work or correct it without teaching the student what changed. That leaves a gap between getting help and actually becoming a stronger writer.",
         solution:
-          "Draftly positions itself as an AI writing coach — not an essay generator. It helps students brainstorm, structure, revise, and understand their work through an explanation loop that turns every correction into a learning moment.",
+          "I designed Draftly as an AI writing coach: a learning-first product concept that helps students begin, revise, and understand their work while keeping ownership with the student.",
         outcome:
-          "A responsive landing page with product previews for the AI Idea Starter and Writing Assistant, presented to potential investors and collaborators as a clear articulation of the product opportunity.",
+          "In a three-day solo sprint, I translated that position into a responsive landing page, two product demonstrations, a visual system, and a Writing Journey that makes progress tangible.",
       },
     },
-
-    /* 2. What I designed */
     {
       type: "what-i-designed",
       heading: "What I designed",
       designedFeatures: [
-        {
-          name: "Landing page",
-          description:
-            "A responsive marketing page that introduces the product category, explains the learning-first approach, and builds trust with students, parents, and teachers.",
-        },
-        {
-          name: "AI Idea Starter",
-          description:
-            "A brainstorming tool that helps students move from assignment prompt to thesis, outline, or first paragraph — without generating the essay for them.",
-        },
-        {
-          name: "Writing Assistant",
-          description:
-            "A real-time revision tool that provides feedback on grammar, clarity, tone, vocabulary, and sentence flow — with explanations that teach rather than just correct.",
-        },
-        {
-          name: "Explain My Mistake",
-          description:
-            "A correction-plus-explanation flow that answers what is wrong, why it is wrong, and how to avoid the same mistake next time.",
-        },
+        { name: "Product story", description: "A responsive landing page that introduces Draftly and shows the product before asking for trust." },
+        { name: "Idea Starter", description: "A guided first step from assignment prompt to an angle, thesis, or outline — without writing the essay." },
+        { name: "Writing Assistant", description: "Revision feedback that pairs a correction with a concise explanation and a student choice." },
+        { name: "Progress system", description: "A visual identity, mascot, and four-stage Writing Journey that make learning feel encouraging and visible." },
       ],
     },
-
-    /* 3. The problem */
     {
       type: "text",
-      heading: "The problem",
-      navLabel: "Problem",
+      heading: "A coach, not a generator",
+      navLabel: "Positioning",
       chapter: "context",
-      body: `<strong>Students already have access to AI tools, but most are not designed around learning.</strong> Many struggle to move from an assignment prompt to a clear thesis, outline, or first paragraph.\n<strong>Corrections often lack explanation.</strong> Grammar tools may improve a sentence without helping the student understand what was wrong.\n<strong>AI can weaken student ownership.</strong> When tools generate complete responses, students can submit better-looking work without developing stronger writing skills.\n<strong>Academic trust is fragile.</strong> Parents, teachers, and schools need reassurance that AI is supporting the writing process rather than completing assignments on the student's behalf.\n<strong>Draftly needed to feel useful enough for students to adopt while clearly communicating that it was a coach, not an essay generator.</strong>`,
+      body: "<strong>Draftly’s product decision was simple: teach before automating.</strong> Students need help getting started and improving a draft, but they should still make the argument and write the work.\n<strong>That distinction also builds trust.</strong> Parents, teachers, and schools need to see a tool that supports learning rather than disguising a shortcut. The landing-page cover above carries the complete product story; the two moments below show how that promise works in practice.",
     },
-
-    /* 4. Product positioning */
     {
       type: "text",
-      heading: "Product positioning",
-      body: `<strong>Learn while you write.</strong> The central product promise shaped both the landing-page messaging and the product concepts shown inside it.\n<strong>Draftly was positioned as an AI writing coach, a guided essay builder, and a learning companion.</strong> It was deliberately not positioned as an essay generator, a homework shortcut, or a tool that thinks on behalf of students.\n<strong>This distinction was the foundation of every design decision.</strong>`,
-    },
-    {
-      type: "full-image",
-      heading: "Product positioning",
-      images: [
-        {
-          src: "/images/draftly/draftly-positioning-1200x760.webp",
-          alt: "Draftly product positioning section contrasting learning support with generic AI writing tools",
-          width: 1200,
-          height: 760,
-        },
-      ],
-    },
-
-    /* 5. Landing page */
-    {
-      type: "text",
-      heading: "Landing page",
-      navLabel: "Landing page",
+      heading: "Two learning-first product moments",
+      navLabel: "Product",
       chapter: "solution",
-      body: `<strong>A page that explains before it sells.</strong> The landing page needed to introduce a new category without overwhelming the audience with educational-technology language.\n<strong>The structure followed a simple sequence:</strong> introduce the writing problem, explain Draftly's learning-first approach, demonstrate the product, show how different users benefit, build trust around originality and AI use, present pricing, answer common objections, and end with a direct invitation to start writing.\n<strong>The hero message — "Write better essays. Learn while you do it." — communicated both the immediate student benefit and the longer-term educational value.</strong>`,
+      body: "<strong>The Idea Starter lowers the cost of beginning.</strong> It turns an assignment prompt into possible directions and a workable structure, without producing a finished submission.\n<strong>The Writing Assistant makes revision instructional.</strong> Each suggestion exposes the issue, proposes a correction, explains the reason, and leaves the decision to accept or ignore with the student.",
     },
     {
-      type: "full-image",
-      heading: "Landing page hero",
+      type: "carousel",
+      heading: "Product demonstrations",
+      carouselAspectRatio: 880 / 573,
+      carouselBackground: "#F6F4FE",
       images: [
         {
-          src: "/images/draftly/draftly-landing-hero-1440x960.webp",
-          alt: "Complete Draftly landing-page hero with headline, CTA buttons, and product preview",
-          width: 1440,
-          height: 960,
+          src: "/images/draftly/draftly-idea-starter-feature.webp",
+          alt: "Draftly AI Idea Starter product frame from Figma",
+          caption: "Idea Starter — helping a student move from a prompt to a direction without creating the assignment.",
+          width: 880,
+          height: 573,
+        },
+        {
+          src: "/images/draftly/draftly-writing-assistant-feature.webp",
+          alt: "Draftly Writing Assistant product frame from Figma",
+          caption: "Writing Assistant — pairing a suggested edit with the explanation that makes it a learning moment.",
+          width: 880,
+          height: 573,
         },
       ],
     },
-
-    /* 6. AI Idea Starter */
     {
       type: "text",
-      heading: "AI Idea Starter",
-      body: `<strong>Addressing blank-page anxiety without creating the assignment.</strong> Instead of asking Draftly to write an essay, students could use it to brainstorm possible directions, explore different arguments, generate thesis options, organize ideas into an outline, and identify useful questions before drafting.\n<strong>The distinction was important.</strong> Draftly could help a student decide what to write, but the student would remain responsible for the final expression and argument.\n<strong>Familiar school topics made the tool approachable.</strong> Prompts like "The effect of social media on teenagers' mental health" or "Whether school uniforms should be mandatory" helped students understand the tool without a long explanation.`,
+      heading: "Make progress visible",
+      navLabel: "System",
+      body: "<strong>Writing is a sequence, not a single submit moment.</strong> The Writing Journey gives students a clear path from pre-writing to drafting, revising, and polishing. The card illustrations make that otherwise invisible progress feel concrete and rewarding.\n<strong>The brand follows the same principle.</strong> Purple carries the core identity; soft colour, generous spacing, rounded shapes, and an encouraging mascot keep the experience youthful and credible rather than like a generic AI dashboard.",
     },
     {
-      type: "image-pair",
-      heading: "Idea Starter flow",
+      type: "carousel",
+      heading: "Visual and brand system",
+      carouselAspectRatio: 1920 / 1080,
       images: [
         {
-          src: "/images/draftly/draftly-idea-starter-input-1280x800.webp",
-          alt: "Draftly AI Idea Starter prompt-entry state",
-          width: 1280,
-          height: 800,
-        },
-        {
-          src: "/images/draftly/draftly-idea-starter-output-1280x800.webp",
-          alt: "Draftly AI Idea Starter generated outline or idea state",
-          width: 1280,
-          height: 800,
+          src: "/images/draftly/draftly-visual-brand-system.webp",
+          alt: "Draftly visual and brand system board from Figma",
+          width: 1920,
+          height: 1080,
         },
       ],
     },
-
-    /* 7. Writing Assistant */
-    {
-      type: "text",
-      heading: "Writing Assistant",
-      navLabel: "Writing",
-      body: `<strong>Real-time revision with explanation.</strong> The Writing Assistant preview demonstrated how Draftly could support revision in real time — providing feedback for grammar, clarity, tone, vocabulary, sentence flow, and punctuation.\n<strong>Each suggestion included the highlighted issue, a corrected version, a short explanation, and Accept and Ignore actions.</strong> The explanation layer was the key difference.\n<strong>Rather than only replacing a sentence, Draftly would tell the student why the original version was weak or incorrect.</strong> This allowed each correction to act as a small learning moment.`,
-    },
-    {
-      type: "full-image",
-      heading: "Writing Assistant",
-      images: [
-        {
-          src: "/images/draftly/draftly-writing-assistant-1440x900.webp",
-          alt: "Draftly writing editor showing highlighted text, a suggested correction, explanation, and actions",
-          width: 1440,
-          height: 900,
-        },
-      ],
-    },
-
-    /* 8. Explain My Mistake */
-    {
-      type: "text",
-      heading: "Explain My Mistake",
-      body: `<strong>Correction plus instruction.</strong> Although not designed as a separate product flow, Explain My Mistake was one of the strongest concepts presented in the landing page. It was built around three questions: what is wrong, why is it wrong, and how can the student avoid the same mistake next time.\n<strong>This moved Draftly beyond correction and into instruction.</strong> A conventional writing tool might improve a sentence. Draftly would correct it while explaining subject–verb agreement, preposition choice, and possessive nouns.\n<strong>The student would not only receive a better sentence. They would receive a reason.</strong>`,
-    },
-    {
-      type: "full-image",
-      heading: "Explain My Mistake",
-      images: [
-        {
-          src: "/images/draftly/draftly-explain-mistake-1000x700.webp",
-          alt: "Focused Draftly suggestion panel showing a correction and the reason behind it",
-          width: 1000,
-          height: 700,
-        },
-      ],
-    },
-
-    /* 9. Use cases */
-    {
-      type: "what-i-designed",
-      heading: "Use cases",
-      designedFeatures: [
-        {
-          name: "Break through the blank page",
-          description:
-            "Students explore possible angles, generate thesis options, and build an outline before drafting.",
-        },
-        {
-          name: "Improve a working draft",
-          description:
-            "Students receive feedback on grammar, sentence flow, clarity, vocabulary, and tone without losing their original voice.",
-        },
-        {
-          name: "Understand every correction",
-          description:
-            "Students learn which rule applies and why the suggestion improves the sentence.",
-        },
-        {
-          name: "Submit with confidence",
-          description:
-            "Students perform a final review of structure, clarity, originality, and overall writing quality before turning in their work.",
-        },
-      ],
-    },
-
-    /* 10. Visual direction */
-    {
-      type: "text",
-      heading: "Visual direction",
-      body: `<strong>Youthful without appearing childish.</strong> Draftly's visual identity uses bright purple, rounded cards, soft shadows, generous spacing, and large interface previews.\n<strong>The direction was chosen to feel modern without resembling a generic AI dashboard, academic without feeling institutional, and energetic without making the writing experience more stressful.</strong>\n<strong>The dark, angled sections introduce contrast and momentum,</strong> while the purple palette provides a recognizable brand system across the page. This was a deliberate departure from traditional education software, which often feels administrative, dense, or overly formal.`,
-    },
-    {
-      type: "full-image",
-      heading: "Visual system",
-      images: [
-        {
-          src: "/images/draftly/draftly-visual-system-1200x1000.webp",
-          alt: "Draftly landing-page crop showing the transition between light and dark branded sections",
-          width: 1200,
-          height: 1000,
-        },
-      ],
-    },
-
-    /* 11. Pricing */
-    {
-      type: "text",
-      heading: "Pricing",
-      body: `<strong>Four tiers for multiple stages of adoption.</strong> Free introduced the product through limited feedback and basic essay-building support. Pro unlocked unlimited essays, advanced feedback, explanations, originality checking, progress tracking, and the Smart Writing Score. Business extended the concept to teachers and tutoring organizations. Enterprise represented a future school and district offering with integrations, administration, analytics, and onboarding support.\n<strong>The pricing structure communicated the broader product vision,</strong> even though the teacher, school, and administration products were roadmap concepts rather than completed interfaces.`,
-    },
-    {
-      type: "full-image",
-      heading: "Pricing",
-      images: [
-        {
-          src: "/images/draftly/draftly-pricing-1440x900.webp",
-          alt: "Draftly pricing section showing Free, Pro, Business, and Enterprise plans",
-          width: 1440,
-          height: 900,
-        },
-      ],
-    },
-
-    /* 12. Trust and academic integrity */
-    {
-      type: "text",
-      heading: "Trust and academic integrity",
-      body: `<strong>The most important product risk was the perception that Draftly could become another shortcut for schoolwork.</strong> The landing page addressed this directly through messages such as "Built for learning — not shortcuts."\n<strong>The product principles reinforced this position:</strong> explain every suggestion, preserve student ownership, encourage critical thinking, make AI assistance visible, avoid automatic essay generation, and support originality by default.\n<strong>This trust layer was intended for students, but it was equally important for parents, teachers, and schools</strong> evaluating whether the product belonged in an academic environment.`,
-    },
-    {
-      type: "full-image",
-      heading: "Trust and integrity",
-      images: [
-        {
-          src: "/images/draftly/draftly-integrity-1200x760.webp",
-          alt: "Draftly trust and academic-integrity section",
-          width: 1200,
-          height: 760,
-        },
-      ],
-    },
-
-    /* 13. Results */
     {
       type: "results",
-      heading: "What was delivered",
-      navLabel: "Results",
+      heading: "Outcome",
+      navLabel: "Outcome",
       chapter: "results",
       outcomeBullets: [
-        {
-          label: "Responsive landing page",
-          description:
-            "A complete marketing page introducing the product category, explaining the learning-first approach, and building trust with students, parents, and teachers.",
-        },
-        {
-          label: "Product previews",
-          description:
-            "Interface concepts for the AI Idea Starter and Writing Assistant that made the product concrete rather than relying only on marketing copy.",
-        },
-        {
-          label: "Brand and visual identity",
-          description:
-            "A distinctive visual system using bright purple, rounded cards, and dark angled sections — designed to feel youthful and modern without resembling generic AI tooling.",
-        },
-        {
-          label: "Investor-ready prototype",
-          description:
-            "A presentation-ready articulation of the product opportunity and its differentiation from general-purpose AI writing tools, completed in three days.",
-        },
+        { label: "A clear product wedge", description: "Explanation and student ownership were made the product promise, not secondary safety language." },
+        { label: "A credible presentation", description: "The landing page and two focused product frames made the concept concrete for potential investors and collaborators." },
+        { label: "A coherent system", description: "The product UI, brand identity, mascot, and Writing Journey all reinforce the same learning-first experience." },
       ],
     },
-
-    /* 14. Constraints */
-    {
-      type: "constraints",
-      heading: "What I had to work with",
-      outcomeBullets: [
-        {
-          label: "Three-day timeline",
-          description:
-            "The project required rapid product definition, visual exploration, interface design, copy structure, and responsive page design within a compressed schedule.",
-        },
-        {
-          label: "New product category",
-          description:
-            "Draftly was my first attempt at designing an AI education product centered on writing development, requiring fast learning and confident direction-setting.",
-        },
-        {
-          label: "No direct student testing",
-          description:
-            "The direction was informed by product logic, competitive analysis, and market references rather than validated student behaviour.",
-        },
-      ],
-    },
-
-    /* 15. Key decisions */
-    {
-      type: "key-decisions",
-      heading: "Key decisions",
-      navLabel: "Decisions",
-      outcomeBullets: [
-        {
-          label: "Teach before automating",
-          description:
-            "Draftly was positioned around helping students understand their writing rather than generating completed work.",
-        },
-        {
-          label: "Make explanation the differentiator",
-          description:
-            "Corrections alone are easy to reproduce. Explaining the rule and helping students avoid future mistakes creates a stronger educational product.",
-        },
-        {
-          label: "Show the product early",
-          description:
-            "The landing page used interface previews to make the concept concrete rather than relying only on marketing copy.",
-        },
-        {
-          label: "Design for trust beyond the student",
-          description:
-            "The message needed to reassure parents, teachers, and schools that Draftly supported learning and academic integrity.",
-        },
-        {
-          label: "Keep future scope visible but separate",
-          description:
-            "Teacher, parent, and school features were shown as part of the roadmap without presenting them as completed product work.",
-        },
-      ],
-    },
-
-    /* 16. Simulated review */
-    {
-      type: "future-state",
-      heading: "Simulated investor and design-engineering review",
-      futureStateData: [
-        {
-          label: "Clear product wedge",
-          description:
-            "Draftly has a clearer wedge than many generic AI writing products because it treats explanation and student ownership as the product rather than as secondary safety messaging.",
-        },
-        {
-          label: "Strongest opportunity",
-          description:
-            "The explanation loop — identifying an issue, showing an improved version, explaining the rule, and tracking whether the student improves over time — is the most important feature to develop further.",
-        },
-        {
-          label: "Before investment",
-          description:
-            "The most important evidence would not be whether students accept more suggestions, but whether their unaided writing improves after repeated use.",
-        },
-      ],
-    },
-
-    /* 17. What I would improve */
     {
       type: "text",
-      heading: "What I would improve next",
+      heading: "What I would validate next",
+      navLabel: "Next",
       chapter: "reflection",
-      body: `<strong>Move beyond the marketing page and validate the core learning experience.</strong> The next version should prioritize designing the complete writing-editor journey, testing the AI Idea Starter with students experiencing blank-page anxiety, and evaluating whether explanations are understandable and measurable.\n<strong>The most important metric would not be the number of AI corrections accepted.</strong> It would be whether students gradually need fewer corrections and produce stronger independent writing.`,
-    },
-
-    /* 18. Closing reflection */
-    {
-      type: "text",
-      heading: "Closing reflection",
-      body: `<strong>Draftly was a short project, but it introduced a meaningful design problem:</strong> how to make AI useful without making the student less responsible for the work.\n<strong>The final concept established a clear product promise, a distinctive visual identity, and a credible initial view</strong> of how guided AI could support writing development.\n<strong>The next challenge would be proving that the product does more than make essays look better</strong> — that it actually helps students become better writers.`,
+      body: "<strong>The next step is testing the learning loop, not expanding the marketing page.</strong> I would test the Idea Starter with students facing blank-page anxiety, then measure whether explanations help them make fewer of the same mistakes independently. Success is not more accepted corrections; it is stronger unaided writing over time.",
     },
   ],
   nextSlug: null,

@@ -202,6 +202,8 @@ function renderSection(
           <CarouselSection
             heading={section.heading}
             slides={section.images || []}
+            aspectRatio={section.carouselAspectRatio}
+            background={section.carouselBackground}
           />
         </ReadingColumn>
       );
