@@ -53,3 +53,9 @@ Base44 Web 94.png
 heart mascot (Favicon).svg
 timeline issue/
 Links/
+
+# Build artifacts
+tsconfig.tsbuildinfo
+
+# Figma source deliverables
+outputs/
