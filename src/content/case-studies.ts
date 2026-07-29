@@ -15,7 +15,9 @@ export interface ContentSection {
     | "results"
     | "constraints"
     | "key-decisions"
-    | "carousel";
+    | "carousel"
+    | "phone-mockup"
+    | "device-showcase";
   heading?: string;
   body?: string;
   images?: {
@@ -25,6 +27,9 @@ export interface ContentSection {
     width?: number;
     height?: number;
     scroll?: boolean;
+    presentation?: "device" | "annotated-device" | "phone" | "phone-pair";
+    secondarySrc?: string;
+    secondaryAlt?: string;
   }[];
   // Image width: "text" (680px, within ReadingColumn) or "full-bleed" (1120px, breaks out)
   width?: "text" | "full-bleed";
@@ -52,6 +57,20 @@ export interface ContentSection {
   navLabel?: string;
   // Chapter grouping — dividers render when chapter changes between consecutive sections
   chapter?: "context" | "process" | "solution" | "results" | "reflection";
+  // Phone mockup fields (type: "phone-mockup")
+  phoneMockupImages?: {
+    src: string;
+    alt: string;
+    caption?: string;
+  }[];
+  deviceAssets?: {
+    body: string;
+    screenContent: string;
+    screenMask: string;
+    fallback: string;
+    alt: string;
+    caption?: string;
+  };
 }
 
 export interface CaseStudyMeta {
@@ -97,6 +116,16 @@ export interface CaseStudy {
   prevSlug: string | null;
   // New fields
   heroMedia?: { src: string; alt: string };
+  heroCarousel?: {
+    src: string;
+    alt: string;
+    width?: number;
+    height?: number;
+    presentation?: "device" | "annotated-device" | "phone" | "phone-pair";
+    secondarySrc?: string;
+    secondaryAlt?: string;
+  }[];
+  heroCarouselBackground?: string;
   /** Full-page screenshot for auto-scrolling cover component */
   coverScroll?: {
     src: string;
@@ -117,71 +146,166 @@ export const todoApp: CaseStudy = {
   timeline: "2025",
   overview:
     "TODO++ started as a straightforward task management tool that had grown into a feature-heavy checklist application. The product was losing users to simpler alternatives because the core experience had become buried under options. The goal was to redesign the experience from the ground up — preserving power-user capabilities while making the everyday experience feel effortless.",
+  subtitle:
+    "A calmer task loop across a dedicated device and mobile companion.",
   coverSrc: "/images/case-studies/todo-app-cover.webp",
+  heroMedia: {
+    src: "/images/case-studies/todo-app/todo-app-hero.webp",
+    alt: "TODO++ dedicated task device and companion phone displayed together",
+  },
+  heroCarousel: [
+    {
+      src: "/images/case-studies/todo-app/phone/todo-app-phone-splash.png",
+      alt: "TODO++ splash screen in a mobile bezel",
+      secondarySrc: "/images/case-studies/todo-app/phone/todo-app-phone-onboarding.png",
+      secondaryAlt: "TODO++ onboarding screen in a mobile bezel",
+      presentation: "phone-pair",
+    },
+    {
+      src: "/images/case-studies/todo-app-device.webp",
+      alt: "TODO++ dedicated device with its e-paper task display and annotated controls",
+      presentation: "annotated-device",
+      width: 800,
+      height: 458,
+    },
+  ],
+  heroCarouselBackground: "#FFFFFF",
+  coverScroll: {
+    src: "",
+    alt: "",
+    sections: [],
+  },
+  meta: {
+    role: "Product design lead — UX, UI, design system",
+    timeline: "2025",
+    date: "2025",
+    platform: "Physical device + mobile app",
+    team: "Solo product design",
+    scope: "Product concept, UX, UI, design system",
+    status: "Presentation-ready concept",
+  },
   sections: [
     {
+      type: "executive-summary",
+      heading: "A calmer task loop across a dedicated device and mobile companion",
+      executiveSummary: {
+        problem: "Task-management products can make a simple daily action—deciding what to do next—feel like administration. TODO++ explores a calmer alternative: a focused physical task device paired with a mobile companion.",
+        solution: "The concept brings the essential task loop to the foreground: see the current work, open its details, connect the companion device, and mark work complete. The UI uses deliberate hierarchy and visible state changes to keep the interaction legible.",
+        outcome: "A presentation-ready product concept comprising a dedicated task device, companion mobile screens, onboarding/linking, task detail, and task-completion states. No quantitative outcome is claimed because the supplied source set does not verify one.",
+      },
+    },
+    {
+      type: "what-i-designed",
+      heading: "What I designed",
+      designedFeatures: [
+        {
+          name: "Dedicated task device",
+          description: "A focused hardware surface for viewing the day's tasks and moving through core controls.",
+        },
+        {
+          name: "Companion mobile home",
+          description: "A mobile task-home state that shows the day, task status, navigation, and a clear entry point into the active task.",
+        },
+        {
+          name: "Task detail",
+          description: "A deeper mobile view for an active task, with its context and actions available without turning the home state into a dense dashboard.",
+        },
+        {
+          name: "Cross-device linking",
+          description: "A mobile setup state that connects the companion app to the physical device.",
+        },
+        {
+          name: "Completion feedback",
+          description: "A distinct completed-task state that makes progress visible and gives the task loop a clear endpoint.",
+        },
+      ],
+    },
+    {
       type: "text",
-      heading: "Understanding the problem",
-      body: "Users reported that TODO++ had become overwhelming. The average user was only engaging with 20% of available features, but those features were increasingly difficult to find beneath layers of menus and configuration screens. The churn rate had increased by 15% over two quarters, primarily driven by users migrating to tools that offered a simpler experience — even when those tools had objectively fewer capabilities.",
+      heading: "Keeping the next task visible",
+      chapter: "context",
+      navLabel: "Context",
+      body: "<strong>TODO++ starts with a smaller question than a typical task dashboard:</strong> what should be visible when someone needs to act now? The concept reduces the daily task loop to a focused device surface and a companion app. Instead of making every organisational option compete for attention, the design foregrounds the current day, the active task, and a small number of clear actions.",
     },
     {
       type: "image-pair",
-      heading: "User research — personas",
+      heading: "Research personas",
+      chapter: "context",
+      body: "The research artifacts frame two complementary needs: <strong>Daniel needs focus and a system that keeps a demanding schedule manageable;</strong> <strong>Amara needs a simple way to capture and return to work without feeling buried by options.</strong> Treat these as the lens for the concept, not as quantitative validation.",
       images: [
-        { src: "/images/case-studies/todo-app-persona-1.webp", alt: "TODO++ user persona — power user", caption: "Power user persona — needs advanced features without clutter", width: 800, height: 744 },
-        { src: "/images/case-studies/todo-app-persona-2.webp", alt: "TODO++ user persona — casual user", caption: "Casual user persona — wants simplicity over options", width: 800, height: 744 },
+        { src: "/images/case-studies/todo-app/todo-app-persona-1.webp", alt: "Daniel Okafor persona — needs clarity, focus, and control without clutter", caption: "Daniel Okafor — needs clarity, focus, and control without clutter.", width: 800, height: 744 },
+        { src: "/images/case-studies/todo-app/todo-app-persona-2.webp", alt: "Amara Bello persona — needs a simple system for assignments and personal tasks", caption: "Amara Bello — needs a simple system for assignments and personal tasks.", width: 800, height: 744 },
+      ],
+    },
+    {
+      type: "key-decisions",
+      heading: "Designing for focus, not configuration",
+      chapter: "context",
+      body: "1. <strong>Make the next action easy to find.</strong> The home state should give the active task and its status room to breathe. 2. <strong>Keep context available when it is needed.</strong> Task detail belongs behind a deliberate transition, not in every overview. 3. <strong>Make progress tangible.</strong> Linking and completion are explicit states, so the system clearly acknowledges what has changed.",
+    },
+    {
+      type: "device-showcase",
+      heading: "A dedicated surface for the day's work",
+      chapter: "solution",
+      navLabel: "Solution",
+      body: "<strong>The physical device is the product's most distinctive design decision.</strong> Its display concentrates the task experience into a compact surface while the companion app handles deeper task interaction. The hero should let the reader see the relationship between hardware controls and the on-screen task state.",
+      deviceAssets: {
+        body: "/images/case-studies/todo-app/threejs/device-body.png",
+        screenContent: "/images/case-studies/todo-app/threejs/screen-content.png",
+        screenMask: "/images/case-studies/todo-app/threejs/screen-mask.png",
+        fallback: "/images/case-studies/todo-app/todo-app-dedicated-surface.png",
+        alt: "TODO++ dedicated task device showing the curated e-paper task list and hardware controls",
+        caption: "The dedicated TODO++ device — focused hardware for daily task management",
+      },
+    },
+    {
+      type: "carousel",
+      heading: "The product system at a glance",
+      chapter: "solution",
+      body: "The dedicated device, the companion mobile home, device linking, and task completion — each slide makes one relationship legible.",
+      carouselBackground: "#FFFFFF",
+      images: [
+        { src: "/images/case-studies/todo-app/phone/todo-app-phone-home-figma.png", alt: "TODO++ companion mobile home screen", caption: "Companion mobile home", presentation: "phone" },
+        { src: "/images/case-studies/todo-app/phone/todo-app-phone-qr-connection.png", alt: "TODO++ QR connection screen for linking the companion app to the device", caption: "Cross-device connection", presentation: "phone" },
+        { src: "/images/case-studies/todo-app/phone/todo-app-phone-manage-hardware.png", alt: "TODO++ hardware management controls", caption: "Manage hardware", presentation: "phone" },
+        { src: "/images/case-studies/todo-app/phone/todo-app-phone-companion-connection.png", alt: "TODO++ companion app connected to the dedicated device", caption: "Companion connection", presentation: "phone" },
+      ],
+    },
+    {
+      type: "phone-mockup",
+      heading: "A daily overview for tasks and updates",
+      chapter: "solution",
+      body: "<strong>The companion home keeps today's tasks, recent updates, and device status in one calm view.</strong> The screen gives the reader a clear entry point into the daily task loop before they move into deeper task context.",
+      phoneMockupImages: [
+        { src: "/images/case-studies/todo-app/phone/todo-app-phone-daily-overview.png", alt: "TODO++ companion app daily overview with tasks, updates, and device controls", caption: "The daily overview keeps tasks, updates, and device controls within reach." },
+      ],
+    },
+    {
+      type: "phone-mockup",
+      heading: "From task context to a clear endpoint",
+      chapter: "solution",
+      body: "<strong>Task detail holds the information needed to act; completion closes the loop.</strong> Present the two states together so the reader can follow the interaction from an active task to a confirmed result.",
+      phoneMockupImages: [
+        { src: "/images/case-studies/todo-app/phone/todo-app-phone-task-detail.webp", alt: "TODO++ task detail view — the active task and its context", caption: "Task detail — the active task and its context." },
+        { src: "/images/case-studies/todo-app/phone/todo-app-phone-completion-figma.png", alt: "TODO++ completed task state — clear acknowledgement that the task is done", caption: "Completion — a clear acknowledgement that the task is done." },
+      ],
+    },
+    {
+      type: "results",
+      heading: "What the concept delivered",
+      navLabel: "Results",
+      chapter: "results",
+      outcomeBullets: [
+        { label: "Coherent product concept", description: "A dedicated task device and companion mobile app designed as a focused, linked system." },
+        { label: "Focused mobile task loop", description: "Home, task detail, device linking, and completion states covering the essential interaction arc." },
+        { label: "Research-led narrative", description: "Two personas distinguishing the needs for clarity and focus from the need for simplicity and recovery." },
       ],
     },
     {
       type: "text",
-      heading: "Defining the principles",
-      body: "We established three design principles that guided every decision: reduce cognitive load before adding features, make the most common paths the most prominent paths, and preserve power through progressive disclosure rather than sacrificing depth for simplicity. These principles became the litmus test for every design decision throughout the project.",
-    },
-    {
-      type: "full-image",
-      heading: "Redesigned interface",
-      images: [
-        { src: "/images/case-studies/todo-app-homepage-task.webp", alt: "TODO++ redesigned task view", caption: "The redesigned task view — clear hierarchy, focused on what matters", width: 492, height: 1057 },
-      ],
-    },
-    {
-      type: "text",
-      heading: "The intelligent inbox",
-      body: "The centrepiece of the redesign was the intelligent inbox — a smart prioritisation layer that surfaces the most relevant tasks based on deadlines, dependencies, and user behaviour patterns. Rather than forcing users to organise their work into folders and tags, the system learns how each user works and adapts the view accordingly. Users who want manual control can still access the full organisational model, but it no longer sits in the critical path of daily use.",
-    },
-    {
-      type: "full-image",
-      heading: "Onboarding flow",
-      images: [
-        { src: "/images/case-studies/todo-app-new-user-sync.webp", alt: "TODO++ new user sync screen", caption: "Onboarding — getting started with intelligent sync", width: 492, height: 1057 },
-        { src: "/images/case-studies/todo-app-new-user-link-device.webp", alt: "TODO++ device linking", caption: "Cross-device setup — seamless transition between devices", width: 485, height: 1050 },
-      ],
-    },
-    {
-      type: "metrics",
-      heading: "Impact",
-      metrics: [
-        { label: "Churn reduction", value: "32%" },
-        { label: "Task completion rate", value: "+28%" },
-        { label: "Feature discovery", value: "+45%" },
-        { label: "NPS score increase", value: "+18 pts" },
-      ],
-    },
-    {
-      type: "text",
-      heading: "Collaboration with engineering",
-      body: "The implementation required close collaboration with the engineering team to ensure that the intelligent inbox was powered by meaningful signals without compromising user privacy or creating a black-box recommendation system. We held weekly design reviews where engineers could challenge assumptions about what data was available and what would be useful. This collaboration resulted in a transparent priority system that users could understand and adjust — no mysterious algorithms.",
-    },
-    {
-      type: "full-image",
-      images: [
-        { src: "/images/case-studies/todo-app-complete-task.webp", alt: "TODO++ completed task state", caption: "Completed task view — satisfying visual feedback without clutter", width: 492, height: 1057 },
-      ],
-    },
-    {
-      type: "text",
-      heading: "What I learned",
-      body: "This project reinforced that simplification is harder than addition. Removing features requires understanding why they were added in the first place and whether those use cases are still valid. The most valuable discussions happened when we asked 'who actually uses this?' and were willing to deprecate features that served an imagined user rather than a real one. The principles we established early became our anchor throughout — every time someone proposed a new feature, we asked whether it reduced or increased cognitive load.",
+      heading: "Focus is a product decision",
+      chapter: "reflection",
+      body: "<strong>TODO++ explores how a task product can become more present without becoming more demanding.</strong> The work's clearest contribution is the relationship between a purposeful physical surface and a mobile companion that retains task context when it is needed. The next step would be validating whether that focused loop helps people return to work with less friction.",
     },
   ],
   nextSlug: "letters-app",
@@ -196,68 +320,157 @@ export const lettersApp: CaseStudy = {
   timeline: "2024",
   overview:
     "Letters App was conceived as a response to the always-on, notification-driven nature of modern messaging. The premise was simple: what if digital communication could feel more like writing a letter than sending a text message? The challenge was designing a platform that encouraged thoughtfulness and intentionality without feeling slow, heavy, or impractical for everyday use.",
+  subtitle:
+    "A digital space for letters worth returning to.",
   coverSrc: "/images/case-studies/letters-app-cover.webp",
+  heroCarousel: [
+    {
+      src: "/images/case-studies/letters-app/phone/letters-app-phone-onboarding.webp",
+      alt: "Letters App iPhone welcome screen — welcome, log in, and sign up",
+      secondarySrc: "/images/case-studies/letters-app/phone/letters-app-phone-preview-post.png",
+      secondaryAlt: "Letters App iPhone preview and post screen — review a finished letter before posting",
+      presentation: "phone-pair",
+    },
+    {
+      src: "/images/case-studies/letters-app/letters-app-hero.webp",
+      alt: "Letters App web homepage — browse recent and continuing letter correspondence",
+      width: 1440,
+      height: 915,
+    },
+  ],
+  heroCarouselBackground: "#FFFFFF",
+  heroMedia: {
+    src: "/images/case-studies/letters-app/letters-app-hero.webp",
+    alt: "Letters App web homepage — browse recent and continuing letter correspondence",
+  },
+  coverScroll: {
+    src: "/images/case-studies/letters-app/letters-app-landing-page-full.webp",
+    alt: "Letters App full web homepage — recent and continuing letter correspondence",
+    sections: [],
+  },
+  meta: {
+    role: "Sole product designer — end-to-end product design",
+    timeline: "2024",
+    date: "2024",
+    platform: "Responsive web and iPhone app",
+    team: "Solo product design",
+    scope: "Product concept, UX, UI, design system",
+    status: "Presentation-ready concept",
+  },
   sections: [
     {
-      type: "text",
-      heading: "The tension between speed and thoughtfulness",
-      body: "The core design tension was immediately clear: how do you create a product that encourages considered communication without frustrating users who expect instant responses? Our research showed that users already felt overwhelmed by instant messaging — they wanted a way to communicate that felt deliberate without requiring a significant time commitment. The solution was not to slow down the interface but to change the expectations around response time.",
+      type: "executive-summary",
+      heading: "A digital space for letters worth returning to",
+      executiveSummary: {
+        problem: "Most communication products optimise for immediacy. That makes it easy to send a message, but leaves little room for a story, a response with context, or a record worth returning to.",
+        solution: "Letters App reframes digital correspondence as a composed letter. Its web and mobile experiences support discovery, long-form reading, replying, writing, image and theme choices, preview, and posting.",
+        outcome: "A presentation-ready, responsive communication-product concept with complete web home and letter-reading views, a detailed iPhone writing flow, onboarding, sent/received letters, and pals. No business or behavioural metric is claimed.",
+      },
     },
     {
-      type: "full-image",
-      heading: "The inbox experience",
-      images: [
-        { src: "/images/case-studies/letters-app-homepage-post-1.webp", alt: "Letters App inbox view", caption: "The inbox — envelopes with preview windows, no read receipts, no typing indicators", width: 492, height: 1057 },
-        { src: "/images/case-studies/letters-app-homepage-post-2.webp", alt: "Letters App homepage", caption: "Home feed — letters from your circle, organised by person", width: 492, height: 1057 },
+      type: "what-i-designed",
+      heading: "What I designed",
+      designedFeatures: [
+        { name: "Web home and discovery", description: "Recent posts, continuing reads, navigation, and search in a spacious letter-first layout." },
+        { name: "Long-form reading and reply", description: "A desktop letter view with author, date, imagery, location moments, and a direct reply action." },
+        { name: "Mobile writing flow", description: "Compose, select or generate imagery, choose a visual treatment, preview, and post." },
+        { name: "Personal correspondence spaces", description: "Sent and received letters plus a pals view that makes the network of people visible." },
+        { name: "Onboarding", description: "A mobile entry screen that introduces the product promise and gives clear sign-in and sign-up actions." },
       ],
     },
     {
       type: "text",
-      heading: "Designing for anticipation",
-      body: "We designed the experience around the emotional arc of sending and receiving. Writing a letter involves intention — choosing words, arranging thoughts, deciding what matters. The interface was designed to support that reflection without adding friction. Delivery notifications are calm rather than demanding, arriving as a subtle badge rather than a banner interruption.",
+      heading: "Communication with room to mean something",
+      chapter: "context",
+      navLabel: "Context",
+      body: "<strong>Letters App makes a case for a different pace of communication.</strong> The product is organised around reading, writing, and replying to stories that need more than a few lines. The design gives a letter its own space, preserving its author, date, images, places, and the invitation to respond.",
     },
     {
-      type: "image-pair",
-      heading: "Writing and connecting",
-      images: [
-        { src: "/images/case-studies/letters-app-my-letters.webp", alt: "Letters App my letters view", caption: "My letters — a personal archive of correspondence", width: 492, height: 1057 },
-        { src: "/images/case-studies/letters-app-my-pals.webp", alt: "Letters App pals page", caption: "My Pals — manage your correspondence circle", width: 492, height: 1057 },
+      type: "key-decisions",
+      heading: "Designing for reading, reflection, and reply",
+      chapter: "context",
+      outcomeBullets: [
+        { label: "Let letters read like letters", description: "Protect generous typography, a clear reading column, and space for images." },
+        { label: "Keep the reply close to the story", description: "Make responding feel like a continuation, not a context switch." },
+        { label: "Make authorship visible", description: "Surface the writer, date, imagery, and place where the letter provides them." },
+        { label: "Turn writing into a guided sequence", description: "Composition, visual treatment, preview, and posting each have a clear state." },
       ],
     },
     {
-      type: "full-image",
-      heading: "Personality and connection",
+      type: "carousel",
+      heading: "A home built for returning to stories",
+      chapter: "solution",
+      navLabel: "Solution",
+      body: "<strong>The web home prioritises correspondence over a generic social feed.</strong> Continue Reading and Recent Posts give the reader two useful ways back into the product, while search and primary navigation stay available without competing with the letters.",
       images: [
-        { src: "/images/case-studies/letters-app-persona-details.webp", alt: "Letters App persona details", caption: "Persona details — understanding communication preferences", width: 800, height: 744 },
-        { src: "/images/case-studies/letters-app-personality-analysis.webp", alt: "Letters App personality analysis", caption: "Personality insights — how your communication style comes across", width: 800, height: 741 },
+        { src: "/images/case-studies/letters-app/letters-app-landing-page-full.webp", alt: "Letters App web homepage — browse recent and continuing letter correspondence", caption: "The web home — recent posts and continuing reads in a letter-first layout", width: 1440, height: 2388, scroll: true },
       ],
     },
     {
-      type: "metrics",
-      heading: "Key results",
-      metrics: [
-        { label: "Avg letter length", value: "240 words" },
-        { label: "Response rate", value: "78%" },
-        { label: "User retention (90d)", value: "82%" },
-        { label: "Daily active users", value: "12k+" },
+      type: "carousel",
+      heading: "From reading to response",
+      chapter: "solution",
+      body: "Each slide shows a key web state at full height — scroll to explore the long-form reading view, the reply modal, and the compose surface. <strong>The product lets you move from discovery to correspondence without leaving the letter.</strong>",
+      images: [
+        { src: "/images/case-studies/letters-app/carousel/letters-app-web-read.webp", alt: "Letters App web reading view — a letter with header, featured image, body text, and reply button", caption: "Read a letter with header, author context, imagery, and a direct reply path.", width: 2880, height: 10456, scroll: true },
+        { src: "/images/case-studies/letters-app/carousel/letters-app-web-reply.webp", alt: "Letters App web reply modal — respond to a letter in an overlay without losing reading context", caption: "Reply without leaving the letter — the overlay keeps the original visible.", width: 2880, height: 4776, scroll: true },
+        { src: "/images/case-studies/letters-app/carousel/letters-app-web-compose.webp", alt: "Letters App web compose editor — draft a new letter with structured fields and image upload", caption: "Draft a new letter with structure — title, cover image, and body.", width: 2880, height: 4776, scroll: true },
+      ],
+    },
+    {
+      type: "phone-mockup",
+      heading: "Writing is guided without taking over the author's voice",
+      chapter: "solution",
+      body: "<strong>The iPhone flow makes the editorial choices visible.</strong> The writer composes a letter, chooses imagery or a visual treatment, previews the result, and posts only when it is ready.",
+      phoneMockupImages: [
+        { src: "/images/case-studies/letters-app/phone/letters-app-phone-compose.webp", alt: "Letters App iPhone compose screen — write a letter and choose its visual treatment", caption: "Compose a letter and choose its visual treatment." },
+        { src: "/images/case-studies/letters-app/phone/letters-app-phone-preview-post.webp", alt: "Letters App iPhone preview and post screen — review the finished letter before posting", caption: "Preview the finished letter before posting." },
+      ],
+    },
+    {
+      type: "phone-mockup",
+      heading: "A correspondence product needs a clear way in and back",
+      chapter: "solution",
+      body: "The supporting mobile states establish the product beyond one letter: <strong>onboarding introduces its promise, My Letters separates sent and received correspondence, and My Pals makes the people behind the letters discoverable.</strong>",
+      phoneMockupImages: [
+        { src: "/images/case-studies/letters-app/phone/letters-app-phone-onboarding.webp", alt: "Letters App iPhone onboarding screen — welcome, log in, sign up", caption: "Welcome and sign-in entry point." },
+        { src: "/images/case-studies/letters-app/phone/letters-app-phone-my-letters.webp", alt: "Letters App iPhone My Letters screen — sent and received letters", caption: "Sent and received letters." },
+      ],
+    },
+    {
+      type: "phone-mockup",
+      heading: "The people behind the correspondence",
+      chapter: "solution",
+      phoneMockupImages: [
+        { src: "/images/case-studies/letters-app/phone/letters-app-phone-my-pals.webp", alt: "Letters App iPhone My Pals screen — discover the people behind the letters", caption: "People behind the correspondence." },
+      ],
+    },
+    {
+      type: "results",
+      heading: "What the concept delivered",
+      navLabel: "Results",
+      chapter: "results",
+      outcomeBullets: [
+        { label: "Responsive web experience", description: "Discovery and long-form letter reading across desktop and mobile viewports." },
+        { label: "Complete mobile correspondence flow", description: "Onboarding through writing, visual choices, preview, posting, sent/received letters, and pals." },
+        { label: "Coherent interaction model", description: "A letter carries story, imagery, place, author context, and a direct reply path." },
+      ],
+    },
+    {
+      type: "constraints",
+      heading: "A slower experience still needs to be easy to use",
+      chapter: "reflection",
+      outcomeBullets: [
+        { label: "Typography and contrast requirements", description: "Long-form reading requires resilient typography, contrast, focus order, and image alt text." },
+        { label: "Designed screens, not measured outcomes", description: "The product concept is evidenced by designed screens, not by a measured accessibility study or live-product outcome." },
+        { label: "Interface concepts only", description: "The visual-assistance and image-generation states shown in the flow should be described only as interface concepts; do not claim autonomous writing or generated content quality." },
       ],
     },
     {
       type: "text",
-      heading: "Accessibility as a feature",
-      body: "Because the product depended so heavily on emotional cues and visual metaphors (envelopes, seals, handwriting-style typography), accessibility was not an afterthought but a core design driver. Every visual metaphor had a text-based alternative. The envelope preview had an accessible version that read the first sentence. The handwriting font was decorative only — all body text used system fonts with full accessibility support. Colour was never the sole indicator of urgency or importance.",
-    },
-    {
-      type: "full-image",
-      heading: "Showcase",
-      images: [
-        { src: "/images/case-studies/letters-app-showcase.webp", alt: "Letters App showcase", caption: "The complete Letters App experience", width: 800, height: 461 },
-      ],
-    },
-    {
-      type: "text",
-      heading: "Reflections",
-      body: "Letters App taught me that emotional design doesn't require complex animations or elaborate visual treatments. The most emotionally resonant elements were simple: a letter that slowly appears to open, a seal that breaks when read, an inbox that treats each message as something valuable rather than something to process and discard. These moments worked because they were grounded in a real understanding of how people want to connect — not because they were visually impressive.",
+      heading: "Designing for a response worth writing",
+      chapter: "reflection",
+      body: "<strong>Letters App treats communication as something people can return to, not simply clear from an inbox.</strong> The work connects the calm of a long reading surface with the practical steps needed to create and send a reply. The next challenge would be validating whether this pace helps people build more meaningful correspondence.",
     },
   ],
   nextSlug: "credlane",
@@ -284,11 +497,11 @@ export const credlane: CaseStudy = {
     alt: "Travecs landing page",
     sections: [
       { label: "Meet Travecs", start: 0 },
-      { label: "Talent experience", start: 0.31 },
-      { label: "Employer experience", start: 0.49 },
-      { label: "Frequently asked questions", start: 0.78 },
-      { label: "Find talent, get hired", start: 0.9 },
-      { label: "Footer", start: 0.97 },
+      { label: "Talent experience", start: 0.28 },
+      { label: "Employer experience", start: 0.47 },
+      { label: "Frequently asked questions", start: 0.64 },
+      { label: "Find talent, get hired", start: 0.78 },
+      { label: "Footer", start: 0.88 },
     ],
   },
   meta: {

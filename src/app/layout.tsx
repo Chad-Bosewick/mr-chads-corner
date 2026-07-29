@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
-import { Plus_Jakarta_Sans, Lora } from "next/font/google";
+import { Inter, Lora } from "next/font/google";
 import "@/styles/globals.css";
 import { Nav } from "@/components/layout/Nav";
 import { Footer } from "@/components/layout/Footer";
 import { AsciiShader } from "@/components/effects/AsciiShader";
+import { AnimationProvider, GlobalAnimationPauseControl } from "@/components/providers/AnimationProvider";
 
-const plusJakartaSans = Plus_Jakarta_Sans({
+const inter = Inter({
   variable: "--font-sans",
   subsets: ["latin"],
   display: "swap",
@@ -64,7 +65,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${plusJakartaSans.variable} ${lora.variable}`}
+      className={`${inter.variable} ${lora.variable}`}
     >
       <body
         className="min-h-screen font-sans"
@@ -74,13 +75,16 @@ export default function RootLayout({
           backgroundColor: "#f5f2ee",
         }}
       >
-        <AsciiShader />
-        <a href="#main-content" className="skip-link">
-          Skip to main content
-        </a>
-        <Nav />
-        <main id="main-content">{children}</main>
-        <Footer />
+        <AnimationProvider>
+          <AsciiShader />
+          <GlobalAnimationPauseControl />
+          <a href="#main-content" className="skip-link">
+            Skip to main content
+          </a>
+          <Nav />
+          <main id="main-content">{children}</main>
+          <Footer />
+        </AnimationProvider>
       </body>
     </html>
   );

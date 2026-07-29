@@ -88,14 +88,14 @@ export function NavMobile({ items, currentPath, onClose }: NavMobileProps) {
         aria-label="Close navigation menu"
       >
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-          <circle cx="12" cy="12" r="10" fill="none" stroke="#FFFFFF" stroke-width="1.5" />
-          <path d="M8 8L16 16M16 8L8 16" stroke="#FFFFFF" stroke-width="1.5" stroke-linecap="round" />
+          <circle cx="12" cy="12" r="10" fill="none" stroke="#FFFFFF" strokeWidth="1.5" />
+          <path d="M8 8L16 16M16 8L8 16" stroke="#FFFFFF" strokeWidth="1.5" strokeLinecap="round" />
         </svg>
       </button>
 
       <ul className="flex flex-col items-center gap-8">
         {items.map((item, index) => {
-          const isActive = currentPath === item.href;
+          const isActive = currentPath === item.href || (item.href !== "/" && currentPath.startsWith(item.href));
           return (
             <li
               key={item.href}

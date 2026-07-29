@@ -1,17 +1,9 @@
 import { SectionReveal } from "@/components/sections/SectionReveal";
-import { CarouselImage } from "@/components/case-study/CarouselImage";
-
-interface CarouselSlide {
-  src: string;
-  alt: string;
-  caption?: string;
-  width?: number;
-  height?: number;
-  scroll?: boolean;
-}
+import { CarouselImage, type CarouselSlide } from "@/components/case-study/CarouselImage";
 
 interface CarouselSectionProps {
   heading?: string;
+  body?: string;
   slides: CarouselSlide[];
   /** Auto-advance interval in ms. Undefined = component default (4000ms). 0 = disabled. */
   autoAdvanceMs?: number;
@@ -21,7 +13,7 @@ interface CarouselSectionProps {
   background?: string;
 }
 
-export function CarouselSection({ heading, slides, autoAdvanceMs, aspectRatio, background }: CarouselSectionProps) {
+export function CarouselSection({ heading, body, slides, autoAdvanceMs, aspectRatio, background }: CarouselSectionProps) {
   return (
     <SectionReveal>
       <section>
@@ -29,6 +21,11 @@ export function CarouselSection({ heading, slides, autoAdvanceMs, aspectRatio, b
           <h2 className="mb-6 font-sans text-[clamp(1.25rem,3vw,1.5rem)] font-medium text-[#151515]">
             {heading}
           </h2>
+        )}
+        {body && (
+          <div className="mb-6 font-sans text-[clamp(0.875rem,2vw,1rem)] leading-relaxed text-[#151515]/70">
+            <p dangerouslySetInnerHTML={{ __html: body }} />
+          </div>
         )}
         <CarouselImage slides={slides} heading={heading} autoAdvanceMs={autoAdvanceMs} aspectRatio={aspectRatio} background={background} />
       </section>

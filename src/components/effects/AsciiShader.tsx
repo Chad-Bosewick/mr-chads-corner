@@ -2,11 +2,13 @@
 
 import { useRef } from "react";
 import { useAsciiShader } from "@/hooks/useAsciiShader";
+import { useAnimationContext } from "@/components/providers/AnimationProvider";
 
 export function AsciiShader() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const { isAsciiPaused } = useAnimationContext();
 
-  useAsciiShader(canvasRef);
+  useAsciiShader(canvasRef, isAsciiPaused);
 
   return (
     <canvas

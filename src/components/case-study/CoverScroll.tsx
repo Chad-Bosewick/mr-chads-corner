@@ -1,8 +1,9 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
+import { AnimationPauseButton } from "@/components/ui/AnimationPauseButton";
 
 interface CoverScrollSection {
   label: string;
@@ -21,16 +22,24 @@ interface CoverScrollProps {
   className?: string;
 }
 
-const SCROLL_DURATION = 1200;
 const PAUSE_DURATION = 3000;
-const INITIAL_DELAY = 1500;
+const INITIAL_DELAY = 4000;
 const VIEWPORT_START_THRESHOLD = 0.8;
 
-/** Liquid easing — starts slow, accelerates, decelerates. Harmonic feel. */
-const liquidEase = (t: number): number =>
-  t < 0.5
-    ? 4 * t * t * t
-    : 1 - (-2 * t + 2) ** 3 / 2;
+/**
+ * iOS momentum-inspired easing — quick snappy start, long natural
+ * deceleration tail. Feels like a flick that coasts to a stop.
+ * At t=0.25 we've covered ~68% of the distance; the remaining 75%
+ * of time is gradual settling.
+ */
+const momentumEase = (t: number): number =>
+  1 - Math.pow(1 - t, 3.5);
+
+/** Scale scroll duration to distance so short jumps feel quick and long
+ *  scrolls have time to breathe. */
+function scrollDuration(px: number): number {
+  return Math.max(500, Math.min(2200, px * 0.55 + 500));
+}
 
 const getPrefersReducedMotion = (): boolean => {
   if (typeof window === "undefined" || typeof window.matchMedia !== "function") return false;
@@ -63,6 +72,8 @@ export function CoverScroll({
   const [imgHeight, setImgHeight] = useState(2400);
   const [hasEnteredViewport, setHasEnteredViewport] = useState(false);
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(getPrefersReducedMotion);
+  const [isPaused, setIsPaused] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
   const hasStartedRef = useRef(false);
 
   // Auto-scroll state (refs for rAF)
@@ -71,14 +82,30 @@ export function CoverScroll({
   const scrollFromRef = useRef(0);
   const scrollToRef = useRef(0);
   const phaseStartRef = useRef(0);
+  const lastNowRef = useRef(0);
+  const idleElapsedRef = useRef(0);
+  const pauseElapsedRef = useRef(0);
+  const initializedRef = useRef(false);
+  const pauseStartedAtRef = useRef<number | null>(null);
+  const wasMotionPausedRef = useRef(false);
+  const segmentDurationRef = useRef(800);
 
-  const totalScrollDistance = Math.max(0, imageHeight - frameHeight);
+  const measurementsReady = imageHeight > 0 && frameHeight > 0;
+  const totalScrollDistance = measurementsReady
+    ? Math.max(0, imageHeight - frameHeight)
+    : 0;
 
   // Scale section starts to pixel offsets within the scrollable range
-  const sectionOffsets = sections.map((s) => {
-    if (totalScrollDistance <= 0) return 0;
-    return Math.min(s.start * (imageHeight / frameHeight) * frameHeight, totalScrollDistance);
-  });
+  const sectionOffsets = useMemo(
+    () => sections.map((s) => (
+      totalScrollDistance <= 0
+        ? 0
+        : Math.min(s.start * imageHeight, totalScrollDistance)
+    )),
+    [imageHeight, sections, totalScrollDistance],
+  );
+
+  const motionPaused = isPaused || isHovered;
 
   // ── Frame height measurement ──
   useEffect(() => {
@@ -150,6 +177,39 @@ export function CoverScroll({
     [],
   );
 
+  // Freeze elapsed animation time while paused or hovered, then resume from the exact offset.
+  useEffect(() => {
+    if (!autoScroll) return;
+
+    if (motionPaused && !wasMotionPausedRef.current) {
+      pauseStartedAtRef.current = performance.now();
+    } else if (!motionPaused && wasMotionPausedRef.current) {
+      const pausedAt = pauseStartedAtRef.current;
+      if (pausedAt !== null && phaseStartRef.current > 0) {
+        phaseStartRef.current += performance.now() - pausedAt;
+      }
+      pauseStartedAtRef.current = null;
+      lastNowRef.current = 0;
+    }
+
+    wasMotionPausedRef.current = motionPaused;
+  }, [autoScroll, motionPaused]);
+
+  useEffect(() => {
+    if (autoScroll && !prefersReducedMotion && measurementsReady) return;
+    phaseRef.current = "idle";
+    sectionIndexRef.current = 0;
+    scrollFromRef.current = 0;
+    scrollToRef.current = 0;
+    phaseStartRef.current = 0;
+    lastNowRef.current = 0;
+    idleElapsedRef.current = 0;
+    pauseElapsedRef.current = 0;
+    initializedRef.current = false;
+    segmentDurationRef.current = 800;
+    if (innerRef.current) innerRef.current.style.transform = "translateY(0px)";
+  }, [autoScroll, measurementsReady, prefersReducedMotion]);
+
   const sizesAttr = showLaptopFrame
     ? "(max-width: 768px) 100vw, 480px"
     : `(max-width: 768px) 100vw, ${maxWidth}`;
@@ -160,6 +220,8 @@ export function CoverScroll({
       !autoScroll ||
       prefersReducedMotion ||
       !hasEnteredViewport ||
+      !measurementsReady ||
+      motionPaused ||
       totalScrollDistance <= 0 ||
       sections.length < 2
     ) {
@@ -171,36 +233,32 @@ export function CoverScroll({
       phaseRef.current = "idle"; // will be set to "scrolling" below
     }
 
-    let lastNow = 0;
-    let idleElapsed = 0;
-    let pauseElapsed = 0;
-    let initialized = false;
-
     const animate = (now: number) => {
-      if (!lastNow) lastNow = now;
-      const dt = now - lastNow;
-      lastNow = now;
+      if (!lastNowRef.current) lastNowRef.current = now;
+      const dt = now - lastNowRef.current;
+      lastNowRef.current = now;
 
       const phase = phaseRef.current;
 
       if (phase === "idle") {
         // Wait for initial delay, then start scrolling to first section
-        idleElapsed += dt;
-        if (!initialized) {
-          initialized = true;
+        idleElapsedRef.current += dt;
+        if (!initializedRef.current) {
+          initializedRef.current = true;
           scrollFromRef.current = 0;
           scrollToRef.current = sectionOffsets[1] ?? 0;
+          segmentDurationRef.current = scrollDuration(Math.abs(scrollToRef.current - scrollFromRef.current));
           sectionIndexRef.current = 0;
           phaseStartRef.current = now;
         }
-        if (idleElapsed >= INITIAL_DELAY) {
+        if (idleElapsedRef.current >= INITIAL_DELAY) {
           phaseRef.current = "scrolling";
           phaseStartRef.current = now;
         }
       } else if (phase === "scrolling") {
         const elapsed = now - phaseStartRef.current;
-        const t = Math.min(elapsed / SCROLL_DURATION, 1);
-        const y = scrollFromRef.current + (scrollToRef.current - scrollFromRef.current) * liquidEase(t);
+        const t = Math.min(elapsed / segmentDurationRef.current, 1);
+        const y = scrollFromRef.current + (scrollToRef.current - scrollFromRef.current) * momentumEase(t);
 
         if (innerRef.current) {
           innerRef.current.style.transform = `translateY(-${y}px)`;
@@ -208,13 +266,14 @@ export function CoverScroll({
 
         if (t >= 1) {
           phaseRef.current = "pausing";
+          pauseElapsedRef.current = 0;
           phaseStartRef.current = now;
         }
       } else if (phase === "pausing") {
-        pauseElapsed += dt;
+        pauseElapsedRef.current += dt;
 
-        if (pauseElapsed >= PAUSE_DURATION) {
-          pauseElapsed = 0;
+        if (pauseElapsedRef.current >= PAUSE_DURATION) {
+          pauseElapsedRef.current = 0;
           const next = sectionIndexRef.current + 1;
 
           if (next < sectionOffsets.length) {
@@ -222,6 +281,7 @@ export function CoverScroll({
             sectionIndexRef.current = next;
             scrollFromRef.current = scrollToRef.current;
             scrollToRef.current = sectionOffsets[next];
+            segmentDurationRef.current = scrollDuration(Math.abs(scrollToRef.current - scrollFromRef.current));
             phaseRef.current = "scrolling";
             phaseStartRef.current = now;
           } else {
@@ -236,8 +296,9 @@ export function CoverScroll({
             }
 
             phaseRef.current = "idle";
-            idleElapsed = 0;
-            initialized = false;
+            idleElapsedRef.current = 0;
+            initializedRef.current = false;
+            segmentDurationRef.current = 800;
             phaseStartRef.current = now;
           }
         }
@@ -253,16 +314,8 @@ export function CoverScroll({
         cancelAnimationFrame(rafRef.current);
         rafRef.current = null;
       }
-      // Reset state for clean re-entry
-      phaseRef.current = "idle";
-      sectionIndexRef.current = 0;
-      scrollFromRef.current = 0;
-      scrollToRef.current = 0;
-      idleElapsed = 0;
-      pauseElapsed = 0;
-      initialized = false;
     };
-  }, [autoScroll, hasEnteredViewport, prefersReducedMotion, totalScrollDistance, sections.length, sectionOffsets]);
+  }, [autoScroll, hasEnteredViewport, measurementsReady, motionPaused, prefersReducedMotion, sectionOffsets, sections.length, totalScrollDistance]);
 
   // ── Scrollbar styles (manual mode only) ──
   const scrollBarStyles = `
@@ -310,10 +363,20 @@ export function CoverScroll({
                   !autoScroll && "cover-scroll-frame overflow-y-auto overflow-x-hidden",
                 )}
                 style={{ aspectRatio: "16 / 10" }}
+                onMouseEnter={() => autoScroll && setIsHovered(true)}
+                onMouseLeave={() => autoScroll && setIsHovered(false)}
                 role="group"
                 aria-label={autoScroll ? `${alt} preview` : `${alt} preview — scroll to explore`}
               >
                 {frameContent}
+                {autoScroll && (
+                  <AnimationPauseButton
+                    isPaused={isPaused}
+                    onToggle={() => setIsPaused((paused) => !paused)}
+                    label="cover preview animation"
+                    className="absolute bottom-3 right-3 z-20"
+                  />
+                )}
               </div>
             </div>
             <div className="mx-auto mt-[-1px] h-[10px] w-[55%] rounded-b-[6px] bg-[#e8e8e8] shadow-[0_2px_4px_rgba(21,21,21,0.06)]" />
@@ -330,10 +393,20 @@ export function CoverScroll({
               !autoScroll && "cover-scroll-frame overflow-y-auto overflow-x-hidden",
             )}
             style={{ aspectRatio: "16 / 10" }}
+            onMouseEnter={() => autoScroll && setIsHovered(true)}
+            onMouseLeave={() => autoScroll && setIsHovered(false)}
             role="group"
             aria-label={autoScroll ? `${alt} preview` : `${alt} preview — scroll to explore`}
           >
             {frameContent}
+            {autoScroll && (
+              <AnimationPauseButton
+                isPaused={isPaused}
+                onToggle={() => setIsPaused((paused) => !paused)}
+                label="cover preview animation"
+                className="absolute bottom-3 right-3 z-20"
+              />
+            )}
           </div>
         )}
       </div>

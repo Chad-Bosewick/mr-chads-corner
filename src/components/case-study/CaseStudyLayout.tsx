@@ -15,6 +15,9 @@ import { ExecutiveSummary } from "@/components/case-study/ExecutiveSummary";
 import { CaseStudyNav } from "@/components/case-study/CaseStudyNav";
 import { CoverScroll } from "@/components/case-study/CoverScroll";
 import { CarouselSection } from "@/components/case-study/CarouselSection";
+import { CarouselImage } from "@/components/case-study/CarouselImage";
+import { PhoneMockupSection } from "@/components/case-study/PhoneMockupSection";
+import { ThreejsDeviceSection } from "@/components/case-study/ThreejsDeviceSection";
 import { PageShell, ReadingColumn } from "@/components/layout/PageShell";
 import type { CaseStudy, ContentSection as ContentSectionType } from "@/content/case-studies";
 import type { Project } from "@/content/projects";
@@ -68,7 +71,7 @@ function sectionSpacingClass(
   }
   // Image/carousel following its parent text → tighter
   if (
-    (section.type === "image-pair" || section.type === "carousel" || section.type === "full-image") &&
+    (section.type === "image-pair" || section.type === "carousel" || section.type === "full-image" || section.type === "phone-mockup" || section.type === "device-showcase") &&
     prevSection?.type === "text"
   ) {
     return "mt-6 md:mt-8";
@@ -119,10 +122,12 @@ function OutcomeList({
   items,
   heading,
   id,
+  body,
 }: {
   items: { label: string; description: string }[];
   heading?: string;
   id?: string;
+  body?: string;
 }) {
   return (
     <SectionReveal>
@@ -131,6 +136,11 @@ function OutcomeList({
           <h2 className="mb-6 font-sans text-[clamp(1.25rem,3vw,1.5rem)] font-medium text-[#151515]">
             {heading}
           </h2>
+        )}
+        {body && (
+          <div className="mb-8 font-sans text-[clamp(0.875rem,2vw,1rem)] leading-relaxed text-[#151515]/70">
+            <p dangerouslySetInnerHTML={{ __html: body }} />
+          </div>
         )}
         <ul className="space-y-4">
           {items.map((item) => (
@@ -184,16 +194,23 @@ function renderSection(
       );
     case "full-image": {
       const isFullBleed = section.width === "full-bleed";
-      const pair = (
-        <ImagePair
-          heading={section.heading}
-          images={section.images || []}
-        />
+      const content = (
+        <>
+          {section.body && (
+            <div className="mb-6 font-sans text-[clamp(0.875rem,2vw,1rem)] leading-relaxed text-[#151515]/70">
+              <p dangerouslySetInnerHTML={{ __html: section.body }} />
+            </div>
+          )}
+          <ImagePair
+            heading={section.heading}
+            images={section.images || []}
+          />
+        </>
       );
       return isFullBleed ? (
-        <div key={index} className={spacing}>{pair}</div>
+        <div key={index} className={spacing}>{content}</div>
       ) : (
-        <ReadingColumn key={index} className={spacing}>{pair}</ReadingColumn>
+        <ReadingColumn key={index} className={spacing}>{content}</ReadingColumn>
       );
     }
     case "carousel":
@@ -201,12 +218,33 @@ function renderSection(
         <ReadingColumn key={index} className={spacing}>
           <CarouselSection
             heading={section.heading}
+            body={section.body}
             slides={section.images || []}
             aspectRatio={section.carouselAspectRatio}
             background={section.carouselBackground}
           />
         </ReadingColumn>
       );
+    case "phone-mockup":
+      return (
+        <ReadingColumn key={index} className={spacing}>
+          <PhoneMockupSection
+            heading={section.heading}
+            body={section.body}
+            images={section.phoneMockupImages || []}
+          />
+        </ReadingColumn>
+      );
+    case "device-showcase":
+      return section.deviceAssets ? (
+        <ReadingColumn key={index} className={spacing}>
+          <ThreejsDeviceSection
+            heading={section.heading}
+            body={section.body}
+            deviceAssets={section.deviceAssets}
+          />
+        </ReadingColumn>
+      ) : null;
     case "metrics":
       return (
         <ReadingColumn key={index} className={spacing}>
@@ -326,6 +364,7 @@ function renderSection(
             items={section.outcomeBullets || []}
             heading={section.heading}
             id={id}
+            body={section.body}
           />
         </ReadingColumn>
       );
@@ -353,7 +392,7 @@ export function CaseStudyLayout({
       <article>
         {/* Nav + header side-by-side on desktop, stacked on mobile */}
         {/* Compact section navigation below the desktop-sidebar breakpoint */}
-        <div className="sticky top-0 z-30 -mx-5 mb-10 sm:-mx-6 xl:hidden">
+        <div className="sticky top-[88px] md:top-[60px] z-30 -mx-5 -mt-12 mb-10 sm:-mx-6 md:-mt-16 lg:-mt-24 xl:hidden">
           <CaseStudyNav items={navItems} variant="mobile" />
         </div>
 
@@ -418,7 +457,15 @@ export function CaseStudyLayout({
             </ReadingColumn>
 
             {/* Hero — full width */}
-            {caseStudy.coverScroll ? (
+            {caseStudy.heroCarousel?.length ? (
+              <ReadingColumn className="mt-8 md:mt-12">
+                <CarouselImage
+                  slides={caseStudy.heroCarousel}
+                  aspectRatio={8 / 5}
+                  background={caseStudy.heroCarouselBackground ?? "#f5f2ee"}
+                />
+              </ReadingColumn>
+            ) : caseStudy.coverScroll?.src ? (
               <ReadingColumn className="mt-6">
                 <CoverScroll
                   src={caseStudy.coverScroll.src}

@@ -10,7 +10,7 @@
   --color-text-on-dark: #FFFFFF;
 
   /* Typography (desktop sizes, mobile overrides use clamp) */
-  --font-sans: "Plus Jakarta Sans", sans-serif;
+  --font-sans: "Inter", sans-serif;
   --font-serif: "Lora", serif;
 
   /* Spacing scale */
@@ -54,6 +54,7 @@ html {
 body {
   color: var(--color-text-primary);
   font-family: var(--font-sans);
+  font-synthesis: none;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: clip;
@@ -120,16 +121,6 @@ body {
 @keyframes fade-in-up {
   from { opacity: 0; transform: translateY(8px); }
   to { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes device-float {
-  0%, 100% { transform: translate3d(0, 0, 0); }
-  50% { transform: translate3d(0, -3px, 0); }
-}
-
-@keyframes device-float-secondary {
-  0%, 100% { transform: translate3d(0, 0, 0); }
-  50% { transform: translate3d(0, -2px, 0); }
 }
 
 /* Motion-controlled animation utilities */

@@ -1,7 +1,7 @@
 # Team Handoff Log — UI-003 Left-Aligned Dual-Phone Bezel
 
 Date: 2026-07-26  
-Status: Implemented; automated validation passed; fresh visual confirmation pending
+Status: Implemented; automated validation passed; owner visual confirmation passed (5/5 states)
 
 ## Team context
 
@@ -96,9 +96,19 @@ Without those props, the second phone asset cannot render on either project list
 - Type validation during build: passed
 - Static generation: 13/13 pages passed
 
-## Visual acceptance still required
+## Visual acceptance — COMPLETE ✅
 
-A fresh localhost screenshot could not be captured from the Codex browser session because no browser instance was available. The code and build are valid, but this task should remain visually pending until the Owner or Claude Code reviews a new desktop render.
+Owner visual confirmation completed 2026-07-27. All 5 states verified via Playwright screenshots:
+
+| State | Result |
+|---|---|
+| Desktop default | ✓ Two overlapping phones, front left-anchored, back offset right and down, ~25px overlap |
+| Desktop hover | ✓ Phones spread apart with ~16px gap, ring border visible, slight scale-down |
+| Desktop after-hover | ✓ Smooth return to default overlapping composition |
+| Desktop keyboard focus | ✓ Same spread as hover — keyboard parity confirmed |
+| Mobile (375px) | ✓ Single phone only, no dual-phone composition |
+
+**Verdict: PASS — all 9 acceptance criteria satisfied (6 desktop + 3 mobile).**
 
 Desktop acceptance criteria:
 

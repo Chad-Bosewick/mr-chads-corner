@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback, useRef } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { NavMobile } from "./NavMobile";
@@ -17,13 +18,25 @@ const NAV_ITEMS = [
 export function Nav() {
   const pathname = usePathname();
   const [isMobileOpen, setIsMobileOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
   const hamburgerRef = useRef<HTMLButtonElement>(null);
   const lastActiveElement = useRef<Element | null>(null);
+  const sentinelRef = useRef<HTMLDivElement>(null);
 
   // Close mobile menu on route change
   useEffect(() => {
     setIsMobileOpen(false);
   }, [pathname]);
+
+  useEffect(() => {
+    const sentinel = sentinelRef.current;
+    if (!sentinel) return;
+    const observer = new IntersectionObserver(([entry]) => {
+      setIsScrolled(!entry.isIntersecting);
+    });
+    observer.observe(sentinel);
+    return () => observer.disconnect();
+  }, []);
 
   // Save and restore focus when menu opens/closes
   useEffect(() => {
@@ -52,15 +65,34 @@ export function Nav() {
 
   return (
     <>
+      <div ref={sentinelRef} className="-mb-px h-px" aria-hidden="true" />
       <nav
-        className="relative z-10 pt-10"
+        className={cn(
+          "sticky top-0 z-40 pt-10 transition-[background-color,border-color] duration-[var(--duration-standard)] ease-[var(--ease-out)]",
+          isScrolled && "border-b border-[#151515]/10 bg-[#f5f2ee]/80 backdrop-blur-md",
+        )}
         aria-label="Main navigation"
       >
-        <ContentRail className="flex items-center justify-end">
+        <ContentRail className="flex items-center justify-between">
+          <Link
+            href="/"
+            className="-m-1 rounded-lg p-1 transition-opacity duration-[var(--duration-fast)] ease-[var(--ease-out)] hover:opacity-80 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#A43718]"
+            aria-label="Temi Adekunle — home"
+          >
+            <Image
+              src="/images/social/mr chad.png"
+              alt=""
+              width={20}
+              height={20}
+              priority
+              className="size-5 rounded object-cover"
+            />
+          </Link>
+
           {/* Desktop navigation */}
           <ul className="hidden items-center gap-8 md:flex">
             {NAV_ITEMS.map((item) => {
-              const isActive = pathname === item.href;
+              const isActive = pathname === item.href || (item.href !== "/" && pathname.startsWith(item.href));
               return (
                 <li key={item.href}>
                   <Link
@@ -92,7 +124,7 @@ export function Nav() {
           {/* Mobile hamburger — minimum 44x44 hit area */}
           <button
             ref={hamburgerRef}
-            className="flex items-center justify-center p-3 md:hidden"
+            className="-mr-3 flex items-center justify-center p-3 md:hidden"
             onClick={openMenu}
             aria-label="Open navigation menu"
             aria-expanded={isMobileOpen}

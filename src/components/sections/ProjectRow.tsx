@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { DeviceMockup } from "@/components/ui/DeviceMockup";
 import { CoverScroll } from "@/components/case-study/CoverScroll";
@@ -18,6 +19,7 @@ interface ProjectRowProps {
     alt: string;
     sections?: { label: string; start: number }[];
   };
+  annotationSet?: "todo-device";
   status: "published" | "coming-soon";
   device: "laptop" | "phone" | "dual-phone";
   delay?: number;
@@ -31,11 +33,15 @@ export function ProjectRow({
   coverSrc,
   coverSrcSecondary,
   coverScroll,
+  annotationSet,
   status,
   device,
   delay = 0,
 }: ProjectRowProps) {
   const isPlaceholder = status === "coming-soon";
+  const supportsCardInteraction =
+    !isPlaceholder && (device === "dual-phone" || annotationSet !== undefined);
+  const [isCardInteractionActive, setIsCardInteractionActive] = useState(false);
 
   const row = (
     <div
@@ -61,6 +67,8 @@ export function ProjectRow({
           alt={`${title} project cover`}
           altSecondary={device === "dual-phone" ? `${title} supporting screen` : undefined}
           placeholder={isPlaceholder}
+          annotationSet={annotationSet}
+          isInteractionActive={supportsCardInteraction && isCardInteractionActive}
           className={cn(
             "transition-transform duration-[var(--duration-slow)] ease-[var(--ease-out)]",
             !isPlaceholder && "group-hover:-translate-y-[2px]"
@@ -124,6 +132,10 @@ export function ProjectRow({
       <Link
         href={`/featured-case-studies/${slug}`}
         className="block py-8 transition-opacity md:py-12"
+        onMouseEnter={() => supportsCardInteraction && setIsCardInteractionActive(true)}
+        onMouseLeave={() => supportsCardInteraction && setIsCardInteractionActive(false)}
+        onFocus={() => supportsCardInteraction && setIsCardInteractionActive(true)}
+        onBlur={() => supportsCardInteraction && setIsCardInteractionActive(false)}
       >
         {row}
       </Link>

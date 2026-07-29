@@ -4,14 +4,18 @@ import { useState, useCallback, useRef, useEffect } from "react";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
+import { TodoCaseStudySlide, type TodoSlidePresentation } from "@/components/case-study/TodoCaseStudySlide";
 
-interface CarouselSlide {
+export interface CarouselSlide {
   src: string;
   alt: string;
   caption?: string;
   width?: number;
   height?: number;
   scroll?: boolean;
+  presentation?: TodoSlidePresentation;
+  secondarySrc?: string;
+  secondaryAlt?: string;
 }
 
 interface CarouselImageProps {
@@ -23,6 +27,8 @@ interface CarouselImageProps {
   aspectRatio?: number;
   /** Optional carousel transition surface, matched to the source artwork's edge colour. */
   background?: string;
+  maxWidthClass?: string;
+  presentation?: "standard" | "hero";
 }
 
 const FRAME_WIDTH = 680;
@@ -44,6 +50,8 @@ export function CarouselImage({
   autoAdvanceMs,
   aspectRatio = FRAME_WIDTH / FRAME_HEIGHT,
   background = "#f0f0f0",
+  maxWidthClass = "max-w-[680px]",
+  presentation = "standard",
 }: CarouselImageProps) {
   const [activeIndex, setActiveIndex] = useState(0);
   const [direction, setDirection] = useState<"next" | "prev">("next");
@@ -152,10 +160,9 @@ export function CarouselImage({
       <div
         ref={frameRef}
         className={cn(
-          "relative w-full max-w-[680px] overflow-hidden",
-          "rounded-xl shadow-[0_8px_30px_rgba(21,21,21,0.08)]",
-          "transition-shadow duration-[var(--duration-standard)] ease-[var(--ease-out)]",
-          "hover:shadow-[0_12px_40px_rgba(21,21,21,0.12)] motion-reduce:duration-0",
+          "relative w-full overflow-hidden",
+          maxWidthClass,
+          presentation === "standard" && "rounded-xl shadow-[0_8px_30px_rgba(21,21,21,0.08)] transition-shadow duration-[var(--duration-standard)] ease-[var(--ease-out)] hover:shadow-[0_12px_40px_rgba(21,21,21,0.12)] motion-reduce:duration-0",
         )}
         style={{ aspectRatio: String(aspectRatio), backgroundColor: background }}
         onKeyDown={handleKeyDown}
@@ -195,7 +202,17 @@ export function CarouselImage({
               aria-label={`Slide ${i + 1} of ${slides.length}: ${slide.alt}`}
               aria-hidden={i !== activeIndex}
             >
-              {isScrollable ? (
+              {slide.presentation ? (
+                <TodoCaseStudySlide
+                  presentation={slide.presentation}
+                  src={slide.src}
+                  alt={slide.alt}
+                  width={slide.width}
+                  height={slide.height}
+                  secondarySrc={slide.secondarySrc}
+                  secondaryAlt={slide.secondaryAlt}
+                />
+              ) : isScrollable ? (
                 <Image
                   src={slide.src}
                   alt={slide.alt}
@@ -222,7 +239,7 @@ export function CarouselImage({
 
       {slides[activeIndex]?.caption && (
         <p
-          className="mt-3 w-full max-w-[680px] font-sans text-sm leading-relaxed text-[#151515]/70"
+          className={cn("mt-3 w-full font-sans text-sm leading-relaxed text-[#151515]/70", maxWidthClass)}
           aria-live="polite"
         >
           {slides[activeIndex].caption}

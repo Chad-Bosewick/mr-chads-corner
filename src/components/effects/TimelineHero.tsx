@@ -4,6 +4,7 @@ import { AnimatePresence, motion } from "motion/react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { getTimelineMarkerPositions, TIMELINE_MILESTONES } from "@/content/timeline";
 import { useTimelineHero } from "@/hooks/useTimelineHero";
+import { AnimationPauseButton } from "@/components/ui/AnimationPauseButton";
 
 /* ── Constants ────────────────────────────────────────────────── */
 
@@ -18,8 +19,9 @@ export function TimelineHero({ animate = true }: { animate?: boolean }) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const wrapperRef = useRef<HTMLDivElement | null>(null);
   const [width, setWidth] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
 
-  const activeIndex = useTimelineHero(canvasRef, animate);
+  const activeIndex = useTimelineHero(canvasRef, animate, isPaused);
 
   /* Track width changes for marker positions — guarded to avoid unnecessary re-renders */
   useEffect(() => {
@@ -80,9 +82,23 @@ export function TimelineHero({ animate = true }: { animate?: boolean }) {
       className="relative mt-2 select-none pt-[76px] md:pt-[80px]"
       style={{ touchAction: "manipulation" }}
       role="group"
-      aria-label="Career timeline with auto-play milestones"
+      aria-label="Career timeline"
     >
       <canvas ref={canvasRef} data-timeline="true" className="block h-[90px] w-full md:h-[120px] bg-[#f5f2ee] will-change-transform" aria-hidden="true" />
+      <ul className="sr-only">
+        {TIMELINE_MILESTONES.map((milestone) => (
+          <li key={milestone.id}>{milestone.year}: {milestone.note}</li>
+        ))}
+      </ul>
+
+      {animate && (
+        <AnimationPauseButton
+          isPaused={isPaused}
+          onToggle={() => setIsPaused((paused) => !paused)}
+          label="timeline animation"
+          className="absolute bottom-3 right-3 z-30"
+        />
+      )}
 
       {/* ── Tooltip ── */}
       <AnimatePresence mode="wait" initial={false}>

@@ -1,8 +1,10 @@
 import { HeroHeading } from "@/components/sections/HeroHeading";
 import { SectionReveal } from "@/components/sections/SectionReveal";
 import { ProjectRow } from "@/components/sections/ProjectRow";
+import { UIScrollStrip } from "@/components/sections/UIScrollStrip";
 import { PageShell } from "@/components/layout/PageShell";
 import { projects } from "@/content/projects";
+import { uiComponents } from "@/content/ui-components";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -33,12 +35,16 @@ export default function CaseStudiesPage() {
               hook={project.hook}
               coverSrc={project.coverSrc}
               coverSrcSecondary={project.coverSrcSecondary}
+              coverScroll={project.coverScroll}
+              annotationSet={project.annotationSet}
               status={project.status}
               device={project.device}
               delay={index * 100}
             />
           ))}
       </div>
+
+      <UIScrollStrip cards={uiComponents} />
     </PageShell>
   );
 }

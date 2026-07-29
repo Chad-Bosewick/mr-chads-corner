@@ -1,10 +1,118 @@
 "use client";
 
-import type { CSSProperties } from "react";
 import Image from "next/image";
+import { motion } from "motion/react";
 import { cn } from "@/lib/utils";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
+
+function TodoDeviceAnnotations({ isVisible }: { isVisible: boolean }) {
+  const pathTransition = (delay: number) => ({
+    duration: 0.28,
+    delay: isVisible ? delay : 0,
+    ease: "easeOut" as const,
+  });
+  const labelTransition = (delay: number) => ({
+    duration: 0.2,
+    delay: isVisible ? delay + 0.08 : 0,
+    ease: "easeOut" as const,
+  });
+
+  return (
+    <div className="pointer-events-none absolute inset-0 z-20 hidden md:block" aria-hidden="true">
+      <svg
+        className="absolute inset-0 h-full w-full"
+        viewBox="0 0 480 300"
+        preserveAspectRatio="none"
+        fill="none"
+      >
+        <motion.path
+          d="M78 66H142L205 87"
+          stroke="rgba(21,21,21,0.3)"
+          strokeWidth="1"
+          initial={{ opacity: 0, pathLength: 0 }}
+          animate={{ opacity: isVisible ? 1 : 0, pathLength: isVisible ? 1 : 0 }}
+          transition={pathTransition(0)}
+        />
+        <motion.path
+          d="M82 177H148L202 166"
+          stroke="rgba(21,21,21,0.3)"
+          strokeWidth="1"
+          initial={{ opacity: 0, pathLength: 0 }}
+          animate={{ opacity: isVisible ? 1 : 0, pathLength: isVisible ? 1 : 0 }}
+          transition={pathTransition(0.06)}
+        />
+        <motion.path
+          d="M406 145H344L295 168"
+          stroke="rgba(21,21,21,0.3)"
+          strokeWidth="1"
+          initial={{ opacity: 0, pathLength: 0 }}
+          animate={{ opacity: isVisible ? 1 : 0, pathLength: isVisible ? 1 : 0 }}
+          transition={pathTransition(0.12)}
+        />
+        <motion.path
+          d="M400 244H324L240 254"
+          stroke="rgba(21,21,21,0.3)"
+          strokeWidth="1"
+          initial={{ opacity: 0, pathLength: 0 }}
+          animate={{ opacity: isVisible ? 1 : 0, pathLength: isVisible ? 1 : 0 }}
+          transition={pathTransition(0.18)}
+        />
+        {[
+          [205, 87],
+          [202, 166],
+          [295, 168],
+          [240, 254],
+        ].map(([cx, cy], index) => (
+          <motion.circle
+            key={`${cx}-${cy}`}
+            cx={cx}
+            cy={cy}
+            r="2.5"
+            fill="#A43718"
+            initial={{ opacity: 0, scale: 0.4 }}
+            animate={{ opacity: isVisible ? 1 : 0, scale: isVisible ? 1 : 0.4 }}
+            transition={labelTransition(index * 0.06)}
+            style={{ transformOrigin: `${cx}px ${cy}px` }}
+          />
+        ))}
+      </svg>
+
+      <motion.span
+        className="absolute left-3 top-[18%] font-sans text-[9px] font-medium uppercase tracking-[0.12em] text-[#151515]/70"
+        initial={{ opacity: 0, x: -5 }}
+        animate={{ opacity: isVisible ? 1 : 0, x: isVisible ? 0 : -5 }}
+        transition={labelTransition(0)}
+      >
+        E-paper task display
+      </motion.span>
+      <motion.span
+        className="absolute left-3 top-[55%] font-sans text-[9px] font-medium uppercase tracking-[0.12em] text-[#151515]/70"
+        initial={{ opacity: 0, x: -5 }}
+        animate={{ opacity: isVisible ? 1 : 0, x: isVisible ? 0 : -5 }}
+        transition={labelTransition(0.06)}
+      >
+        Screen control keys
+      </motion.span>
+      <motion.span
+        className="absolute right-3 top-[44%] text-right font-sans text-[9px] font-medium uppercase tracking-[0.12em] text-[#151515]/70"
+        initial={{ opacity: 0, x: 5 }}
+        animate={{ opacity: isVisible ? 1 : 0, x: isVisible ? 0 : 5 }}
+        transition={labelTransition(0.12)}
+      >
+        AI emoji display
+      </motion.span>
+      <motion.span
+        className="absolute bottom-[13%] right-3 text-right font-sans text-[9px] font-medium uppercase tracking-[0.12em] text-[#151515]/70"
+        initial={{ opacity: 0, x: 5 }}
+        animate={{ opacity: isVisible ? 1 : 0, x: isVisible ? 0 : 5 }}
+        transition={labelTransition(0.18)}
+      >
+        Push to speak
+      </motion.span>
+    </div>
+  );
+}
 
 interface DeviceMockupProps {
   type: "laptop" | "phone" | "dual-phone";
@@ -13,6 +121,10 @@ interface DeviceMockupProps {
   alt: string;
   altSecondary?: string;
   className?: string;
+  /** Whether the parent project card is hovered or keyboard-focused. */
+  isInteractionActive?: boolean;
+  /** Optional informational overlay for a device-specific editorial treatment. */
+  annotationSet?: "todo-device";
   /** Whether this entry is coming-soon (adds placeholder overlay) */
   placeholder?: boolean;
 }
@@ -24,6 +136,8 @@ export function DeviceMockup({
   alt,
   altSecondary,
   className,
+  isInteractionActive = false,
+  annotationSet,
   placeholder = false,
 }: DeviceMockupProps) {
   const isLaptop = type === "laptop";
@@ -49,20 +163,23 @@ export function DeviceMockup({
   const frameShadowClass =
     "shadow-[0_8px_30px_rgba(21,21,21,0.12)] transition-[box-shadow] duration-[320ms] ease-[var(--ease-fluid)] group-hover:shadow-[0_12px_38px_rgba(21,21,21,0.18)]";
 
+  const showTodoAnnotations =
+    annotationSet === "todo-device" && isInteractionActive && !prefersReducedMotion;
+
   const renderPhoneShell = ({
     imageSrc,
     imageAlt,
     className: shellClassName,
     sizes = "(max-width: 768px) 100vw, 220px",
-    style,
+    disableImageHoverScale = false,
   }: {
     imageSrc?: string;
     imageAlt: string;
     className?: string;
     sizes?: string;
-    style?: CSSProperties;
+    disableImageHoverScale?: boolean;
   }) => (
-    <div className={shellClassName} style={style}>
+    <div className={shellClassName}>
       <div
         className={cn(
           "relative overflow-hidden rounded-[22px] bg-[#1a1a1a] p-[1.5px]",
@@ -78,7 +195,7 @@ export function DeviceMockup({
               fill
               className={cn(
                 "object-cover transition-transform duration-[var(--duration-slow)] ease-[var(--ease-out)]",
-                !placeholder && "group-hover:scale-105",
+                !placeholder && !disableImageHoverScale && "group-hover:scale-105",
               )}
               sizes={sizes}
             />
@@ -97,15 +214,47 @@ export function DeviceMockup({
     "absolute left-0 top-0 z-10 w-[240px]",
     "transition-[transform,opacity] duration-[900ms] ease-[var(--ease-out)]",
     isVisible || prefersReducedMotion ? "translate-y-0 opacity-100" : "translate-y-6 opacity-0",
-    !prefersReducedMotion && "group-hover:[animation-play-state:paused]",
   );
 
   const backPhoneClass = cn(
     "absolute right-0 top-12 z-0 w-[225px]",
     "transition-[transform,opacity] duration-[900ms] ease-[var(--ease-out)]",
     isVisible || prefersReducedMotion ? "translate-y-0 opacity-100" : "translate-y-6 opacity-0",
-    !prefersReducedMotion && "group-hover:[animation-play-state:paused]",
   );
+
+  const dualPhoneIsActive = isInteractionActive && !prefersReducedMotion;
+  const dualPhoneMotion = (direction: "front" | "back") => ({
+    animate: dualPhoneIsActive
+      ? {
+          // 212px-wide frames + a 16px gap fill the 440px stage exactly.
+          // The scale ratios normalize the original 240px and 225px bezels.
+          x: 0,
+          y: direction === "front" ? 0 : -48,
+          scale: direction === "front" ? 212 / 240 : 212 / 225,
+        }
+      : {
+          x: 0,
+          y: prefersReducedMotion
+            ? 0
+            : direction === "front"
+              ? [0, -3, 0]
+              : [0, -2, 0],
+          scale: 1,
+        },
+    transition: dualPhoneIsActive || prefersReducedMotion
+      ? { type: "spring" as const, duration: 0.38, bounce: 0 }
+      : {
+          x: { type: "spring" as const, duration: 0.38, bounce: 0 },
+          scale: { type: "spring" as const, duration: 0.38, bounce: 0 },
+          y: {
+            duration: direction === "front" ? 6 : 6.4,
+            ease: "easeInOut" as const,
+            repeat: Infinity,
+            repeatType: "mirror" as const,
+            delay: direction === "back" ? 0.15 : 0,
+          },
+        },
+  });
 
   return (
     <div className={cn("relative select-none", className)}>
@@ -135,6 +284,9 @@ export function DeviceMockup({
               {placeholder && (
                 <div className="absolute inset-0 bg-gradient-to-b from-[#151515]/5 to-[#151515]/20" />
               )}
+              {annotationSet === "todo-device" && (
+                <TodoDeviceAnnotations isVisible={showTodoAnnotations} />
+              )}
             </div>
           </div>
           <div className="mx-auto mt-[-1px] h-[10px] w-[55%] rounded-b-[6px] bg-[#e8e8e8] shadow-[0_2px_4px_rgba(21,21,21,0.06)]" />
@@ -152,31 +304,38 @@ export function DeviceMockup({
           </div>
 
           <div className="relative hidden h-[540px] w-full max-w-[440px] md:block">
-            {renderPhoneShell({
-              imageSrc: srcSecondary,
-              imageAlt: altSecondary ?? `${alt} secondary`,
-              className: backPhoneClass,
-              sizes: "(max-width: 1024px) 210px, 225px",
-              style: prefersReducedMotion
-                ? { transitionDelay: "150ms" }
-                : {
-                    animation: "device-float-secondary 6.4s ease-in-out 150ms infinite",
-                    animationPlayState: "running",
-                    transitionDelay: "150ms",
-                  },
-            })}
-            {renderPhoneShell({
-              imageSrc: src,
-              imageAlt: alt,
-              className: frontPhoneClass,
-              sizes: "(max-width: 1024px) 220px, 240px",
-              style: prefersReducedMotion
-                ? undefined
-                : {
-                    animation: "device-float 6s ease-in-out infinite",
-                    animationPlayState: "running",
-                  },
-            })}
+            <div className={backPhoneClass} style={{ transitionDelay: "150ms" }}>
+              <motion.div
+                initial={false}
+                className="w-full will-change-transform"
+                style={{ transformOrigin: "right top" }}
+                {...dualPhoneMotion("back")}
+              >
+                {renderPhoneShell({
+                  imageSrc: srcSecondary,
+                  imageAlt: altSecondary ?? `${alt} secondary`,
+                  className: "w-full",
+                  sizes: "(max-width: 1024px) 210px, 225px",
+                  disableImageHoverScale: true,
+                })}
+              </motion.div>
+            </div>
+            <div className={frontPhoneClass}>
+              <motion.div
+                initial={false}
+                className="w-full will-change-transform"
+                style={{ transformOrigin: "left top" }}
+                {...dualPhoneMotion("front")}
+              >
+                {renderPhoneShell({
+                  imageSrc: src,
+                  imageAlt: alt,
+                  className: "w-full",
+                  sizes: "(max-width: 1024px) 220px, 240px",
+                  disableImageHoverScale: true,
+                })}
+              </motion.div>
+            </div>
           </div>
         </div>
       ) : (

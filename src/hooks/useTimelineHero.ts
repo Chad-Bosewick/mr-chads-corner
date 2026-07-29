@@ -332,6 +332,7 @@ function draw(canvas: HTMLCanvasElement, state: TimelineState) {
 export function useTimelineHero(
   canvasRef: RefObject<HTMLCanvasElement | null>,
   animate?: boolean,
+  isPaused = false,
 ): number | null {
   const prefersReducedMotion = useReducedMotion();
   const stateRef = useRef<TimelineState>({
@@ -397,10 +398,13 @@ export function useTimelineHero(
     const resizeObserver = new ResizeObserver(() => setup(canvas));
     resizeObserver.observe(canvas.parentElement!);
 
-    /* Only start the RAF loop when animate becomes true */
-    if (animate && !prefersReducedMotion) {
+    /* Only start the RAF loop when motion is allowed and not visitor-paused. */
+    if (animate && !prefersReducedMotion && !isPaused) {
       state.lastFrame = performance.now();
-      state.activeIndex = 0;
+      if (state.activeIndex === null) {
+        state.activeIndex = 0;
+        setActiveIndex(0);
+      }
 
       function tick(ts: number) {
         if (disposed) return;
@@ -434,7 +438,7 @@ export function useTimelineHero(
       cancelAnimationFrame(state.rafId);
       resizeObserver?.disconnect();
     };
-  }, [canvasRef, prefersReducedMotion, animate]);
+  }, [canvasRef, prefersReducedMotion, animate, isPaused]);
 
   return activeIndex;
 }

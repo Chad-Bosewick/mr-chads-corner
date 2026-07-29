@@ -11,6 +11,7 @@ export interface Project {
     alt: string;
     sections?: { label: string; start: number }[];
   };
+  annotationSet?: "todo-device";
   status: "published" | "coming-soon";
   device: "laptop" | "phone" | "dual-phone";
 }
@@ -48,6 +49,7 @@ export const projects: Project[] = [
     description:
       "Redesigning a task management tool from feature-heavy checklist into an intelligent, adaptive workflow system — reducing cognitive load while preserving power-user capabilities.",
     coverSrc: "/images/case-studies/todo-app-device.webp",
+    annotationSet: "todo-device",
     status: "published",
     device: "laptop",
   },

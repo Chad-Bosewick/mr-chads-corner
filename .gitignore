@@ -59,3 +59,4 @@ tsconfig.tsbuildinfo
 
 # Figma source deliverables
 outputs/
+.gstack/

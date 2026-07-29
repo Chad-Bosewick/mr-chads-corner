@@ -29,6 +29,7 @@ export function ImagePair({ heading, images }: ImagePairProps) {
                 alt={img.alt}
                 aspectRatio="auto"
                 sizes="(max-width: 768px) 100vw, 680px"
+                containerClassName="rounded-xl shadow-[0_8px_30px_rgba(21,21,21,0.08)] transition-shadow duration-[var(--duration-standard)] ease-[var(--ease-out)] hover:shadow-[0_12px_40px_rgba(21,21,21,0.12)]"
                 {...(img.width && img.height ? { width: img.width, height: img.height } : {})}
               />
               {img.caption && (

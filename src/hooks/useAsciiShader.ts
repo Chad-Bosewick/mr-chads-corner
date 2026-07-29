@@ -392,6 +392,7 @@ function draw(
 
 export function useAsciiShader(
   canvasRef: RefObject<HTMLCanvasElement | null>,
+  isPaused = false,
 ) {
   const prefersReducedMotion = useReducedMotion();
   const stateRef = useRef<ShaderState>({
@@ -441,7 +442,7 @@ export function useAsciiShader(
     resize();
     window.addEventListener("resize", resize);
 
-    if (!prefersReducedMotion) {
+    if (!prefersReducedMotion && !isPaused) {
       window.addEventListener("pointermove", handlePointerMove, {
         passive: true,
       });
@@ -458,5 +459,5 @@ export function useAsciiShader(
       window.removeEventListener("pointerleave", handlePointerLeave);
       window.cancelAnimationFrame(state.rafId);
     };
-  }, [canvasRef, prefersReducedMotion]);
+  }, [canvasRef, prefersReducedMotion, isPaused]);
 }

@@ -1,4 +1,7 @@
+"use client";
+
 import { ContentRail } from "./PageShell";
+import { useCallback } from "react";
 
 const QUOTE = "The best designs don't just work — they communicate.";
 
@@ -14,6 +17,16 @@ const SOCIAL_LINKS = [
 ];
 
 export function Footer() {
+  const scrollToTop = useCallback(() => {
+    const prefersReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+    window.scrollTo({
+      top: 0,
+      behavior: prefersReducedMotion ? "auto" : "smooth",
+    });
+  }, []);
+
   return (
     <footer
       className="relative z-10 bg-[#0F0F0F] py-16"
@@ -44,6 +57,28 @@ export function Footer() {
             ))}
           </ul>
         </nav>
+
+        <button
+          type="button"
+          onClick={scrollToTop}
+          className="mt-8 inline-flex items-center gap-2 font-sans text-[14px] text-white/70 transition-colors duration-[var(--duration-fast)] hover:text-[#A43718] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#A43718]"
+          aria-label="Back to top of page"
+        >
+          <svg
+            width="12"
+            height="12"
+            viewBox="0 0 12 12"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            aria-hidden="true"
+          >
+            <path d="M6 10.5V3M2.5 5.5 6 2l3.5 3.5" />
+          </svg>
+          Back to top
+        </button>
 
         <hr className="mt-16 border-white/10" />
 

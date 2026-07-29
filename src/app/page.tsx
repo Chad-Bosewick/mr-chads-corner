@@ -69,6 +69,7 @@ export default function HomePage() {
               coverSrc={project.coverSrc}
               coverSrcSecondary={project.coverSrcSecondary}
               coverScroll={project.coverScroll}
+              annotationSet={project.annotationSet}
               status={project.status}
               device={project.device}
               delay={index * 100}
