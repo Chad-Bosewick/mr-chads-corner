@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Temi Adekunle — CV</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    color: #151515;
+    background: #fff;
+    line-height: 1.5;
+    padding: 0;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  .page { width: 210mm; min-height: 297mm; padding: 48px 56px; margin: 0 auto; }
+  @page { margin: 0; size: A4; }
+
+  h1 { font-size: 28px; font-weight: 600; letter-spacing: -0.02em; color: #151515; }
+  .title { font-size: 16px; font-weight: 400; color: #6F6F6F; margin-top: 4px; }
+  .contact-bar {
+    display: flex; gap: 24px; margin-top: 12px;
+    font-size: 12px; color: #6F6F6F; flex-wrap: wrap;
+  }
+  .contact-bar a { color: #A43718; text-decoration: none; }
+  .contact-bar a:hover { text-decoration: underline; }
+
+  section { margin-top: 28px; }
+  h2 {
+    font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+    color: #A43718; border-bottom: 1.5px solid #151515; padding-bottom: 6px; margin-bottom: 14px;
+  }
+
+  .summary p { font-size: 13px; line-height: 1.6; color: #333; margin-bottom: 8px; }
+  .summary p:last-child { margin-bottom: 0; }
+
+  .experience { margin-bottom: 20px; }
+  .experience:last-child { margin-bottom: 0; }
+  .exp-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 2px; }
+  .exp-header h3 { font-size: 14px; font-weight: 600; color: #151515; }
+  .exp-header .company { color: #A43718; }
+  .exp-header .period { font-size: 12px; color: #6F6F6F; white-space: nowrap; margin-left: 12px; }
+  .exp-location { font-size: 12px; color: #6F6F6F; margin-bottom: 6px; }
+  .exp-context { font-size: 13px; line-height: 1.6; color: #333; margin-bottom: 6px; }
+  ul { list-style: none; padding: 0; }
+  ul li {
+    font-size: 13px; line-height: 1.5; color: #444;
+    padding-left: 14px; position: relative; margin-bottom: 3px;
+  }
+  ul li::before { content: "—"; position: absolute; left: 0; color: #A43718; }
+
+  .skills-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .skill-group h3 { font-size: 12px; font-weight: 600; color: #151515; margin-bottom: 4px; }
+  .skill-group p { font-size: 12px; line-height: 1.6; color: #555; }
+
+  .education-item { margin-bottom: 10px; }
+  .education-item:last-child { margin-bottom: 0; }
+  .education-item h3 { font-size: 14px; font-weight: 600; color: #151515; }
+  .education-item p { font-size: 13px; color: #6F6F6F; }
+
+  .aside-block {
+    margin-top: 24px; border-left: 2px solid #A43718; padding-left: 16px;
+  }
+  .aside-block .label {
+    font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #A43718; margin-bottom: 4px;
+  }
+  .aside-block p { font-size: 12px; line-height: 1.6; color: #555; }
+
+  @media print {
+    body { padding: 0; }
+    .page { padding: 48px 56px; width: auto; min-height: auto; }
+    section { page-break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+  <div class="page">
+    <header>
+      <h1>Temi Adekunle</h1>
+      <p class="title">Product Designer</p>
+      <div class="contact-bar">
+        <span>08106212289</span>
+        <span>Addtemi270@gmail.com</span>
+        <a href="https://www.linkedin.com/in/temidayoadekunle">LinkedIn</a>
+        <a href="https://dribbble.com/ChadBosewick27">Dribbble</a>
+      </div>
+    </header>
+
+    <section class="summary">
+      <h2>Professional Summary</h2>
+      <p>Product designer with a bias toward clarity, systems thinking, and work that holds up under scrutiny. Experience across early-stage startups and product teams, leading design for productivity tools, presentation platforms, and digital banking experiences.</p>
+      <p>Work spans the full product design spectrum — from user research and information architecture through to visual design, prototyping, and design-system architecture. Guided by the conviction that great products are built on clear thinking before polished pixels, and that the best design decisions make complex systems feel inevitable rather than clever.</p>
+      <p>Background in biochemistry — a discipline that instilled systems thinking, process rigor, and an understanding of the relationship between cause and effect. These principles carry through every design decision, from mapping a user journey to building a design-system component.</p>
+    </section>
+
+    <section>
+      <h2>Experience</h2>
+
+      <div class="experience">
+        <div class="exp-header">
+          <h3>Lead Designer / Product Operations Collaborator <span class="company">· Enviodeck</span></h3>
+          <span class="period">Mar 2026 — Present</span>
+        </div>
+        <p class="exp-location">Start-up environment</p>
+        <p class="exp-context">Leading design for a presentation platform, building the visual language and component system for a new product entering a competitive market.</p>
+        <ul>
+          <li>Designed 100+ screens spanning the editor, template library, collaboration features, and export pipeline</li>
+          <li>Built a 50+ component design system establishing the product's visual language, component hierarchy, and interaction patterns</li>
+          <li>Collaborating on product strategy, user research synthesis, and design operations workflows</li>
+        </ul>
+      </div>
+
+      <div class="experience">
+        <div class="exp-header">
+          <h3>Product Designer / Founder-Side Operator <span class="company">· Candidote</span></h3>
+          <span class="period">Aug 2025 — Mar 2026</span>
+        </div>
+        <p class="exp-location">Fully remote — 3-person team</p>
+        <p class="exp-context">Joined as the founding designer for a productivity-focused startup, owning the full product design lifecycle from research through implementation.</p>
+        <ul>
+          <li>Designed 80+ screens across the core product, covering onboarding, dashboard, workspace management, and settings flows</li>
+          <li>Built a 40+ component design system from scratch, establishing reusable patterns, variants, and documentation that enabled rapid iteration</li>
+          <li>Worked directly alongside the founder as the sole designer — defining product strategy, prioritising roadmap items, and shipping design decisions directly to development</li>
+        </ul>
+      </div>
+
+      <div class="aside-block">
+        <p class="label">Design-Systems Practice</p>
+        <p>Candidote: 40+ components built for a three-person team over eight months. Enviodeck: 50+ components and ongoing work on visual language, variants, and auto-layout systems in Figma.</p>
+      </div>
+    </section>
+
+    <section>
+      <h2>Skills &amp; Tools</h2>
+      <div class="skills-grid">
+        <div class="skill-group">
+          <h3>Product Design</h3>
+          <p>UX research · Information architecture · Interaction design · Visual design · Prototyping · Design systems</p>
+        </div>
+        <div class="skill-group">
+          <h3>AI Workflows</h3>
+          <p>Prompt engineering · AI-assisted product design · Code generation workflows · Tool orchestration</p>
+        </div>
+        <div class="skill-group" style="grid-column: 1 / -1;">
+          <h3>Tools</h3>
+          <p>Figma · Framer · Notion · Linear · ClickUp · Miro · Canva · ChatGPT · Claude · Codex · Perplexity · Google Analytics · Slack · Airtable</p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Education</h2>
+      <div class="education-item">
+        <h3>University of Lagos</h3>
+        <p>Biochemistry — Mar 2023</p>
+      </div>
+      <div class="education-item">
+        <h3>Google UX Design Certificate</h3>
+        <p>Coursera — Oct 2024</p>
+      </div>
+    </section>
+  </div>
+</body>
+</html>

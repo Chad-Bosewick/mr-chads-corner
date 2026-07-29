@@ -44,8 +44,7 @@ Each role rendered as:
 | Role | Company | Period | Location |
 |---|---|---|---|
 | Product Designer / Founder-Side Operator | Candidote | Aug 2025 - Mar 2026 | Fully remote, 3-person team |
-| Lead Designer / Product Operations Collaborator | Enviodeck | Nov 2025 - Present | Context TBD |
-| Executive Assistant / Second-Brain Operator | (Contract/Freelance) | Timeline TBD | Tools: Notion, Linear, etc. |
+| Lead Designer / Product Operations Collaborator | Enviodeck | Mar 2026 - Present | Start-up design systems |
 | Customer Experience / Digital Operations | UBA | Earlier role | Lagos, Nigeria |
 
 ### Design Systems callout (inline with timeline or adjacent):
@@ -83,7 +82,6 @@ Compact, bottom-of-page section.
 
 - **University of Lagos** — Biochemistry (background)
 - **Google UX Design Certificate** — Coursera
-- **NN/group** — UX certification (if applicable)
 
 Laid out as a simple list with dates, no embellishment.
 
@@ -109,7 +107,7 @@ Laid out as a simple list with dates, no embellishment.
 
 | Category | Details | Emoji |
 |---|---|---|
-| Education | University of Lagos, Google UX Design (Coursera), NN/group | 🎓 |
+| Education | University of Lagos, Google UX Design (Coursera) | 🎓 |
 | Sports | Chelsea FC, Formula 1, NBA | ⚽ |
 | Books | George R.R. Martin | 📖 |
 | Films | Quentin Tarantino, James Cameron | 🎥 |
