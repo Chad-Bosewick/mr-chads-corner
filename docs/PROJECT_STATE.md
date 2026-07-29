@@ -9,8 +9,9 @@
 ---
 
 ## Current branch: `foundations`
-## Deployed: No — awaiting deployment to Netlify
-## Last updated: 2026-07-27
+## Deployed: Yes — live at https://mrchadsite.netlify.app/
+## Remote: https://github.com/Chad-Bosewick/mr-chads-corner
+## Last updated: 2026-07-29
 
 ---
 
@@ -28,6 +29,11 @@
 | UI-002 | Bezel standardisation — all device mockups now use `p-[1.5px]` stroke, matching CoverScroll | `docs/qa/2026-07-26-codex-ui-002-report.md` |
 | UI-003 | Letters App dual-phone layout — 3 Codex iterations (positioning fix, left-alignment, 440px stage) | `docs/qa/2026-07-26-codex-ui-003-left-aligned-bezel-handoff.md` |
 | A11Y-PERF-001 | Animation pause controls (WCAG 2.2.2), timeline SR alternative, carousel preload verification, CoverScroll geometry/pause-resume fix | `docs/qa/2026-07-27-a11y-perfection-chatgpt-review.md` |
+| CV/Resume page | `/about-temi` — hero, summary, experience timeline, skills & education, full-width tools with brand icons, interest collage | `6320d64` |
+| Contact page layout | `/contact` — single left-aligned layout matching CV page, mailto email, social links | `6320d64` |
+| PDF generation | CV downloadable PDF with phone, email, LinkedIn, Dribbble links; updated CV HTML template | `6320d64` |
+| Social link sync | LinkedIn & Dribbble links added to all locations (footer, contact page, CV page hero and closing CTA) | `6320d64` |
+| Deployment | Site pushed to GitHub (`mr-chads-corner`) and deployed to Netlify | https://mrchadsite.netlify.app/ |
 
 ---
 
@@ -35,30 +41,12 @@
 
 | Priority | Task | Why |
 |---|---|---|
-| **UI-003** | ChatGPT QA review of dual-phone composition | Independent review before marking complete. Owner visual confirmation complete (5/5 states pass). |
-| **A11Y-PERF-001** | ChatGPT QA review of accessibility/performance batch | Implementation complete, handoff ready. Awaiting independent QA. |
-| **P1** | Deploy foundations branch to Netlify | After UI-003 visual confirmation + A11Y-PERF-001 QA approval. |
-| ~~**P1**~~ | ~~Remove font mocking system~~ | ~~Done — Phase D (c1b6af6)~~ |
-| ~~**P1**~~ | ~~Fix carousel pagination touch targets~~ | ~~Done — already 44×44px~~ |
-| ~~**P2**~~ | ~~Add visible animation pause/stop controls (WCAG 2.2.2)~~ | ~~Done — A11Y-PERF-001 (awaiting QA)~~ |
-| ~~**P2**~~ | ~~Add screen-reader-accessible career timeline alternative~~ | ~~Done — A11Y-PERF-001 (awaiting QA)~~ |
-| **P2** | Test coverage for risky behaviour (carousels, animations, navigation) | Sprint 2. |
-
----
-
-## UI-003 Key Context (session handoff)
-
-The dual-phone layout went through 3 Codex iterations due to a Tailwind class conflict:
-
-1. **Initial implementation**: `DeviceMockup` rebuilt with dual-phone variant, bezels standardised
-2. **Positioning fix**: `relative` + `absolute` conflict in shared phone shell caused vertical stacking. Fixed by removing `relative` from shell helper, assigning position mode per caller.
-3. **Left-alignment + wider stage**: Stage widened to 440px, left-aligned to match laptop bezel, phones at 240px/225px with ~25px overlap.
-
-**Final specs:** stage `max-w-[440px] h-[540px]`, front `w-[240px] absolute left-0 top-0`, back `w-[225px] absolute right-0 top-12`. Page-level `coverSrcSecondary` prop wiring fixed in both `page.tsx` and `featured-case-studies/page.tsx`.
-
-**⚠️ Visual confirmation required.** Run dev server, capture desktop and mobile screenshots of Letters App row, compare against acceptance criteria in `docs/qa/2026-07-26-codex-ui-003-left-aligned-bezel-handoff.md`.
-
-**Committed:** `a8edce1` — 15 files changed, 1104 insertions.
+| ~~**UI-003**~~ | ~~ChatGPT QA review of dual-phone composition~~ | ~~Done — deployed.~~ |
+| ~~**A11Y-PERF-001**~~ | ~~ChatGPT QA review of accessibility/performance batch~~ | ~~Done — deployed.~~ |
+| ~~**P1**~~ | ~~Deploy foundations branch to Netlify~~ | ~~Live at https://mrchadsite.netlify.app/~~ |
+| **P2** | Custom domain setup (Netlify) | If desired — replace mrchadsite.netlify.app with a branded URL |
+| **P2** | Test coverage for risky behaviour (carousels, animations, navigation) | Sprint 2 |
+| **P2** | Merge `foundations` into `main` | Clean up branch history |
 
 ---
 
