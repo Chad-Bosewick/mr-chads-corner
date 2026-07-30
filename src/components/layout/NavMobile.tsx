@@ -76,7 +76,7 @@ export function NavMobile({ items, currentPath, onClose }: NavMobileProps) {
       onKeyDown={handleKeyDown}
       onClick={handleBackdropClick}
     >
-      <div>
+      <div className="pl-1">
         <p className="mb-4 font-sans text-xs font-medium uppercase tracking-[0.12em] text-[#A43718]">
           Menu
         </p>
@@ -92,7 +92,7 @@ export function NavMobile({ items, currentPath, onClose }: NavMobileProps) {
                 <Link
                   href={item.href}
                   className={cn(
-                    "inline-block px-4 py-3 font-sans text-2xl font-medium transition-colors",
+                    "inline-block py-3 font-sans text-2xl font-medium transition-colors",
                     isActive
                       ? "text-white/60"
                       : "text-[#FFFFFF] hover:text-[#A43718]"

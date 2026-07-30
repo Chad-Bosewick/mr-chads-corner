@@ -114,59 +114,57 @@ export function Nav() {
             })}
           </ul>
 
-          {/* Mobile hamburger — minimum 44x44 hit area */}
-          <button
-            ref={hamburgerRef}
-            className={cn(
-              "-mr-3 flex items-center justify-center p-3 md:hidden",
-              isMobileOpen && "fixed right-2 top-3 z-[60]"
-            )}
-            onClick={isMobileOpen ? closeMenu : openMenu}
-            aria-label={isMobileOpen ? "Close navigation menu" : "Open navigation menu"}
-            aria-expanded={isMobileOpen}
-          >
-            <motion.svg
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              aria-hidden="true"
-            >
-              <motion.path
-                initial={false}
-                animate={{
-                  d: isMobileOpen ? "M6 6 L18 18" : "M4 6 L20 6",
-                  stroke: isMobileOpen ? "#FFFFFF" : "#151515",
-                }}
-                strokeWidth="1.5"
-                strokeLinecap="round"
-                transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
-              />
-              <motion.path
-                initial={false}
-                d="M4 12 L20 12"
-                animate={{
-                  opacity: isMobileOpen ? 0 : 1,
-                  stroke: isMobileOpen ? "#FFFFFF" : "#151515",
-                }}
-                strokeWidth="1.5"
-                strokeLinecap="round"
-                transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
-              />
-              <motion.path
-                initial={false}
-                animate={{
-                  d: isMobileOpen ? "M6 18 L18 6" : "M4 18 L20 18",
-                  stroke: isMobileOpen ? "#FFFFFF" : "#151515",
-                }}
-                strokeWidth="1.5"
-                strokeLinecap="round"
-                transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
-              />
-            </motion.svg>
-          </button>
         </ContentRail>
       </nav>
+
+      {/* Mobile hamburger — outside <nav> so z-index competes with overlay */}
+      <button
+        ref={hamburgerRef}
+        className="fixed right-4 top-3 z-[60] flex items-center justify-center p-3 md:hidden"
+        onClick={isMobileOpen ? closeMenu : openMenu}
+        aria-label={isMobileOpen ? "Close navigation menu" : "Open navigation menu"}
+        aria-expanded={isMobileOpen}
+      >
+        <motion.svg
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          aria-hidden="true"
+        >
+          <motion.path
+            initial={false}
+            animate={{
+              d: isMobileOpen ? "M6 6 L18 18" : "M4 6 L20 6",
+              stroke: isMobileOpen ? "#FFFFFF" : "#151515",
+            }}
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
+          />
+          <motion.path
+            initial={false}
+            d="M4 12 L20 12"
+            animate={{
+              opacity: isMobileOpen ? 0 : 1,
+              stroke: isMobileOpen ? "#FFFFFF" : "#151515",
+            }}
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
+          />
+          <motion.path
+            initial={false}
+            animate={{
+              d: isMobileOpen ? "M6 18 L18 6" : "M4 18 L20 18",
+              stroke: isMobileOpen ? "#FFFFFF" : "#151515",
+            }}
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
+          />
+        </motion.svg>
+      </button>
 
       {/* Mobile overlay */}
       {isMobileOpen && (
