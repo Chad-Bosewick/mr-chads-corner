@@ -13,16 +13,16 @@ export default function HomePage() {
       {/* Editorial hero */}
       <EditorialHero
         name="Temi Adekunle"
-        tagline="Senior product designer who thinks in systems and delivers polished, intentional digital experiences across B2B and B2C products."
+        tagline="Product designer who thinks in systems and creates polished, intentional digital experiences across B2B and B2C products."
       />
 
       {/* Editorial intro */}
       <TextSection align="start" spacing="tight" className="mt-5 md:mt-6">
         <SectionReveal delay={80}>
           <p className="max-w-[700px] text-[clamp(0.875rem,2vw,1rem)] leading-relaxed text-[#151515]/70 [text-wrap:pretty]">
-            Senior product designer with experience shipping across talent
-            platforms, productivity, communication, and developer tools. I
-            design where user needs and business outcomes converge.
+            Product designer with hands-on experience leading end-to-end design
+            for early-stage digital products. I design where user needs and
+            business outcomes converge.
           </p>
         </SectionReveal>
 
