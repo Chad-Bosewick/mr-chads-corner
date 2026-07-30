@@ -120,7 +120,7 @@ export function Nav() {
       {/* Mobile hamburger — outside <nav> so z-index competes with overlay */}
       <button
         ref={hamburgerRef}
-        className="fixed right-4 top-3 z-[60] flex items-center justify-center p-3 md:hidden"
+        className="fixed right-4 top-[2px] z-[60] flex items-center justify-center p-3 md:hidden"
         onClick={isMobileOpen ? closeMenu : openMenu}
         aria-label={isMobileOpen ? "Close navigation menu" : "Open navigation menu"}
         aria-expanded={isMobileOpen}
