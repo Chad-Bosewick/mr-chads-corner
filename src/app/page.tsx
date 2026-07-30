@@ -20,7 +20,7 @@ export default function HomePage() {
       <TextSection align="start" spacing="tight" className="mt-5 md:mt-6">
         <SectionReveal delay={80}>
           <p className="max-w-[700px] text-[clamp(0.875rem,2vw,1rem)] leading-relaxed text-[#151515]/70 [text-wrap:pretty]">
-            Product designer with hands-on experience leading end-to-end design
+            Hands-on experience leading end-to-end design
             for early-stage digital products. I design where user needs and
             business outcomes converge.
           </p>
