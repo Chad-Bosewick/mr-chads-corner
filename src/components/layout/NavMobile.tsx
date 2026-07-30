@@ -76,32 +76,37 @@ export function NavMobile({ items, currentPath, onClose }: NavMobileProps) {
       onKeyDown={handleKeyDown}
       onClick={handleBackdropClick}
     >
-      <ul className="flex flex-col gap-8">
-        {items.map((item, index) => {
-          const isActive = currentPath === item.href || (item.href !== "/" && currentPath.startsWith(item.href));
-          return (
-            <li
-              key={item.href}
-              className="animate-fade-in-up"
-              style={{ animationDelay: `${index * 40}ms` }}
-            >
-              <Link
-                href={item.href}
-                className={cn(
-                  "inline-block px-4 py-3 font-sans text-2xl font-medium transition-colors",
-                  isActive
-                    ? "text-white/60"
-                    : "text-[#FFFFFF] hover:text-[#A43718]"
-                )}
-                aria-current={isActive ? "page" : undefined}
-                onClick={onClose}
+      <div>
+        <p className="mb-4 font-sans text-xs font-medium uppercase tracking-[0.12em] text-[#A43718]">
+          Menu
+        </p>
+        <ul className="flex flex-col gap-8">
+          {items.map((item, index) => {
+            const isActive = currentPath === item.href || (item.href !== "/" && currentPath.startsWith(item.href));
+            return (
+              <li
+                key={item.href}
+                className="animate-fade-in-up"
+                style={{ animationDelay: `${index * 40}ms` }}
               >
-                {item.label}
-              </Link>
-            </li>
-          );
-        })}
-      </ul>
+                <Link
+                  href={item.href}
+                  className={cn(
+                    "inline-block px-4 py-3 font-sans text-2xl font-medium transition-colors",
+                    isActive
+                      ? "text-white/60"
+                      : "text-[#FFFFFF] hover:text-[#A43718]"
+                  )}
+                  aria-current={isActive ? "page" : undefined}
+                  onClick={onClose}
+                >
+                  {item.label}
+                </Link>
+              </li>
+            );
+          })}
+        </ul>
+      </div>
     </div>
   );
 }
