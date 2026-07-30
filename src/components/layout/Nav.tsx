@@ -9,7 +9,6 @@ import { NavMobile } from "./NavMobile";
 import { ContentRail } from "./PageShell";
 
 const NAV_ITEMS = [
-  { href: "/", label: "Home" },
   { href: "/featured-case-studies", label: "Featured case studies" },
   { href: "/about-temi", label: "About Temi" },
   { href: "/contact", label: "Contact" },
@@ -68,8 +67,8 @@ export function Nav() {
       <div ref={sentinelRef} className="-mb-px h-px" aria-hidden="true" />
       <nav
         className={cn(
-          "sticky top-0 z-40 pt-10 transition-[background-color,border-color] duration-[var(--duration-standard)] ease-[var(--ease-out)]",
-          isScrolled && "border-b border-[#151515]/10 bg-[#f5f2ee]/80 backdrop-blur-md",
+          "sticky top-0 z-40 py-3 transition-colors duration-[var(--duration-standard)] ease-[var(--ease-out)] md:py-4",
+          isScrolled && "bg-[#f5f2ee]/80 backdrop-blur-md",
         )}
         aria-label="Main navigation"
       >
@@ -82,15 +81,15 @@ export function Nav() {
             <Image
               src="/images/social/mr chad.png"
               alt=""
-              width={20}
-              height={20}
+              width={28}
+              height={28}
               priority
-              className="size-5 rounded object-cover"
+              className="size-7 rounded object-cover"
             />
           </Link>
 
           {/* Desktop navigation */}
-          <ul className="hidden items-center gap-8 md:flex">
+          <ul className="hidden items-center gap-6 md:flex">
             {NAV_ITEMS.map((item) => {
               const isActive = pathname === item.href || (item.href !== "/" && pathname.startsWith(item.href));
               return (
@@ -98,7 +97,7 @@ export function Nav() {
                   <Link
                     href={item.href}
                     className={cn(
-                      "group relative inline-block pb-1 font-sans text-base font-medium transition-colors duration-[var(--duration-fast)] ease-[var(--ease-out)]",
+                      "inline-block font-sans text-base font-medium transition-colors duration-[var(--duration-fast)] ease-[var(--ease-out)]",
                       isActive
                         ? "text-[#A43718]"
                         : "text-[#151515] hover:text-[#A43718]"
@@ -106,15 +105,6 @@ export function Nav() {
                     aria-current={isActive ? "page" : undefined}
                   >
                     {item.label}
-                    {/* Animated underline */}
-                    <span
-                      className={cn(
-                        "absolute bottom-0 left-1/2 h-[1.5px] -translate-x-1/2 bg-[#A43718] transition-transform duration-[var(--duration-standard)] ease-[var(--ease-out)]",
-                        isActive
-                          ? "w-full scale-x-100"
-                          : "w-0 scale-x-0 group-hover:w-full group-hover:scale-x-100"
-                      )}
-                    />
                   </Link>
                 </li>
               );

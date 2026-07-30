@@ -8,7 +8,7 @@ export default function NotFound() {
         Page not found
       </h1>
       <p className="mt-4 text-[var(--color-text-muted)]">
-        This page doesn&rsquo;t exist yet &mdash; or has moved.
+        This page doesn&rsquo;t exist yet, or has moved.
       </p>
       <Link
         href="/"

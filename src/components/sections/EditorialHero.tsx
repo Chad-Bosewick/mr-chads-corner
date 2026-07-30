@@ -60,21 +60,6 @@ export function EditorialHero({
           }}
         />
       )}
-      {/* Full-bleed paper background */}
-      <div
-        className="pointer-events-none absolute inset-0 -mx-5 sm:-mx-6 lg:-mx-8"
-        aria-hidden="true"
-      >
-        <div
-          className="h-full w-full opacity-[0.04]"
-          style={{
-            backgroundImage: "url(/paper-texture.webp)",
-            backgroundRepeat: "repeat",
-            backgroundSize: "400px 400px",
-          }}
-        />
-      </div>
-
       <div>
         {/* Editorial label */}
         {label ? (
@@ -101,7 +86,7 @@ export function EditorialHero({
           )}
         </h1>
 
-        {/* Career timeline — heart mascot moves along milestone track */}
+        {/* Career timeline — hover over markers to explore milestones */}
         <TimelineHero animate={timelineReady} />
 
         {/* Tagline */}

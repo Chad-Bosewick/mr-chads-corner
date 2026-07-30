@@ -13,34 +13,30 @@ export default function HomePage() {
       {/* Editorial hero */}
       <EditorialHero
         name="Temi Adekunle"
-        tagline="Product designer who thinks in systems and delivers polished, intentional digital experiences."
+        tagline="Senior product designer who thinks in systems and delivers polished, intentional digital experiences across B2B and B2C products."
       />
 
       {/* Editorial intro */}
       <TextSection align="start" spacing="tight" className="mt-5 md:mt-6">
         <SectionReveal delay={80}>
           <p className="max-w-[700px] text-[clamp(0.875rem,2vw,1rem)] leading-relaxed text-[#151515]/70 [text-wrap:pretty]">
-            I design products where user needs and business outcomes
-            converge. Every decision serves both.
+            Senior product designer with experience shipping across talent
+            platforms, productivity, communication, and developer tools. I
+            design where user needs and business outcomes converge.
           </p>
         </SectionReveal>
 
         <SectionReveal delay={160}>
           <p className="max-w-[700px] text-[clamp(0.875rem,2vw,1rem)] leading-relaxed text-[#151515]/70 [text-wrap:pretty]">
-            I work alongside engineers — from first principles through
+            I work alongside engineers, from first principles through
             implementation. Each product problem demands its own
             response, shaped by context, constraints, and goals.
           </p>
         </SectionReveal>
       </TextSection>
 
-      {/* Divider */}
-      <SectionReveal delay={240}>
-        <hr className="mb-16 mt-14 border-[#151515]/10 md:mb-20 md:mt-16" />
-      </SectionReveal>
-
       {/* Featured case studies */}
-      <SectionReveal delay={80}>
+      <SectionReveal delay={80} className="mt-16 md:mt-20">
         <div className="space-y-3">
           <p className="font-sans text-[11px] font-medium uppercase tracking-[0.18em] text-[var(--color-text-muted)]">
             SELECTED WORK
@@ -72,6 +68,7 @@ export default function HomePage() {
               annotationSet={project.annotationSet}
               status={project.status}
               device={project.device}
+              sector={project.sector}
               delay={index * 100}
             />
           ))}

@@ -25,8 +25,8 @@ let heartPath: Path2D | null = null;
 /* Timeline */
 const SEGMENT_MS = 4500;
 const PAUSE_MS = 2800;
-const RESTART_MS = 1700; // time for the heart to slide in from the left restart point
-const INITIAL_PAUSE_MS = 1200; // shorter gap after entrance animation lands the heart
+const RESTART_MS = 1700;
+const INITIAL_PAUSE_MS = 1200;
 const DOT_RADIUS = 3;
 const ACTIVE_DOT_RADIUS = 4;
 
@@ -62,12 +62,12 @@ function drawHeartGlyph(
 ) {
   ctx.save();
 
-  const scale = (HEART_SIZE / 100) * scaleMultiplier; // SVG heart is ~100 units tall
+  const scale = (HEART_SIZE / 100) * scaleMultiplier;
   ctx.globalAlpha = opacity;
   ctx.filter = blur > 0 ? `blur(${blur}px)` : "none";
   ctx.translate(x, y);
   ctx.scale(scale, scale);
-  ctx.translate(-70, -70); // center SVG (70, 70) → the draw point
+  ctx.translate(-70, -70);
 
   heartPath ??= new Path2D(HEART_SVG_PATH);
 
@@ -95,8 +95,6 @@ function drawMotionTrail(
 
   const direction = distance >= 0 ? 1 : -1;
   const trailSpan = Math.min(110, Math.max(30, Math.abs(distance) * 0.40));
-
-  /* ── Trailing ghost hearts ────────────────────────────────── */
 
   const ghosts = [
     { t: 0.22, opacity: 0.18, blur: 2, scale: 0.88, drop: 1.5 },
@@ -147,8 +145,6 @@ function computeProgress(
   const pos = elapsed % cycleMs;
 
   if (pos < INITIAL_PAUSE_MS) {
-    /* Delay the first tooltip by 1s — lets the mascot visually settle
-     * before the milestone note appears. */
     const showTooltip = pos > 1000;
     return {
       fromIndex: 0,
@@ -163,7 +159,6 @@ function computeProgress(
 
   const afterInitialPause = pos - INITIAL_PAUSE_MS;
 
-  /* Restart phase — the old run resolves, then the heart re-enters from the left. */
   if (afterInitialPause >= travelWindowMs) {
     const restartT = Math.min(1, (afterInitialPause - travelWindowMs) / RESTART_MS);
     return {
@@ -196,7 +191,14 @@ function computeProgress(
   };
 }
 
-/* ── Draw ─────────────────────────────────────────────────────── */
+/** Compute elapsed ms that places the heart at a given marker index (in pause phase). */
+function elapsedForIndex(index: number, count: number): number {
+  if (index === 0) return INITIAL_PAUSE_MS + 100; // just past initial pause
+  const unit = SEGMENT_MS + PAUSE_MS;
+  return INITIAL_PAUSE_MS + index * unit - PAUSE_MS + SEGMENT_MS;
+}
+
+/* ── Draw (animated) ──────────────────────────────────────────── */
 
 function draw(canvas: HTMLCanvasElement, state: TimelineState) {
   if (state.width === 0) return;
@@ -212,7 +214,7 @@ function draw(canvas: HTMLCanvasElement, state: TimelineState) {
   ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   ctx.clearRect(0, 0, width, height);
 
-  /* ── Ground line — constrained to the page content width ── */
+  /* Ground line */
   ctx.strokeStyle = "rgba(21, 21, 21, 0.12)";
   ctx.lineWidth = 1;
   ctx.beginPath();
@@ -220,10 +222,10 @@ function draw(canvas: HTMLCanvasElement, state: TimelineState) {
   ctx.lineTo(width, groundY);
   ctx.stroke();
 
-  /* ── Heart position ── */
+  /* Heart position from progress */
   const { fromIndex, toIndex, t, isPausing, isRestarting, restartT } = computeProgress(elapsed, count);
 
-  /* Compound idle bob — two frequencies for organic breath */
+  /* Compound idle bob */
   const bob1 = Math.sin((elapsed * 3.2) / 1000) * 0.8;
   const bob2 = Math.sin((elapsed * 5.1) / 1000) * 0.3;
   const idleBob = bob1 + bob2;
@@ -250,7 +252,6 @@ function draw(canvas: HTMLCanvasElement, state: TimelineState) {
     trailFromX = fromX;
     shouldDrawMotionTrail = restartT > 0.08 && restartT < 0.96;
   } else {
-    /* Forward travel with cubic ease-out for damped arrival */
     if (count <= 1) {
       heartX = markers[0];
     } else {
@@ -264,7 +265,7 @@ function draw(canvas: HTMLCanvasElement, state: TimelineState) {
     drawY = groundY - HEART_SIZE / 2 + idleBob;
   }
 
-  /* ── Trail ── */
+  /* Trail line */
   if (!isRestarting) {
     ctx.strokeStyle = "rgba(164, 55, 24, 0.11)";
     ctx.lineWidth = 1;
@@ -274,7 +275,7 @@ function draw(canvas: HTMLCanvasElement, state: TimelineState) {
     ctx.stroke();
   }
 
-  /* ── Subtle glow ── */
+  /* Subtle glow */
   const glow = ctx.createRadialGradient(heartX, groundY, 0, heartX, groundY, 28);
   glow.addColorStop(0, `rgba(164, 55, 24, ${0.035 * heartOpacity})`);
   glow.addColorStop(1, "rgba(164, 55, 24, 0)");
@@ -287,7 +288,7 @@ function draw(canvas: HTMLCanvasElement, state: TimelineState) {
     drawMotionTrail(ctx, trailFromX, heartX, drawY, heartOpacity);
   }
 
-  /* ── Marker dots ── */
+  /* Marker dots */
   for (let i = 0; i < count; i++) {
     const x = markers[i];
     const isActive = i === activeIndex;
@@ -311,7 +312,7 @@ function draw(canvas: HTMLCanvasElement, state: TimelineState) {
     }
   }
 
-  /* ── Year labels (10px for legibility on mobile) ── */
+  /* Year labels */
   ctx.font =
     '10px ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace';
   ctx.textBaseline = "top";
@@ -327,14 +328,145 @@ function draw(canvas: HTMLCanvasElement, state: TimelineState) {
   drawHeartGlyph(ctx, heartX, drawY, heartOpacity, heartScale, heartBlur);
 }
 
+/* ── Static override draw (heart pinned to a specific marker) ── */
+
+function drawOverride(
+  canvas: HTMLCanvasElement,
+  state: TimelineState,
+  overrideIndex: number,
+) {
+  if (state.width === 0) return;
+
+  const ctx = canvas.getContext("2d");
+  if (!ctx) return;
+
+  const { dpr, width, height, groundY } = state;
+  const count = TIMELINE_MILESTONES.length;
+  const markers = getTimelineMarkerPositions(width, count, TIMELINE_PADDING);
+
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  ctx.clearRect(0, 0, width, height);
+
+  /* Ground line */
+  ctx.strokeStyle = "rgba(21, 21, 21, 0.12)";
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.moveTo(0, groundY);
+  ctx.lineTo(width, groundY);
+  ctx.stroke();
+
+  /* Idle bob for organic feel even in override */
+  const now = performance.now();
+  const bob1 = Math.sin((now * 3.2) / 1000) * 0.8;
+  const bob2 = Math.sin((now * 5.1) / 1000) * 0.3;
+  const idleBob = bob1 + bob2;
+
+  const heartX = markers[overrideIndex];
+  const drawY = groundY - HEART_SIZE / 2 + idleBob;
+
+  /* Trail line */
+  ctx.strokeStyle = "rgba(164, 55, 24, 0.11)";
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.moveTo(markers[0], groundY);
+  ctx.lineTo(heartX, groundY);
+  ctx.stroke();
+
+  /* Glow */
+  const glow = ctx.createRadialGradient(heartX, groundY, 0, heartX, groundY, 28);
+  glow.addColorStop(0, "rgba(164, 55, 24, 0.035)");
+  glow.addColorStop(1, "rgba(164, 55, 24, 0)");
+  ctx.fillStyle = glow;
+  ctx.beginPath();
+  ctx.arc(heartX, groundY, 28, 0, Math.PI * 2);
+  ctx.fill();
+
+  /* Marker dots */
+  for (let i = 0; i < count; i++) {
+    const x = markers[i];
+    const isActive = i === overrideIndex;
+
+    if (isActive) {
+      ctx.beginPath();
+      ctx.arc(x, groundY, ACTIVE_DOT_RADIUS, 0, Math.PI * 2);
+      ctx.fillStyle = "#A43718";
+      ctx.fill();
+      ctx.beginPath();
+      ctx.arc(x, groundY, ACTIVE_DOT_RADIUS + 4, 0, Math.PI * 2);
+      ctx.strokeStyle = "rgba(164, 55, 24, 0.2)";
+      ctx.lineWidth = 1;
+      ctx.stroke();
+    } else {
+      ctx.beginPath();
+      ctx.arc(x, groundY, DOT_RADIUS, 0, Math.PI * 2);
+      ctx.fillStyle = "rgba(21, 21, 21, 0.25)";
+      ctx.fill();
+    }
+  }
+
+  /* Year labels */
+  ctx.font =
+    '10px ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace';
+  ctx.textBaseline = "top";
+  ctx.textAlign = "center";
+  for (let i = 0; i < count; i++) {
+    ctx.fillStyle =
+      i === overrideIndex ? "rgba(164, 55, 24, 0.7)" : "rgba(21, 21, 21, 0.3)";
+    ctx.fillText(TIMELINE_MILESTONES[i].year, markers[i], groundY + 12);
+  }
+
+  drawHeartGlyph(ctx, heartX, drawY, 1, 1, 0);
+}
+
+/* ── Static draw (for reduced motion, no heart) ──────────────── */
+
+function drawStatic(canvas: HTMLCanvasElement, state: TimelineState) {
+  if (state.width === 0) return;
+  const ctx = canvas.getContext("2d");
+  if (!ctx) return;
+
+  const { dpr, width, height, groundY } = state;
+  const count = TIMELINE_MILESTONES.length;
+  const markers = getTimelineMarkerPositions(width, count, TIMELINE_PADDING);
+
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  ctx.clearRect(0, 0, width, height);
+
+  ctx.strokeStyle = "rgba(21, 21, 21, 0.12)";
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.moveTo(0, groundY);
+  ctx.lineTo(width, groundY);
+  ctx.stroke();
+
+  for (let i = 0; i < count; i++) {
+    const x = markers[i];
+    ctx.beginPath();
+    ctx.arc(x, groundY, DOT_RADIUS, 0, Math.PI * 2);
+    ctx.fillStyle = "rgba(21, 21, 21, 0.25)";
+    ctx.fill();
+  }
+
+  ctx.font =
+    '10px ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace';
+  ctx.textBaseline = "top";
+  ctx.textAlign = "center";
+  for (let i = 0; i < count; i++) {
+    ctx.fillStyle = "rgba(21, 21, 21, 0.3)";
+    ctx.fillText(TIMELINE_MILESTONES[i].year, markers[i], groundY + 12);
+  }
+}
+
 /* ── Hook ─────────────────────────────────────────────────────── */
 
 export function useTimelineHero(
   canvasRef: RefObject<HTMLCanvasElement | null>,
   animate?: boolean,
   isPaused = false,
+  overrideIndex?: number | null,
 ): number | null {
   const prefersReducedMotion = useReducedMotion();
+  const prevOverrideRef = useRef<number | null | undefined>(undefined);
   const stateRef = useRef<TimelineState>({
     width: 0,
     height: 0,
@@ -353,6 +485,8 @@ export function useTimelineHero(
 
     const state = stateRef.current;
     let disposed = false;
+    let overrideRafId = 0;
+    let hasDrawnOverride = false;
 
     function setup(cvs: HTMLCanvasElement) {
       const parent = cvs.parentElement;
@@ -381,13 +515,17 @@ export function useTimelineHero(
         cvs.height = canvasHeight;
         cvs.style.width = `${w}px`;
         cvs.style.height = `${h}px`;
-        cvs.style.marginLeft = "";
       }
 
       if (prefersReducedMotion) {
         state.activeIndex = 0;
         setActiveIndex(0);
         drawStatic(cvs, state);
+      } else if (overrideIndex != null) {
+        drawOverride(cvs, state, overrideIndex);
+        hasDrawnOverride = true;
+        state.activeIndex = overrideIndex;
+        setActiveIndex(overrideIndex);
       } else if (sizeChanged) {
         drawStatic(cvs, state);
       }
@@ -398,8 +536,42 @@ export function useTimelineHero(
     const resizeObserver = new ResizeObserver(() => setup(canvas));
     resizeObserver.observe(canvas.parentElement!);
 
-    /* Only start the RAF loop when motion is allowed and not visitor-paused. */
-    if (animate && !prefersReducedMotion && !isPaused) {
+    /* ── Override mode (user-interacted) ── */
+    if (overrideIndex != null && !prefersReducedMotion) {
+      hasDrawnOverride = true;
+      state.activeIndex = overrideIndex;
+      setActiveIndex(overrideIndex);
+
+      /* Cancel the main RAF loop if running */
+      cancelAnimationFrame(state.rafId);
+
+      /* Idle-bob RAF for the override state */
+      function overrideTick() {
+        if (disposed) return;
+        if (overrideIndex != null) {
+          drawOverride(canvas!, state, overrideIndex);
+          overrideRafId = requestAnimationFrame(overrideTick);
+        }
+      }
+      overrideRafId = requestAnimationFrame(overrideTick);
+    }
+
+    /* ── Auto-advance mode (normal) ── */
+    if (
+      animate &&
+      !prefersReducedMotion &&
+      !isPaused &&
+      (overrideIndex == null)
+    ) {
+      /* If we just came from an override, reset elapsed to resume seamlessly */
+      const prev = prevOverrideRef.current;
+      if (prev != null && overrideIndex == null) {
+        state.elapsed = elapsedForIndex(
+          state.activeIndex ?? 0,
+          TIMELINE_MILESTONES.length,
+        );
+      }
+
       state.lastFrame = performance.now();
       if (state.activeIndex === null) {
         state.activeIndex = 0;
@@ -430,56 +602,19 @@ export function useTimelineHero(
         state.rafId = requestAnimationFrame(tick);
       }
 
+      cancelAnimationFrame(overrideRafId);
       state.rafId = requestAnimationFrame(tick);
     }
+
+    prevOverrideRef.current = overrideIndex;
 
     return () => {
       disposed = true;
       cancelAnimationFrame(state.rafId);
+      cancelAnimationFrame(overrideRafId);
       resizeObserver?.disconnect();
     };
-  }, [canvasRef, prefersReducedMotion, animate, isPaused]);
+  }, [canvasRef, prefersReducedMotion, animate, isPaused, overrideIndex]);
 
   return activeIndex;
-}
-
-/* ── Static draw (no heart, used before animation starts) ────── */
-function drawStatic(canvas: HTMLCanvasElement, state: TimelineState) {
-  if (state.width === 0) return;
-  const ctx = canvas.getContext("2d");
-  if (!ctx) return;
-
-  const { dpr, width, height, groundY } = state;
-  const count = TIMELINE_MILESTONES.length;
-  const markers = getTimelineMarkerPositions(width, count, TIMELINE_PADDING);
-
-  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-  ctx.clearRect(0, 0, width, height);
-
-  /* Ground line */
-  ctx.strokeStyle = "rgba(21, 21, 21, 0.12)";
-  ctx.lineWidth = 1;
-  ctx.beginPath();
-  ctx.moveTo(0, groundY);
-  ctx.lineTo(width, groundY);
-  ctx.stroke();
-
-  /* Marker dots — all inactive */
-  for (let i = 0; i < count; i++) {
-    const x = markers[i];
-    ctx.beginPath();
-    ctx.arc(x, groundY, DOT_RADIUS, 0, Math.PI * 2);
-    ctx.fillStyle = "rgba(21, 21, 21, 0.25)";
-    ctx.fill();
-  }
-
-  /* Year labels */
-  ctx.font =
-    '10px ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace';
-  ctx.textBaseline = "top";
-  ctx.textAlign = "center";
-  for (let i = 0; i < count; i++) {
-    ctx.fillStyle = "rgba(21, 21, 21, 0.3)";
-    ctx.fillText(TIMELINE_MILESTONES[i].year, markers[i], groundY + 12);
-  }
 }

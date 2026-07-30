@@ -2,6 +2,7 @@ export interface Project {
   slug: string;
   title: string;
   category: string;
+  sector: "B2B" | "B2C" | "B2B · B2C";
   hook: string;
   description: string;
   coverSrc?: string;
@@ -21,6 +22,7 @@ export const projects: Project[] = [
     slug: "credlane",
     title: "Travecs",
     category: "Talent Platform",
+    sector: "B2B",
     hook: "Designing a hiring platform where talent can prove readiness and employers can evaluate candidates with stronger evidence.",
     description:
       "I led the design of Travecs, a responsive talent-assessment and hiring platform connecting job readiness, employer discovery, custom assessments, and candidate evaluation.",
@@ -45,9 +47,10 @@ export const projects: Project[] = [
     slug: "todo-app",
     title: "TODO++",
     category: "Productivity",
+    sector: "B2C",
     hook: "A task manager that adapts to how you work.",
     description:
-      "Redesigning a task management tool from feature-heavy checklist into an intelligent, adaptive workflow system — reducing cognitive load while preserving power-user capabilities.",
+      "Redesigning a task management tool from feature-heavy checklist into an intelligent, adaptive workflow system. It reduces cognitive load while preserving power-user capabilities.",
     coverSrc: "/images/case-studies/todo-app-device.webp",
     annotationSet: "todo-device",
     status: "published",
@@ -57,9 +60,10 @@ export const projects: Project[] = [
     slug: "draftly",
     title: "Draftly",
     category: "Content Creation",
+    sector: "B2C",
     hook: "An AI writing coach that teaches through explanation, not automation.",
     description:
-      "A learning-first writing tool for high-school students that helps them brainstorm, revise, and understand their work — turning every correction into a teaching moment.",
+      "A learning-first writing tool for high-school students that helps them brainstorm, revise, and understand their work, turning every correction into a teaching moment.",
     coverSrc: "/images/draftly/draftly-hero-1440x900.webp",
     coverScroll: {
       src: "/images/draftly/draftly-landing-page-full.webp",
@@ -82,6 +86,7 @@ export const projects: Project[] = [
     slug: "testground",
     title: "Testground",
     category: "Developer Tools",
+    sector: "B2B",
     hook: "Testing infrastructure that teams actually enjoy using.",
     description:
       "A testing platform designed for collaboration, speed, and developer happiness.",
@@ -92,9 +97,10 @@ export const projects: Project[] = [
     slug: "letters-app",
     title: "Letters App",
     category: "Communication",
+    sector: "B2C",
     hook: "Thoughtful correspondence for the modern world.",
     description:
-      "Designing a thoughtful correspondence platform that reintroduces pause and intentionality into digital messaging — combining the warmth of letter-writing with the practicality of modern communication.",
+      "Designing a thoughtful correspondence platform that reintroduces pause and intentionality into digital messaging, combining the warmth of letter-writing with the practicality of modern communication.",
     coverSrc: "/images/case-studies/letters-app-homepage-post-1.webp",
     coverSrcSecondary: "/images/case-studies/letters-app-showcase.webp",
     status: "published",

@@ -11,6 +11,7 @@ interface ProjectRowProps {
   slug: string;
   title: string;
   category: string;
+  sector: "B2B" | "B2C" | "B2B · B2C";
   hook: string;
   coverSrc?: string;
   coverSrcSecondary?: string;
@@ -29,6 +30,7 @@ export function ProjectRow({
   slug,
   title,
   category,
+  sector,
   hook,
   coverSrc,
   coverSrcSecondary,
@@ -79,7 +81,7 @@ export function ProjectRow({
       {/* Text block */}
       <div className="flex flex-col gap-3">
         <p className="font-sans text-[11px] font-medium uppercase tracking-[0.18em] text-[var(--color-text-muted)]">
-          {category}
+          {category} · {sector}
         </p>
 
         <h3 className="font-sans text-[clamp(1.25rem,2.5vw,1.5rem)] font-medium leading-[1.2] text-[#151515] transition-colors duration-[var(--duration-standard)] ease-[var(--ease-out)] group-hover:text-[#A43718]">
@@ -131,7 +133,9 @@ export function ProjectRow({
     <SectionReveal delay={delay}>
       <Link
         href={`/featured-case-studies/${slug}`}
-        className="block py-8 transition-opacity md:py-12"
+        className={cn(
+          "block py-12 transition-opacity md:py-20",
+        )}
         onMouseEnter={() => supportsCardInteraction && setIsCardInteractionActive(true)}
         onMouseLeave={() => supportsCardInteraction && setIsCardInteractionActive(false)}
         onFocus={() => supportsCardInteraction && setIsCardInteractionActive(true)}

@@ -19,7 +19,7 @@ import {
 } from "simple-icons";
 
 export const metadata: Metadata = {
-  title: "Temi Adekunle — CV / Resume",
+  title: "Temi Adekunle | CV / Resume",
   description:
     "Product designer with a bias toward clarity, systems thinking, and work that holds up under scrutiny. Biochemistry background, startup design lead, design system builder, AI-native operator.",
 };
@@ -37,7 +37,7 @@ const SNAPSHOT_ITEMS = [
   {
     label: "Systems Thinker",
     description:
-      "Biochemistry taught me to think in systems, process, and cause and effect — applied now to information architecture, user journeys, and design-system thinking.",
+      "Biochemistry taught me to think in systems, process, and cause and effect. I apply that thinking to information architecture, user journeys, and design systems.",
   },
   {
     label: "Design System Builder",
@@ -85,13 +85,6 @@ export default function AboutPage() {
           <p className="mt-6 max-w-[680px] text-lg leading-relaxed text-[var(--color-text-muted)]">
             Product designer with a bias toward clarity, systems thinking, and work that holds up under scrutiny.
           </p>
-          <div className="mt-4 flex flex-wrap items-center gap-4 font-sans text-sm text-[#A43718]">
-            <a href="mailto:Addtemi270@gmail.com" className="hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#A43718]">Addtemi270@gmail.com</a>
-            <span className="text-[#151515]/20" aria-hidden="true">·</span>
-            <a href="https://www.linkedin.com/in/temidayoadekunle/" className="hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#A43718]">LinkedIn</a>
-            <span className="text-[#151515]/20" aria-hidden="true">·</span>
-            <a href="https://dribbble.com/ChadBosewick27" className="hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#A43718]">Dribbble</a>
-          </div>
           <div className="mt-5">
             <a
               href="/downloads/temi-adekunle-cv.pdf"
@@ -111,23 +104,23 @@ export default function AboutPage() {
       <div className="mt-12 max-w-[680px]">
         <SectionReveal delay={80}>
           <p className="font-sans text-[clamp(0.875rem,2vw,1rem)] leading-relaxed text-[#151515]/70">
-            I&rsquo;ve spent the past several years working across early-stage startups and established product teams, leading design for productivity tools, presentation platforms, and digital banking experiences. My work spans the full product design spectrum — from user research and information architecture through to visual design, prototyping, and design-system architecture.
+            I&rsquo;ve spent the past several years working across early-stage startups and established product teams, leading design for productivity tools, presentation platforms, and digital banking experiences. My work spans the full product design spectrum, from user research and information architecture through to visual design, prototyping, and design-system architecture.
           </p>
         </SectionReveal>
         <SectionReveal delay={160}>
           <p className="mt-5 font-sans text-[clamp(0.875rem,2vw,1rem)] leading-relaxed text-[#151515]/70">
-            What drives me is the intersection of structure and craft. I believe great products are built on clear thinking before polished pixels — and that the best design decisions make complex systems feel inevitable rather than clever. I work best in close partnership with engineers, where design intent meets implementation constraints, and the result is better for both.
+            What drives me is the intersection of structure and craft. I believe great products are built on clear thinking before polished pixels, and that the best design decisions make complex systems feel inevitable rather than clever. I work best in close partnership with engineers, where design intent meets implementation constraints, and the result is better for both.
           </p>
         </SectionReveal>
         <SectionReveal delay={240}>
           <p className="mt-5 font-sans text-[clamp(0.875rem,2vw,1rem)] leading-relaxed text-[#151515]/70">
-            Before product design, I studied biochemistry — a background that taught me to think in systems, process, and the relationship between cause and effect. Those principles carry through everything I design today, whether it&rsquo;s mapping a user journey or building a design system component.
+            Before product design, I studied biochemistry, a background that taught me to think in systems, process, and the relationship between cause and effect. Those principles carry through everything I design today, whether it&rsquo;s mapping a user journey or building a design system component.
           </p>
         </SectionReveal>
       </div>
 
       <SectionReveal delay={320}>
-        <div className="mt-12 flex flex-col gap-6 border-t border-[#151515]/10 pt-8 md:flex-row md:gap-8">
+        <div className="mt-12 flex flex-col gap-6 md:flex-row md:gap-8">
           {SNAPSHOT_ITEMS.map((item) => (
             <div key={item.label} className="flex-1">
               <h2 className="font-sans text-sm font-semibold uppercase tracking-wider text-[#6F6F6F]">
@@ -149,13 +142,8 @@ export default function AboutPage() {
         <div className="mt-8"><ExperienceTimeline /></div>
       </div>
 
-      {/* ── Act break ── */}
-      <SectionReveal>
-        <hr className="my-16 border-[#151515]/10 md:my-20" />
-      </SectionReveal>
-
       {/* ── Skills & Education ── */}
-      <section aria-labelledby="skills-education-heading">
+      <section aria-labelledby="skills-education-heading" className="mt-16 md:mt-20">
         <SectionReveal>
           <h2 id="skills-education-heading" className="font-sans text-[clamp(1.25rem,3vw,1.75rem)] font-medium text-[#151515]">
             Skills &amp; Education
@@ -175,11 +163,11 @@ export default function AboutPage() {
               <div className="mt-6 space-y-6">
                 <div>
                   <p className="font-sans text-base font-medium text-[#151515]">University of Lagos</p>
-                  <p className="mt-0.5 font-sans text-sm text-[#6F6F6F]">Biochemistry — Mar 2023</p>
+                  <p className="mt-0.5 font-sans text-sm text-[#6F6F6F]">Biochemistry, Mar 2023</p>
                 </div>
                 <div>
                   <p className="font-sans text-base font-medium text-[#151515]">Google UX Design Certificate</p>
-                  <p className="mt-0.5 font-sans text-sm text-[#6F6F6F]">Coursera — Oct 2024</p>
+                  <p className="mt-0.5 font-sans text-sm text-[#6F6F6F]">Coursera, Oct 2024</p>
                 </div>
               </div>
             </div>
@@ -224,31 +212,11 @@ export default function AboutPage() {
             Do we have similar interests?
           </h2>
           <p className="mt-2 max-w-[680px] font-sans text-[clamp(0.875rem,2vw,1rem)] leading-relaxed text-[#6F6F6F]">
-            A few things I&rsquo;m into — beyond the work.
+            A few things I&rsquo;m into beyond the work.
           </p>
         </SectionReveal>
         <div className="mt-8"><InterestGrid interests={INTERESTS} /></div>
 
-        <SectionReveal>
-          <div className="mt-16 max-w-[680px] border-t border-[#151515]/10 pt-8">
-            <p className="font-sans text-base font-medium text-[#151515]">Interested in working together?</p>
-            <div className="mt-3 flex flex-wrap items-center gap-4 font-sans text-sm text-[#A43718]">
-              <a href="mailto:Addtemi270@gmail.com" className="hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#A43718]">Addtemi270@gmail.com</a>
-              <span className="text-[#151515]/20" aria-hidden="true">·</span>
-              <a href="https://www.linkedin.com/in/temidayoadekunle/" className="hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#A43718]">LinkedIn</a>
-              <span className="text-[#151515]/20" aria-hidden="true">·</span>
-              <a href="https://dribbble.com/ChadBosewick27" className="hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#A43718]">Dribbble</a>
-              <span className="text-[#151515]/20" aria-hidden="true">·</span>
-              <a
-                href="/downloads/temi-adekunle-cv.pdf"
-                download
-                className="font-medium hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#A43718]"
-              >
-                Download CV (PDF)
-              </a>
-            </div>
-          </div>
-        </SectionReveal>
       </section>
     </PageShell>
   );

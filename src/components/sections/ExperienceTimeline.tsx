@@ -6,20 +6,20 @@ const EXPERIENCE = [
   {
     title: "Product Designer / Founder-Side Operator",
     company: "Candidote",
-    period: "Aug 2025 — Mar 2026",
-    location: "Fully remote — 3-person team",
+    period: "Aug 2025 to Mar 2026",
+    location: "Fully remote, 3-person team",
     context:
       "Joined as the founding designer for a productivity-focused startup, owning the full product design lifecycle from research through implementation.",
     contributions: [
       "Designed 80+ screens across the core product, covering onboarding, dashboard, workspace management, and settings flows.",
       "Built a 40+ component design system from scratch, establishing reusable patterns, variants, and documentation that enabled rapid iteration.",
-      "Worked directly alongside the founder as the sole designer — defining product strategy, prioritising roadmap items, and shipping design decisions directly to development.",
+      "Worked directly alongside the founder as the sole designer, defining product strategy, prioritising roadmap items, and shipping design decisions directly to development.",
     ],
   },
   {
     title: "Lead Designer / Product Operations Collaborator",
     company: "Enviodeck",
-    period: "Mar 2026 — Present",
+    period: "Mar 2026 to present",
     location: "Start-up environment",
     context:
       "Leading design for a presentation platform, building the visual language and component system for a new product entering a competitive market.",

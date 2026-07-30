@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useEffect, useCallback } from "react";
+import { useRef, useEffect, useCallback, useState } from "react";
 import { cn } from "@/lib/utils";
 import { SectionReveal } from "@/components/sections/SectionReveal";
 import Image from "next/image";
@@ -104,12 +104,58 @@ export function UIScrollStrip({
   const autoScrollPositionRef = useRef(0);
   const pauseUntilRef = useRef(0);
   const hoveringRef = useRef(false);
+  const [isMobile, setIsMobile] = useState(false);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(false);
 
   const pauseAutoScroll = useCallback((duration = 1600) => {
     const loopWidth = firstTrackRef.current?.getBoundingClientRect().width ?? 0;
     const currentPosition = scrollRef.current?.scrollLeft ?? 0;
     autoScrollPositionRef.current = loopWidth > 0 ? currentPosition % loopWidth : currentPosition;
     pauseUntilRef.current = performance.now() + duration;
+  }, []);
+
+  const updateMobileControls = useCallback(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+
+    setCanScrollLeft(el.scrollLeft > 2);
+    setCanScrollRight(el.scrollLeft + el.clientWidth < el.scrollWidth - 2);
+  }, []);
+
+  useEffect(() => {
+    const query = window.matchMedia("(max-width: 767px)");
+    const updateViewport = () => setIsMobile(query.matches);
+
+    updateViewport();
+    query.addEventListener("change", updateViewport);
+    return () => query.removeEventListener("change", updateViewport);
+  }, []);
+
+  useEffect(() => {
+    if (!isMobile) return;
+
+    const el = scrollRef.current;
+    if (!el) return;
+    const resizeObserver = new ResizeObserver(updateMobileControls);
+
+    updateMobileControls();
+    el.addEventListener("scroll", updateMobileControls, { passive: true });
+    resizeObserver.observe(el);
+
+    return () => {
+      el.removeEventListener("scroll", updateMobileControls);
+      resizeObserver.disconnect();
+    };
+  }, [isMobile, updateMobileControls]);
+
+  const scrollByCard = useCallback((direction: -1 | 1) => {
+    const el = scrollRef.current;
+    const card = el?.querySelector<HTMLElement>("figure");
+    if (!el || !card) return;
+
+    const gap = Number.parseFloat(getComputedStyle(el.firstElementChild!).gap) || 16;
+    el.scrollBy({ left: direction * (card.offsetWidth + gap), behavior: "smooth" });
   }, []);
 
   useEffect(() => {
@@ -127,6 +173,7 @@ export function UIScrollStrip({
       const loopWidth = firstTrackRef.current?.getBoundingClientRect().width ?? 0;
 
       if (
+        !isMobile &&
         !reducedMotion.matches &&
         !hoveringRef.current &&
         now >= pauseUntilRef.current &&
@@ -142,7 +189,7 @@ export function UIScrollStrip({
 
     animationFrame = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(animationFrame);
-  }, [pauseAutoScroll]);
+  }, [isMobile, pauseAutoScroll]);
 
   if (cards.length === 0) return null;
 
@@ -177,12 +224,40 @@ export function UIScrollStrip({
                 <StripCard key={card.id} card={card} />
               ))}
             </div>
-            <div className="flex flex-none gap-4 pr-4" aria-hidden="true">
-              {cards.map((card) => (
-                <StripCard key={`duplicate-${card.id}`} card={card} duplicate />
-              ))}
-            </div>
+            {!isMobile && (
+              <div className="flex flex-none gap-4 pr-4" aria-hidden="true">
+                {cards.map((card) => (
+                  <StripCard key={`duplicate-${card.id}`} card={card} duplicate />
+                ))}
+              </div>
+            )}
           </div>
+
+          {isMobile && canScrollLeft && (
+            <button
+              type="button"
+              aria-label="Show previous UI component"
+              onClick={() => scrollByCard(-1)}
+              className="absolute left-2 top-1/2 z-10 flex size-11 -translate-y-1/2 items-center justify-center rounded-full bg-[#f5f2ee]/90 text-[#151515] shadow-[0_4px_16px_rgba(21,21,21,0.12)] backdrop-blur-sm transition-colors duration-[var(--duration-fast)] hover:bg-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#A43718]"
+            >
+              <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+                <path d="m10.5 4.5-4.5 4.5 4.5 4.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </button>
+          )}
+
+          {isMobile && canScrollRight && (
+            <button
+              type="button"
+              aria-label="Show next UI component"
+              onClick={() => scrollByCard(1)}
+              className="absolute right-2 top-1/2 z-10 flex size-11 -translate-y-1/2 items-center justify-center rounded-full bg-[#f5f2ee]/90 text-[#151515] shadow-[0_4px_16px_rgba(21,21,21,0.12)] backdrop-blur-sm transition-colors duration-[var(--duration-fast)] hover:bg-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#A43718]"
+            >
+              <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+                <path d="m7.5 4.5 4.5 4.5-4.5 4.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </button>
+          )}
         </div>
       </section>
     </SectionReveal>

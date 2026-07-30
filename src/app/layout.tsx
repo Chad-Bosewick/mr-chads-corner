@@ -27,12 +27,12 @@ export const metadata: Metadata = {
   ),
   title: {
     template: "%s | Temi Adekunle",
-    default: "Temi Adekunle — Product Design Portfolio",
+    default: "Temi Adekunle | Product Design Portfolio",
   },
   description:
     "Product designer who thinks in systems and shapes digital experiences with taste and empathy.",
   openGraph: {
-    title: "Temi Adekunle — Product Design Portfolio",
+    title: "Temi Adekunle | Product Design Portfolio",
     description:
       "Product designer who thinks in systems and shapes digital experiences with taste and empathy.",
     url: "/",
@@ -44,13 +44,13 @@ export const metadata: Metadata = {
         url: "/images/social/og-preview.png",
         width: 1200,
         height: 630,
-        alt: "Temi Adekunle, Product Designer — Systems-minded digital experiences shaped with taste and empathy.",
+        alt: "Temi Adekunle, Product Designer. Systems-minded digital experiences shaped with taste and empathy.",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Temi Adekunle — Product Design Portfolio",
+    title: "Temi Adekunle | Product Design Portfolio",
     description:
       "Product designer who thinks in systems and shapes digital experiences with taste and empathy.",
     images: ["/images/social/og-preview.png"],
@@ -70,8 +70,6 @@ export default function RootLayout({
       <body
         className="min-h-screen font-sans"
         style={{
-          backgroundImage: 'url(/paper-texture.webp)',
-          backgroundRepeat: 'repeat',
           backgroundColor: "#f5f2ee",
         }}
       >

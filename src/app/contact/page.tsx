@@ -5,7 +5,7 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Contact",
   description:
-    "Get in touch with Temi Adekunle — open to freelance collaborations, product design leadership opportunities, and speaking engagements.",
+    "Get in touch with Temi Adekunle. Open to freelance collaborations, product design leadership opportunities, and speaking engagements.",
 };
 
 const SOCIAL_LINKS = [
@@ -73,8 +73,7 @@ export default function ContactPage() {
 
       {/* Availability */}
       <SectionReveal delay={240}>
-        <hr className="my-16 border-[#151515]/10" />
-        <p className="max-w-[680px] font-sans text-[clamp(0.875rem,2vw,1rem)] leading-relaxed text-[#151515]/70">
+        <p className="mt-16 max-w-[680px] font-sans text-[clamp(0.875rem,2vw,1rem)] leading-relaxed text-[#151515]/70">
           Currently open to freelance collaborations, product design leadership
           opportunities, and speaking engagements. Based in Lagos, working
           remotely with teams worldwide.

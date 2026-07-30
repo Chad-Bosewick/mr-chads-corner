@@ -39,6 +39,7 @@ export default function CaseStudiesPage() {
               annotationSet={project.annotationSet}
               status={project.status}
               device={project.device}
+              sector={project.sector}
               delay={index * 100}
             />
           ))}

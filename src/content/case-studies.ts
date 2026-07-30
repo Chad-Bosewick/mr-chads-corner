@@ -142,10 +142,10 @@ export const todoApp: CaseStudy = {
   slug: "todo-app",
   title: "TODO++",
   category: "Productivity",
-  role: "Product design lead — UX, UI, design system",
+  role: "Product design lead: UX, UI, design system",
   timeline: "2025",
   overview:
-    "TODO++ started as a straightforward task management tool that had grown into a feature-heavy checklist application. The product was losing users to simpler alternatives because the core experience had become buried under options. The goal was to redesign the experience from the ground up — preserving power-user capabilities while making the everyday experience feel effortless.",
+    "TODO++ started as a straightforward task management tool that had grown into a feature-heavy checklist application. The product was losing users to simpler alternatives because the core experience had become buried under options. The goal was to redesign the experience from the ground up, preserving power-user capabilities while making the everyday experience feel effortless.",
   subtitle:
     "A calmer task loop across a dedicated device and mobile companion.",
   coverSrc: "/images/case-studies/todo-app-cover.webp",
@@ -155,9 +155,9 @@ export const todoApp: CaseStudy = {
   },
   heroCarousel: [
     {
-      src: "/images/case-studies/todo-app/phone/todo-app-phone-splash.png",
+      src: "/images/case-studies/todo-app/phone/todo-app-phone-splash.webp",
       alt: "TODO++ splash screen in a mobile bezel",
-      secondarySrc: "/images/case-studies/todo-app/phone/todo-app-phone-onboarding.png",
+      secondarySrc: "/images/case-studies/todo-app/phone/todo-app-phone-onboarding.webp",
       secondaryAlt: "TODO++ onboarding screen in a mobile bezel",
       presentation: "phone-pair",
     },
@@ -176,7 +176,7 @@ export const todoApp: CaseStudy = {
     sections: [],
   },
   meta: {
-    role: "Product design lead — UX, UI, design system",
+  role: "Product design lead: UX, UI, design system",
     timeline: "2025",
     date: "2025",
     platform: "Physical device + mobile app",
@@ -189,7 +189,7 @@ export const todoApp: CaseStudy = {
       type: "executive-summary",
       heading: "A calmer task loop across a dedicated device and mobile companion",
       executiveSummary: {
-        problem: "Task-management products can make a simple daily action—deciding what to do next—feel like administration. TODO++ explores a calmer alternative: a focused physical task device paired with a mobile companion.",
+        problem: "Task-management products can make a simple daily action, deciding what to do next, feel like administration. TODO++ explores a calmer alternative: a focused physical task device paired with a mobile companion.",
         solution: "The concept brings the essential task loop to the foreground: see the current work, open its details, connect the companion device, and mark work complete. The UI uses deliberate hierarchy and visible state changes to keep the interaction legible.",
         outcome: "A presentation-ready product concept comprising a dedicated task device, companion mobile screens, onboarding/linking, task detail, and task-completion states. No quantitative outcome is claimed because the supplied source set does not verify one.",
       },
@@ -233,8 +233,8 @@ export const todoApp: CaseStudy = {
       chapter: "context",
       body: "The research artifacts frame two complementary needs: <strong>Daniel needs focus and a system that keeps a demanding schedule manageable;</strong> <strong>Amara needs a simple way to capture and return to work without feeling buried by options.</strong> Treat these as the lens for the concept, not as quantitative validation.",
       images: [
-        { src: "/images/case-studies/todo-app/todo-app-persona-1.webp", alt: "Daniel Okafor persona — needs clarity, focus, and control without clutter", caption: "Daniel Okafor — needs clarity, focus, and control without clutter.", width: 800, height: 744 },
-        { src: "/images/case-studies/todo-app/todo-app-persona-2.webp", alt: "Amara Bello persona — needs a simple system for assignments and personal tasks", caption: "Amara Bello — needs a simple system for assignments and personal tasks.", width: 800, height: 744 },
+        { src: "/images/case-studies/todo-app/todo-app-persona-1.webp", alt: "Daniel Okafor persona, needs clarity, focus, and control without clutter", caption: "Daniel Okafor needs clarity, focus, and control without clutter.", width: 800, height: 744 },
+        { src: "/images/case-studies/todo-app/todo-app-persona-2.webp", alt: "Amara Bello persona, needs a simple system for assignments and personal tasks", caption: "Amara Bello needs a simple system for assignments and personal tasks.", width: 800, height: 744 },
       ],
     },
     {
@@ -253,22 +253,22 @@ export const todoApp: CaseStudy = {
         body: "/images/case-studies/todo-app/threejs/device-body.png",
         screenContent: "/images/case-studies/todo-app/threejs/screen-content.png",
         screenMask: "/images/case-studies/todo-app/threejs/screen-mask.png",
-        fallback: "/images/case-studies/todo-app/todo-app-dedicated-surface.png",
+        fallback: "/images/case-studies/todo-app/todo-app-dedicated-surface.webp",
         alt: "TODO++ dedicated task device showing the curated e-paper task list and hardware controls",
-        caption: "The dedicated TODO++ device — focused hardware for daily task management",
+        caption: "The dedicated TODO++ device: focused hardware for daily task management",
       },
     },
     {
       type: "carousel",
       heading: "The product system at a glance",
       chapter: "solution",
-      body: "The dedicated device, the companion mobile home, device linking, and task completion — each slide makes one relationship legible.",
+      body: "The dedicated device, the companion mobile home, device linking, and task completion each make one relationship legible.",
       carouselBackground: "#FFFFFF",
       images: [
-        { src: "/images/case-studies/todo-app/phone/todo-app-phone-home-figma.png", alt: "TODO++ companion mobile home screen", caption: "Companion mobile home", presentation: "phone" },
-        { src: "/images/case-studies/todo-app/phone/todo-app-phone-qr-connection.png", alt: "TODO++ QR connection screen for linking the companion app to the device", caption: "Cross-device connection", presentation: "phone" },
-        { src: "/images/case-studies/todo-app/phone/todo-app-phone-manage-hardware.png", alt: "TODO++ hardware management controls", caption: "Manage hardware", presentation: "phone" },
-        { src: "/images/case-studies/todo-app/phone/todo-app-phone-companion-connection.png", alt: "TODO++ companion app connected to the dedicated device", caption: "Companion connection", presentation: "phone" },
+        { src: "/images/case-studies/todo-app/phone/todo-app-phone-home-figma.webp", alt: "TODO++ companion mobile home screen", caption: "Companion mobile home", presentation: "phone" },
+        { src: "/images/case-studies/todo-app/phone/todo-app-phone-qr-connection.webp", alt: "TODO++ QR connection screen for linking the companion app to the device", caption: "Cross-device connection", presentation: "phone" },
+        { src: "/images/case-studies/todo-app/phone/todo-app-phone-manage-hardware.webp", alt: "TODO++ hardware management controls", caption: "Manage hardware", presentation: "phone" },
+        { src: "/images/case-studies/todo-app/phone/todo-app-phone-companion-connection.webp", alt: "TODO++ companion app connected to the dedicated device", caption: "Companion connection", presentation: "phone" },
       ],
     },
     {
@@ -277,7 +277,7 @@ export const todoApp: CaseStudy = {
       chapter: "solution",
       body: "<strong>The companion home keeps today's tasks, recent updates, and device status in one calm view.</strong> The screen gives the reader a clear entry point into the daily task loop before they move into deeper task context.",
       phoneMockupImages: [
-        { src: "/images/case-studies/todo-app/phone/todo-app-phone-daily-overview.png", alt: "TODO++ companion app daily overview with tasks, updates, and device controls", caption: "The daily overview keeps tasks, updates, and device controls within reach." },
+        { src: "/images/case-studies/todo-app/phone/todo-app-phone-daily-overview.webp", alt: "TODO++ companion app daily overview with tasks, updates, and device controls", caption: "The daily overview keeps tasks, updates, and device controls within reach." },
       ],
     },
     {
@@ -286,8 +286,8 @@ export const todoApp: CaseStudy = {
       chapter: "solution",
       body: "<strong>Task detail holds the information needed to act; completion closes the loop.</strong> Present the two states together so the reader can follow the interaction from an active task to a confirmed result.",
       phoneMockupImages: [
-        { src: "/images/case-studies/todo-app/phone/todo-app-phone-task-detail.webp", alt: "TODO++ task detail view — the active task and its context", caption: "Task detail — the active task and its context." },
-        { src: "/images/case-studies/todo-app/phone/todo-app-phone-completion-figma.png", alt: "TODO++ completed task state — clear acknowledgement that the task is done", caption: "Completion — a clear acknowledgement that the task is done." },
+        { src: "/images/case-studies/todo-app/phone/todo-app-phone-task-detail.webp", alt: "TODO++ task detail view, the active task and its context", caption: "Task detail: the active task and its context." },
+        { src: "/images/case-studies/todo-app/phone/todo-app-phone-completion-figma.webp", alt: "TODO++ completed task state, clear acknowledgement that the task is done", caption: "Completion: clear acknowledgement that the task is done." },
       ],
     },
     {
@@ -316,7 +316,7 @@ export const lettersApp: CaseStudy = {
   slug: "letters-app",
   title: "Letters App",
   category: "Communication",
-  role: "Sole product designer — end-to-end product design",
+  role: "Sole product designer: end-to-end product design",
   timeline: "2024",
   overview:
     "Letters App was conceived as a response to the always-on, notification-driven nature of modern messaging. The premise was simple: what if digital communication could feel more like writing a letter than sending a text message? The challenge was designing a platform that encouraged thoughtfulness and intentionality without feeling slow, heavy, or impractical for everyday use.",
@@ -326,14 +326,14 @@ export const lettersApp: CaseStudy = {
   heroCarousel: [
     {
       src: "/images/case-studies/letters-app/phone/letters-app-phone-onboarding.webp",
-      alt: "Letters App iPhone welcome screen — welcome, log in, and sign up",
-      secondarySrc: "/images/case-studies/letters-app/phone/letters-app-phone-preview-post.png",
-      secondaryAlt: "Letters App iPhone preview and post screen — review a finished letter before posting",
+      alt: "Letters App iPhone welcome screen: welcome, log in, and sign up",
+      secondarySrc: "/images/case-studies/letters-app/phone/letters-app-phone-preview-post.webp",
+      secondaryAlt: "Letters App iPhone preview and post screen: review a finished letter before posting",
       presentation: "phone-pair",
     },
     {
       src: "/images/case-studies/letters-app/letters-app-hero.webp",
-      alt: "Letters App web homepage — browse recent and continuing letter correspondence",
+      alt: "Letters App web homepage: browse recent and continuing letter correspondence",
       width: 1440,
       height: 915,
     },
@@ -341,15 +341,15 @@ export const lettersApp: CaseStudy = {
   heroCarouselBackground: "#FFFFFF",
   heroMedia: {
     src: "/images/case-studies/letters-app/letters-app-hero.webp",
-    alt: "Letters App web homepage — browse recent and continuing letter correspondence",
+    alt: "Letters App web homepage: browse recent and continuing letter correspondence",
   },
   coverScroll: {
     src: "/images/case-studies/letters-app/letters-app-landing-page-full.webp",
-    alt: "Letters App full web homepage — recent and continuing letter correspondence",
+    alt: "Letters App full web homepage: recent and continuing letter correspondence",
     sections: [],
   },
   meta: {
-    role: "Sole product designer — end-to-end product design",
+  role: "Sole product designer: end-to-end product design",
     timeline: "2024",
     date: "2024",
     platform: "Responsive web and iPhone app",
@@ -403,18 +403,18 @@ export const lettersApp: CaseStudy = {
       navLabel: "Solution",
       body: "<strong>The web home prioritises correspondence over a generic social feed.</strong> Continue Reading and Recent Posts give the reader two useful ways back into the product, while search and primary navigation stay available without competing with the letters.",
       images: [
-        { src: "/images/case-studies/letters-app/letters-app-landing-page-full.webp", alt: "Letters App web homepage — browse recent and continuing letter correspondence", caption: "The web home — recent posts and continuing reads in a letter-first layout", width: 1440, height: 2388, scroll: true },
+        { src: "/images/case-studies/letters-app/letters-app-landing-page-full.webp", alt: "Letters App web homepage: browse recent and continuing letter correspondence", caption: "The web home: recent posts and continuing reads in a letter-first layout", width: 1440, height: 2388, scroll: true },
       ],
     },
     {
       type: "carousel",
       heading: "From reading to response",
       chapter: "solution",
-      body: "Each slide shows a key web state at full height — scroll to explore the long-form reading view, the reply modal, and the compose surface. <strong>The product lets you move from discovery to correspondence without leaving the letter.</strong>",
+      body: "Each slide shows a key web state at full height. Scroll to explore the long-form reading view, the reply modal, and the compose surface. <strong>The product lets you move from discovery to correspondence without leaving the letter.</strong>",
       images: [
-        { src: "/images/case-studies/letters-app/carousel/letters-app-web-read.webp", alt: "Letters App web reading view — a letter with header, featured image, body text, and reply button", caption: "Read a letter with header, author context, imagery, and a direct reply path.", width: 2880, height: 10456, scroll: true },
-        { src: "/images/case-studies/letters-app/carousel/letters-app-web-reply.webp", alt: "Letters App web reply modal — respond to a letter in an overlay without losing reading context", caption: "Reply without leaving the letter — the overlay keeps the original visible.", width: 2880, height: 4776, scroll: true },
-        { src: "/images/case-studies/letters-app/carousel/letters-app-web-compose.webp", alt: "Letters App web compose editor — draft a new letter with structured fields and image upload", caption: "Draft a new letter with structure — title, cover image, and body.", width: 2880, height: 4776, scroll: true },
+        { src: "/images/case-studies/letters-app/carousel/letters-app-web-read.webp", alt: "Letters App web reading view: a letter with header, featured image, body text, and reply button", caption: "Read a letter with header, author context, imagery, and a direct reply path.", width: 2880, height: 10456, scroll: true },
+        { src: "/images/case-studies/letters-app/carousel/letters-app-web-reply.webp", alt: "Letters App web reply modal: respond to a letter in an overlay without losing reading context", caption: "Reply without leaving the letter. The overlay keeps the original visible.", width: 2880, height: 4776, scroll: true },
+        { src: "/images/case-studies/letters-app/carousel/letters-app-web-compose.webp", alt: "Letters App web compose editor: draft a new letter with structured fields and image upload", caption: "Draft a new letter with structure: title, cover image, and body.", width: 2880, height: 4776, scroll: true },
       ],
     },
     {
@@ -423,8 +423,8 @@ export const lettersApp: CaseStudy = {
       chapter: "solution",
       body: "<strong>The iPhone flow makes the editorial choices visible.</strong> The writer composes a letter, chooses imagery or a visual treatment, previews the result, and posts only when it is ready.",
       phoneMockupImages: [
-        { src: "/images/case-studies/letters-app/phone/letters-app-phone-compose.webp", alt: "Letters App iPhone compose screen — write a letter and choose its visual treatment", caption: "Compose a letter and choose its visual treatment." },
-        { src: "/images/case-studies/letters-app/phone/letters-app-phone-preview-post.webp", alt: "Letters App iPhone preview and post screen — review the finished letter before posting", caption: "Preview the finished letter before posting." },
+        { src: "/images/case-studies/letters-app/phone/letters-app-phone-compose.webp", alt: "Letters App iPhone compose screen: write a letter and choose its visual treatment", caption: "Compose a letter and choose its visual treatment." },
+        { src: "/images/case-studies/letters-app/phone/letters-app-phone-preview-post.webp", alt: "Letters App iPhone preview and post screen: review the finished letter before posting", caption: "Preview the finished letter before posting." },
       ],
     },
     {
@@ -433,8 +433,8 @@ export const lettersApp: CaseStudy = {
       chapter: "solution",
       body: "The supporting mobile states establish the product beyond one letter: <strong>onboarding introduces its promise, My Letters separates sent and received correspondence, and My Pals makes the people behind the letters discoverable.</strong>",
       phoneMockupImages: [
-        { src: "/images/case-studies/letters-app/phone/letters-app-phone-onboarding.webp", alt: "Letters App iPhone onboarding screen — welcome, log in, sign up", caption: "Welcome and sign-in entry point." },
-        { src: "/images/case-studies/letters-app/phone/letters-app-phone-my-letters.webp", alt: "Letters App iPhone My Letters screen — sent and received letters", caption: "Sent and received letters." },
+        { src: "/images/case-studies/letters-app/phone/letters-app-phone-onboarding.webp", alt: "Letters App iPhone onboarding screen: welcome, log in, sign up", caption: "Welcome and sign-in entry point." },
+        { src: "/images/case-studies/letters-app/phone/letters-app-phone-my-letters.webp", alt: "Letters App iPhone My Letters screen: sent and received letters", caption: "Sent and received letters." },
       ],
     },
     {
@@ -442,7 +442,7 @@ export const lettersApp: CaseStudy = {
       heading: "The people behind the correspondence",
       chapter: "solution",
       phoneMockupImages: [
-        { src: "/images/case-studies/letters-app/phone/letters-app-phone-my-pals.webp", alt: "Letters App iPhone My Pals screen — discover the people behind the letters", caption: "People behind the correspondence." },
+        { src: "/images/case-studies/letters-app/phone/letters-app-phone-my-pals.webp", alt: "Letters App iPhone My Pals screen: discover the people behind the letters", caption: "People behind the correspondence." },
       ],
     },
     {
@@ -565,7 +565,7 @@ export const credlane: CaseStudy = {
       chapter: "solution",
       images: [
         {
-          src: "/images/case-studies/credlane/carousel/travecs-assessment-01-personal-summary.png",
+          src: "/images/case-studies/credlane/carousel/travecs-assessment-01-personal-summary.webp",
           alt: "SkillBridge-stage personal assessment summary with the next assessment in the talent roadmap",
           caption: "Personal assessment: the summary unlocks the next step in the roadmap",
           width: 1360,
@@ -573,7 +573,7 @@ export const credlane: CaseStudy = {
           scroll: true,
         },
         {
-          src: "/images/case-studies/credlane/carousel/travecs-assessment-02-advanced-preview.png",
+          src: "/images/case-studies/credlane/carousel/travecs-assessment-02-advanced-preview.webp",
           alt: "SkillBridge-stage advanced assessment preview with timing, expectations, and retake guidance",
           caption: "Advanced assessment preview: expectations and guidance before starting",
           width: 1360,
@@ -581,7 +581,7 @@ export const credlane: CaseStudy = {
           scroll: true,
         },
         {
-          src: "/images/case-studies/credlane/carousel/travecs-assessment-03-active.png",
+          src: "/images/case-studies/credlane/carousel/travecs-assessment-03-active.webp",
           alt: "SkillBridge-stage active assessment with question navigation, timer, progress, and submit action",
           caption: "Active assessment: structured navigation, progress, and submission",
           width: 1360,
@@ -589,7 +589,7 @@ export const credlane: CaseStudy = {
           scroll: true,
         },
         {
-          src: "/images/case-studies/credlane/carousel/travecs-assessment-04-advanced-summary.png",
+          src: "/images/case-studies/credlane/carousel/travecs-assessment-04-advanced-summary.webp",
           alt: "SkillBridge-stage advanced assessment summary confirming completion and explaining the results timeline",
           caption: "Advanced assessment summary: completion confirmation and what happens next",
           width: 1360,
@@ -613,7 +613,7 @@ export const credlane: CaseStudy = {
       chapter: "solution",
       images: [
         {
-          src: "/images/case-studies/credlane/carousel/travecs-talent-01-generating.png",
+          src: "/images/case-studies/credlane/carousel/travecs-talent-01-generating.webp",
           alt: "SkillBridge-stage loading screen generating assessments before a new talent profile is created",
           caption: "New talent: generating a personalised assessment path before profile creation",
           width: 1360,
@@ -621,7 +621,7 @@ export const credlane: CaseStudy = {
           scroll: true,
         },
         {
-          src: "/images/case-studies/credlane/carousel/travecs-talent-02-home.png",
+          src: "/images/case-studies/credlane/carousel/travecs-talent-02-home.webp",
           alt: "SkillBridge-stage default talent homepage with profile progress and the assessment roadmap",
           caption: "Default homepage: profile progress and the complete Job Ready roadmap",
           width: 1360,
@@ -629,7 +629,7 @@ export const credlane: CaseStudy = {
           scroll: true,
         },
         {
-          src: "/images/case-studies/credlane/carousel/travecs-talent-03-resources-menu.png",
+          src: "/images/case-studies/credlane/carousel/travecs-talent-03-resources-menu.webp",
           alt: "SkillBridge-stage resources page with learning resources and the account menu open",
           caption: "Resources: learning content with account controls kept within reach",
           width: 1360,
@@ -637,7 +637,7 @@ export const credlane: CaseStudy = {
           scroll: true,
         },
         {
-          src: "/images/case-studies/credlane/carousel/travecs-talent-04-job-ready.png",
+          src: "/images/case-studies/credlane/carousel/travecs-talent-04-job-ready.webp",
           alt: "Credlane-stage Job Ready talent homepage with verified status, skill breakdown, and recommendations",
           caption: "Job Ready homepage: verified status, score context, and next opportunities",
           width: 1360,
@@ -704,14 +704,14 @@ export const credlane: CaseStudy = {
       chapter: "solution",
       images: [
         {
-          src: "/images/case-studies/credlane/carousel/travecs-employer-assessment-01-create.png",
+          src: "/images/case-studies/credlane/carousel/travecs-employer-assessment-01-create.webp",
           alt: "Credlane-stage employer modal for defining an assessment title, category, pass rate, and deadline",
           caption: "Set up: define the assessment details, pass rate, and deadline",
           width: 1360,
           height: 850,
         },
         {
-          src: "/images/case-studies/credlane/carousel/travecs-employer-assessment-02-review-create.png",
+          src: "/images/case-studies/credlane/carousel/travecs-employer-assessment-02-review-create.webp",
           alt: "Credlane-stage employer review screen with a Create assessment action",
           caption: "Review: confirm the configuration before creating the assessment",
           width: 1360,
@@ -719,7 +719,7 @@ export const credlane: CaseStudy = {
           scroll: true,
         },
         {
-          src: "/images/case-studies/credlane/carousel/travecs-employer-assessment-03-manage.png",
+          src: "/images/case-studies/credlane/carousel/travecs-employer-assessment-03-manage.webp",
           alt: "Credlane-stage employer Assessments page showing active, completed, and draft assessments",
           caption: "Manage: track active, completed, and draft assessments in one place",
           width: 1360,
@@ -825,7 +825,7 @@ export const testground: CaseStudy = {
   slug: "testground",
   title: "Testground",
   category: "Developer Tools",
-  role: "Product design — UX, UI",
+  role: "Product design: UX, UI",
   timeline: "2026",
   overview: "Case study content coming soon.",
   sections: [
@@ -846,7 +846,7 @@ export const draftly: CaseStudy = {
   role: "Design Lead and Sole Designer",
   timeline: "3 days",
   overview:
-    "Draftly is an AI writing coach for high-school students — a system that helps students brainstorm, structure, revise, and understand their writing through explanations that turn every correction into a learning moment. I designed the full product concept in a three-day solo sprint: product direction, visual identity, a responsive landing page, product previews for the AI Idea Starter and Writing Assistant, a brand and mascot system, and a set of Writing Journey illustration cards. The prototype was presented to potential investors and collaborators.",
+    "Draftly is an AI writing coach for high-school students. It helps students brainstorm, structure, revise, and understand their writing through explanations that turn every correction into a learning moment. I designed the full product concept in a three-day solo sprint: product direction, visual identity, a responsive landing page, product previews for the AI Idea Starter and Writing Assistant, a brand and mascot system, and a set of Writing Journey illustration cards. The prototype was presented to potential investors and collaborators.",
   coverSrc: "/images/case-studies/draftly-cover.webp",
   heroMedia: {
     src: "/images/draftly/draftly-hero-1440x900.webp",
@@ -893,7 +893,7 @@ export const draftly: CaseStudy = {
       heading: "What I designed",
       designedFeatures: [
         { name: "Product story", description: "A responsive landing page that introduces Draftly and shows the product before asking for trust." },
-        { name: "Idea Starter", description: "A guided first step from assignment prompt to an angle, thesis, or outline — without writing the essay." },
+        { name: "Idea Starter", description: "A guided first step from assignment prompt to an angle, thesis, or outline without writing the essay." },
         { name: "Writing Assistant", description: "Revision feedback that pairs a correction with a concise explanation and a student choice." },
         { name: "Progress system", description: "A visual identity, mascot, and four-stage Writing Journey that make learning feel encouraging and visible." },
       ],
@@ -921,14 +921,14 @@ export const draftly: CaseStudy = {
         {
           src: "/images/draftly/draftly-idea-starter-feature.webp",
           alt: "Draftly AI Idea Starter product frame from Figma",
-          caption: "Idea Starter — helping a student move from a prompt to a direction without creating the assignment.",
+          caption: "Idea Starter: helping a student move from a prompt to a direction without creating the assignment.",
           width: 880,
           height: 573,
         },
         {
           src: "/images/draftly/draftly-writing-assistant-feature.webp",
           alt: "Draftly Writing Assistant product frame from Figma",
-          caption: "Writing Assistant — pairing a suggested edit with the explanation that makes it a learning moment.",
+          caption: "Writing Assistant: pairing a suggested edit with the explanation that makes it a learning moment.",
           width: 880,
           height: 573,
         },
