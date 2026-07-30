@@ -71,7 +71,7 @@ export function NavMobile({ items, currentPath, onClose }: NavMobileProps) {
       role="dialog"
       aria-label="Navigation menu"
       aria-modal="true"
-      className="animate-slide-in-left fixed inset-0 z-50 flex items-center justify-center"
+      className="animate-slide-in-right fixed inset-0 z-50 flex items-center justify-center"
       style={{
         backgroundColor: '#0F0F0F',
         backgroundImage: 'url(/menu-bg-mobile.webp)',
@@ -81,18 +81,6 @@ export function NavMobile({ items, currentPath, onClose }: NavMobileProps) {
       onKeyDown={handleKeyDown}
       onClick={handleBackdropClick}
     >
-      {/* Close button — p-3 ensures ≥44×44 hit area around the 24×24 icon */}
-      <button
-        className="absolute right-6 top-6 flex items-center justify-center p-3"
-        onClick={onClose}
-        aria-label="Close navigation menu"
-      >
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-          <circle cx="12" cy="12" r="10" fill="none" stroke="#FFFFFF" strokeWidth="1.5" />
-          <path d="M8 8L16 16M16 8L8 16" stroke="#FFFFFF" strokeWidth="1.5" strokeLinecap="round" />
-        </svg>
-      </button>
-
       <ul className="flex flex-col items-center gap-8">
         {items.map((item, index) => {
           const isActive = currentPath === item.href || (item.href !== "/" && currentPath.startsWith(item.href));

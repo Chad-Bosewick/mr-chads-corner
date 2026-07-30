@@ -113,8 +113,8 @@ body {
 }
 
 /* ===== Animation Keyframes ===== */
-@keyframes slide-in-left {
-  from { transform: translateX(-100%); }
+@keyframes slide-in-right {
+  from { transform: translateX(100%); }
   to { transform: translateX(0); }
 }
 
@@ -125,8 +125,8 @@ body {
 
 /* Motion-controlled animation utilities */
 @media (prefers-reduced-motion: no-preference) {
-  .animate-slide-in-left {
-    animation: slide-in-left var(--duration-standard) var(--ease-out) forwards;
+  .animate-slide-in-right {
+    animation: slide-in-right var(--duration-standard) var(--ease-out) forwards;
   }
 
   .animate-fade-in-up {
@@ -136,7 +136,7 @@ body {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .animate-slide-in-left,
+  .animate-slide-in-right,
   .animate-fade-in-up {
     opacity: 1;
     transform: none;

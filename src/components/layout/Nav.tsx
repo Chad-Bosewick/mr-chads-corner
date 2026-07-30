@@ -4,7 +4,9 @@ import { useState, useEffect, useCallback, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
+import { motion } from "motion/react";
 import { cn } from "@/lib/utils";
+import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { NavMobile } from "./NavMobile";
 import { ContentRail } from "./PageShell";
 
@@ -19,6 +21,7 @@ export function Nav() {
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const hamburgerRef = useRef<HTMLButtonElement>(null);
+  const prefersReducedMotion = useReducedMotion();
   const lastActiveElement = useRef<Element | null>(null);
   const sentinelRef = useRef<HTMLDivElement>(null);
 
@@ -114,16 +117,53 @@ export function Nav() {
           {/* Mobile hamburger — minimum 44x44 hit area */}
           <button
             ref={hamburgerRef}
-            className="-mr-3 flex items-center justify-center p-3 md:hidden"
-            onClick={openMenu}
-            aria-label="Open navigation menu"
+            className={cn(
+              "-mr-3 flex items-center justify-center p-3 md:hidden",
+              isMobileOpen && "relative z-[60]"
+            )}
+            onClick={isMobileOpen ? closeMenu : openMenu}
+            aria-label={isMobileOpen ? "Close navigation menu" : "Open navigation menu"}
             aria-expanded={isMobileOpen}
           >
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-              <rect x="3" y="6" width="18" height="1.5" rx="0.75" fill="#151515" />
-              <rect x="3" y="11.25" width="18" height="1.5" rx="0.75" fill="#151515" />
-              <rect x="3" y="16.5" width="18" height="1.5" rx="0.75" fill="#151515" />
-            </svg>
+            <motion.svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              aria-hidden="true"
+            >
+              <motion.path
+                initial={false}
+                animate={{
+                  d: isMobileOpen ? "M6 6 L18 18" : "M4 6 L20 6",
+                  stroke: isMobileOpen ? "#FFFFFF" : "#151515",
+                }}
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
+              />
+              <motion.path
+                initial={false}
+                d="M4 12 L20 12"
+                animate={{
+                  opacity: isMobileOpen ? 0 : 1,
+                  stroke: isMobileOpen ? "#FFFFFF" : "#151515",
+                }}
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
+              />
+              <motion.path
+                initial={false}
+                animate={{
+                  d: isMobileOpen ? "M6 18 L18 6" : "M4 18 L20 18",
+                  stroke: isMobileOpen ? "#FFFFFF" : "#151515",
+                }}
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
+              />
+            </motion.svg>
           </button>
         </ContentRail>
       </nav>
