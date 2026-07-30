@@ -22,9 +22,10 @@ export function TimelineHero({ animate = true }: { animate?: boolean }) {
 
   const [width, setWidth] = useState(0);
   const [overrideIndex, setOverrideIndex] = useState<number | null>(null);
+  const [isPaused, setIsPaused] = useState(false);
 
   /* Hook returns the active index — from auto-advance or override */
-  const activeIndex = useTimelineHero(canvasRef, animate, false, overrideIndex);
+  const activeIndex = useTimelineHero(canvasRef, animate, isPaused, overrideIndex);
 
   /* The tooltip always follows the hook's activeIndex */
   const displayIndex = overrideIndex !== null ? overrideIndex : activeIndex;
@@ -117,6 +118,10 @@ export function TimelineHero({ animate = true }: { animate?: boolean }) {
     startIdleTimer();
   }, [startIdleTimer]);
 
+  const togglePause = useCallback(() => {
+    setIsPaused((prev) => !prev);
+  }, []);
+
   return (
     <div
       ref={wrapperRef}
@@ -141,6 +146,7 @@ export function TimelineHero({ animate = true }: { animate?: boolean }) {
           onClick={(event) => {
             event.stopPropagation();
             focusMilestone(index);
+            startIdleTimer();
           }}
           className="absolute z-10 size-11 -translate-x-1/2 -translate-y-1/2 rounded-full focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#A43718]"
           style={{ left: position, top: canvasTop + groundY }}
@@ -186,6 +192,25 @@ export function TimelineHero({ animate = true }: { animate?: boolean }) {
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* ── Pause/play button ── */}
+      <button
+        type="button"
+        onClick={togglePause}
+        aria-label={isPaused ? "Resume timeline animation" : "Pause timeline animation"}
+        aria-pressed={isPaused}
+        className="absolute right-1 top-4 z-20 flex size-8 items-center justify-center rounded-md text-[#151515]/30 transition-colors duration-[var(--duration-fast)] hover:text-[#151515]/70 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#A43718] md:right-2 md:top-5"
+      >
+        {isPaused ? (
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor" aria-hidden="true">
+            <path d="M4 2.5a.5.5 0 0 1 .75-.433l7 4.5a.5.5 0 0 1 0 .866l-7 4.5A.5.5 0 0 1 4 11.5v-9Z" />
+          </svg>
+        ) : (
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor" aria-hidden="true">
+            <path d="M4.5 2.5a.5.5 0 0 1 .5.5v8a.5.5 0 0 1-.5.5H4a.5.5 0 0 1-.5-.5V3a.5.5 0 0 1 .5-.5h.5Zm5.5 0a.5.5 0 0 1 .5.5v8a.5.5 0 0 1-.5.5H9a.5.5 0 0 1-.5-.5V3a.5.5 0 0 1 .5-.5h1Z" />
+          </svg>
+        )}
+      </button>
     </div>
   );
 }

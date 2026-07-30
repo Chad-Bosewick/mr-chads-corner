@@ -40,7 +40,7 @@ export function Footer() {
 
   return (
     <footer
-      className="relative z-10 overflow-hidden bg-[#0F0F0F] py-16"
+      className="relative z-10 bg-[#0F0F0F] py-16"
       aria-label="Site footer"
     >
       <FooterAscii />
@@ -110,10 +110,9 @@ export function Footer() {
           </div>
         </ContentRail>
 
-        <ContentRail>
-          {/* Wordmark aligned to the footer divider */}
+        <div className="relative left-1/2 w-screen -translate-x-1/2 lg:left-auto lg:w-full lg:max-w-[1120px] lg:translate-x-0 lg:mx-auto lg:px-8">
           <FooterAsciiBrand />
-        </ContentRail>
+        </div>
       </div>
     </footer>
   );

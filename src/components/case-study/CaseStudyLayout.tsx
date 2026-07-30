@@ -392,7 +392,7 @@ export function CaseStudyLayout({
       <article>
         {/* Nav + header side-by-side on desktop, stacked on mobile */}
         {/* Compact section navigation below the desktop-sidebar breakpoint */}
-        <div className="sticky top-[88px] md:top-[60px] z-30 -mx-5 -mt-12 mb-10 sm:-mx-6 md:-mt-16 lg:-mt-24 xl:hidden">
+        <div className="sticky top-14 md:top-[60px] z-30 -mx-5 -mt-12 mb-10 sm:-mx-6 md:-mt-16 lg:-mt-24 xl:hidden">
           <CaseStudyNav items={navItems} variant="mobile" />
         </div>
 
