@@ -119,7 +119,7 @@ export function Nav() {
             ref={hamburgerRef}
             className={cn(
               "-mr-3 flex items-center justify-center p-3 md:hidden",
-              isMobileOpen && "relative z-[60]"
+              isMobileOpen && "fixed right-2 top-3 z-[60]"
             )}
             onClick={isMobileOpen ? closeMenu : openMenu}
             aria-label={isMobileOpen ? "Close navigation menu" : "Open navigation menu"}

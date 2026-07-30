@@ -71,17 +71,12 @@ export function NavMobile({ items, currentPath, onClose }: NavMobileProps) {
       role="dialog"
       aria-label="Navigation menu"
       aria-modal="true"
-      className="animate-slide-in-right fixed inset-0 z-50 flex items-center justify-center"
-      style={{
-        backgroundColor: '#0F0F0F',
-        backgroundImage: 'url(/menu-bg-mobile.webp)',
-        backgroundRepeat: 'repeat',
-        backgroundSize: 'cover',
-      }}
+      className="animate-slide-in-right fixed inset-0 z-50 flex items-center justify-start pl-8 sm:pl-10"
+      style={{ backgroundColor: '#1C1916' }}
       onKeyDown={handleKeyDown}
       onClick={handleBackdropClick}
     >
-      <ul className="flex flex-col items-center gap-8">
+      <ul className="flex flex-col gap-8">
         {items.map((item, index) => {
           const isActive = currentPath === item.href || (item.href !== "/" && currentPath.startsWith(item.href));
           return (
