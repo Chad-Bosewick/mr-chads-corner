@@ -6,6 +6,11 @@ import { SectionReveal } from "@/components/sections/SectionReveal";
 import { PageShell, ReadingColumn } from "@/components/layout/PageShell";
 import { projects } from "@/content/projects";
 import Link from "next/link";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  alternates: { canonical: "/" },
+};
 
 export default function HomePage() {
   return (

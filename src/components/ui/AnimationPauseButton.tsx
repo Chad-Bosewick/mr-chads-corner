@@ -19,7 +19,13 @@ export function AnimationPauseButton({
   return (
     <button
       type="button"
-      onClick={onToggle}
+      onClick={(e) => {
+        // This button sometimes sits inside a card-level <Link>. Stop the
+        // click from bubbling so pausing never triggers navigation.
+        e.preventDefault();
+        e.stopPropagation();
+        onToggle();
+      }}
       aria-label={`${action} ${label}`}
       aria-pressed={isPaused}
       className={`flex h-8 w-8 items-center justify-center rounded-full border border-[#151515]/10 bg-white/80 text-[#151515] shadow-sm backdrop-blur-sm transition-[background-color,color,transform] duration-[var(--duration-fast)] hover:bg-white active:scale-[0.96] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#A43718] motion-reduce:transition-none ${className ?? ""}`}

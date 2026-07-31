@@ -217,6 +217,7 @@ function renderSection(
       return (
         <ReadingColumn key={index} className={spacing}>
           <CarouselSection
+            id={id}
             heading={section.heading}
             body={section.body}
             slides={section.images || []}
@@ -239,6 +240,7 @@ function renderSection(
       return section.deviceAssets ? (
         <ReadingColumn key={index} className={spacing}>
           <ThreejsDeviceSection
+            id={id}
             heading={section.heading}
             body={section.body}
             deviceAssets={section.deviceAssets}

@@ -23,12 +23,18 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   if (!project) return {};
 
+  const title = caseStudy?.title || project.title;
+  const description =
+    slug === "credlane"
+      ? "I led the design of Travecs, a responsive talent-assessment and hiring platform connecting job readiness, employer discovery, custom assessments, and candidate evaluation."
+      : project.description;
+
   return {
-    title: caseStudy?.title || project.title,
-    description:
-      slug === "credlane"
-        ? "I led the design of Travecs, a responsive talent-assessment and hiring platform connecting job readiness, employer discovery, custom assessments, and candidate evaluation."
-        : project.description,
+    title,
+    description,
+    alternates: { canonical: `/featured-case-studies/${slug}` },
+    openGraph: { title, description, url: `/featured-case-studies/${slug}` },
+    twitter: { title, description },
   };
 }
 

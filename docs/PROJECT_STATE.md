@@ -11,7 +11,7 @@
 ## Current branch: `foundations`
 ## Deployed: Yes — live at https://mrchadsite.netlify.app/
 ## Remote: https://github.com/Chad-Bosewick/mr-chads-corner
-## Last updated: 2026-07-29
+## Last updated: 2026-07-31
 
 ---
 
@@ -31,7 +31,11 @@
 | A11Y-PERF-001 | Animation pause controls (WCAG 2.2.2), timeline SR alternative, carousel preload verification, CoverScroll geometry/pause-resume fix | `docs/qa/2026-07-27-a11y-perfection-chatgpt-review.md` |
 | CV/Resume page | `/about-temi` — hero, summary, experience timeline, skills & education, full-width tools with brand icons, interest collage | `6320d64` |
 | Contact page layout | `/contact` — single left-aligned layout matching CV page, mailto email, social links | `6320d64` |
-| PDF generation | CV downloadable PDF with phone, email, LinkedIn, Dribbble links; updated CV HTML template | `6320d64` |
+| PDF generation | CV downloadable PDF with phone, email; updated CV HTML template | `6320d64` |
+| CV content rectification | **CV (`temi-adekunle-cv.pdf`) is source of truth for company/product descriptions** — Candidote = recruitment platform, Enviodeck = logistics platform. `/about-temi` Experience timeline + intro summary rectified to match the CV; `temi's cvs/` folder reduced to the single true CV | 2026-07-31 |
+| CV revision (1 page, ATS) | LinkedIn & Dribbble removed from CV (contact is phone + email only); condensed to one page; single-paragraph ATS-optimized summary; experience bullets end with periods; recruitment/logistics content preserved; re-rendered PDF deployed to `public/downloads/` and `temi's cvs/` | 2026-07-31 |
+| Usability fix batch (Codex audit) | Pause button click isolation (no navigation from inside card links); TOC anchor IDs on Letters App/TODO++ + `scroll-mt-16`; certificate date aligned to timeline (Oct 2023) in CV + `/about-temi`; route-specific OG/Twitter/canonical metadata; heading skip fixed on case-studies index (project titles now `h2`); tool label contrast → `#6F6F6F`; `aria-controls`/`id` wired on mobile menu | 2026-07-31 |
+| Phone-carousel clipping fix | `PhoneBezel` sizes from available frame height (`fitHeight`) so 9:19 phones fully fit the fixed 8:5 hero and 16:10 section carousels on TODO++ & Letters App at all breakpoints — verified at 390px and 1440px; standalone `PhoneMockupSection` untouched (no regression) | 2026-07-31 |
 | Social link sync | LinkedIn & Dribbble links added to all locations (footer, contact page, CV page hero and closing CTA) | `6320d64` |
 | Deployment | Site pushed to GitHub (`mr-chads-corner`) and deployed to Netlify | https://mrchadsite.netlify.app/ |
 

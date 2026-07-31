@@ -24,6 +24,8 @@ interface ProjectRowProps {
   status: "published" | "coming-soon";
   device: "laptop" | "phone" | "dual-phone";
   delay?: number;
+  /** Heading level for the project title. Defaults to h3 (used under an h2 section label on the homepage). */
+  titleAs?: "h2" | "h3";
 }
 
 export function ProjectRow({
@@ -39,11 +41,13 @@ export function ProjectRow({
   status,
   device,
   delay = 0,
+  titleAs = "h3",
 }: ProjectRowProps) {
   const isPlaceholder = status === "coming-soon";
   const supportsCardInteraction =
     !isPlaceholder && (device === "dual-phone" || annotationSet !== undefined);
   const [isCardInteractionActive, setIsCardInteractionActive] = useState(false);
+  const TitleTag = titleAs;
 
   const row = (
     <div
@@ -84,9 +88,9 @@ export function ProjectRow({
           {category} · {sector}
         </p>
 
-        <h3 className="font-sans text-[clamp(1.25rem,2.5vw,1.5rem)] font-medium leading-[1.2] text-[#151515] transition-colors duration-[var(--duration-standard)] ease-[var(--ease-out)] group-hover:text-[#A43718]">
+        <TitleTag className="font-sans text-[clamp(1.25rem,2.5vw,1.5rem)] font-medium leading-[1.2] text-[#151515] transition-colors duration-[var(--duration-standard)] ease-[var(--ease-out)] group-hover:text-[#A43718]">
           {title}
-        </h3>
+        </TitleTag>
 
         <p className="font-sans text-[clamp(0.875rem,1.5vw,1rem)] leading-relaxed text-[#151515]/70">
           {hook}

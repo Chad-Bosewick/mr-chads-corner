@@ -124,6 +124,7 @@ export function Nav() {
         onClick={isMobileOpen ? closeMenu : openMenu}
         aria-label={isMobileOpen ? "Close navigation menu" : "Open navigation menu"}
         aria-expanded={isMobileOpen}
+        aria-controls="mobile-navigation-menu"
       >
         <motion.svg
           width="24"

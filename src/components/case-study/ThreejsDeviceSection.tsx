@@ -12,9 +12,11 @@ interface ThreejsDeviceSectionProps {
   heading?: string;
   body?: string;
   deviceAssets: ThreejsDeviceAssets & { fallback: string; caption?: string; alt: string };
+  /** Anchor id so the sticky section nav can target this section. */
+  id?: string;
 }
 
-export function ThreejsDeviceSection({ heading, body, deviceAssets }: ThreejsDeviceSectionProps) {
+export function ThreejsDeviceSection({ heading, body, deviceAssets, id }: ThreejsDeviceSectionProps) {
   const rootRef = useRef<HTMLDivElement>(null);
   const prefersReducedMotion = useReducedMotion();
   const [isInView, setIsInView] = useState(false);
@@ -50,7 +52,7 @@ export function ThreejsDeviceSection({ heading, body, deviceAssets }: ThreejsDev
   }, [canUseWebgl]);
 
   return (
-    <section>
+    <section id={id} className={id ? "scroll-mt-16" : undefined}>
       {heading && <h2 className="mb-6 font-sans text-[clamp(1.25rem,3vw,1.5rem)] font-medium text-[#151515]">{heading}</h2>}
       {body && (
         <div className="mb-8 font-sans text-[clamp(0.875rem,2vw,1rem)] leading-relaxed text-[#151515]/70">

@@ -2,10 +2,22 @@ import { SectionReveal } from "@/components/sections/SectionReveal";
 import { PageShell } from "@/components/layout/PageShell";
 import type { Metadata } from "next";
 
+const DESCRIPTION =
+  "Get in touch with Temi Adekunle. Open to freelance collaborations, product design leadership opportunities, and speaking engagements.";
+
 export const metadata: Metadata = {
   title: "Contact",
-  description:
-    "Get in touch with Temi Adekunle. Open to freelance collaborations, product design leadership opportunities, and speaking engagements.",
+  description: DESCRIPTION,
+  alternates: { canonical: "/contact" },
+  openGraph: {
+    title: "Contact",
+    description: DESCRIPTION,
+    url: "/contact",
+  },
+  twitter: {
+    title: "Contact",
+    description: DESCRIPTION,
+  },
 };
 
 const SOCIAL_LINKS = [

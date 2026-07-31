@@ -6,6 +6,8 @@ interface PhoneBezelProps {
   alt: string;
   className?: string;
   sizes?: string;
+  /** Inside a fixed-height carousel frame, size from available height (keeps 9:19). */
+  fitHeight?: boolean;
 }
 
 /**
@@ -18,6 +20,7 @@ export function PhoneBezel({
   alt,
   className,
   sizes = "(max-width: 768px) 34vw, 180px",
+  fitHeight,
 }: PhoneBezelProps) {
   return (
     <div
@@ -25,7 +28,9 @@ export function PhoneBezel({
         "relative overflow-hidden rounded-[22px] bg-[#1a1a1a] p-[1.5px]",
         "shadow-[0_8px_30px_rgba(21,21,21,0.08)]",
         className,
+        fitHeight && "h-full w-auto",
       )}
+      style={fitHeight ? { aspectRatio: "9 / 19" } : undefined}
     >
       <div className="absolute left-1/2 top-0 z-10 h-[14px] w-[60px] -translate-x-1/2 rounded-b-[10px] bg-[#1a1a1a]" />
       <div className="relative aspect-[9/19] w-full overflow-hidden rounded-[20px] bg-[#f0f0f0]">
@@ -91,19 +96,19 @@ export function TodoCaseStudySlide({
   return (
     <div className="flex h-full w-full items-center overflow-hidden bg-white px-6 py-7 sm:px-10">
       {isPair ? (
-        <div className="flex w-full items-center justify-center gap-4 sm:gap-6">
-          <PhoneBezel src={src} alt={alt} className="w-[min(28vw,180px)]" />
+        <div className="flex h-full w-full items-center justify-center gap-4 sm:gap-6">
+          <PhoneBezel src={src} alt={alt} fitHeight />
           {secondarySrc && (
             <PhoneBezel
               src={secondarySrc}
               alt={secondaryAlt ?? "TODO++ companion mobile screen"}
-              className="w-[min(28vw,180px)]"
+              fitHeight
             />
           )}
         </div>
       ) : isPhone ? (
-        <div className="flex w-full justify-center">
-          <PhoneBezel src={src} alt={alt} className="w-[min(38vw,180px)]" />
+        <div className="flex h-full w-full justify-center">
+          <PhoneBezel src={src} alt={alt} fitHeight />
         </div>
       ) : isAnnotated ? (
         <div className="flex h-full w-full items-center justify-center gap-5">

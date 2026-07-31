@@ -18,10 +18,22 @@ import {
   siAirtable,
 } from "simple-icons";
 
+const DESCRIPTION =
+  "Product designer with a bias toward clarity, systems thinking, and work that holds up under scrutiny. Biochemistry background, startup design lead, design system builder, AI-native operator.";
+
 export const metadata: Metadata = {
   title: "Temi Adekunle | CV / Resume",
-  description:
-    "Product designer with a bias toward clarity, systems thinking, and work that holds up under scrutiny. Biochemistry background, startup design lead, design system builder, AI-native operator.",
+  description: DESCRIPTION,
+  alternates: { canonical: "/about-temi" },
+  openGraph: {
+    title: "Temi Adekunle | CV / Resume",
+    description: DESCRIPTION,
+    url: "/about-temi",
+  },
+  twitter: {
+    title: "Temi Adekunle | CV / Resume",
+    description: DESCRIPTION,
+  },
 };
 
 const INTERESTS: InterestItem[] = [
@@ -104,7 +116,7 @@ export default function AboutPage() {
       <div className="mt-12 max-w-[680px]">
         <SectionReveal delay={80}>
           <p className="font-sans text-[clamp(0.875rem,2vw,1rem)] leading-relaxed text-[#151515]/70">
-            I&rsquo;ve spent the past several years working across early-stage startups and established product teams, leading design for productivity tools, presentation platforms, and digital banking experiences. My work spans the full product design spectrum, from user research and information architecture through to visual design, prototyping, and design-system architecture.
+            I&rsquo;ve spent the past several years working across early-stage startups and established product teams, leading design for recruitment and logistics platforms, and digital banking experiences. My work spans the full product design spectrum, from user research and information architecture through to visual design, prototyping, and design-system architecture.
           </p>
         </SectionReveal>
         <SectionReveal delay={160}>
@@ -167,7 +179,7 @@ export default function AboutPage() {
                 </div>
                 <div>
                   <p className="font-sans text-base font-medium text-[#151515]">Google UX Design Certificate</p>
-                  <p className="mt-0.5 font-sans text-sm text-[#6F6F6F]">Coursera, Oct 2024</p>
+                  <p className="mt-0.5 font-sans text-sm text-[#6F6F6F]">Coursera, Oct 2023</p>
                 </div>
               </div>
             </div>
@@ -195,7 +207,7 @@ export default function AboutPage() {
                       {tool.name.charAt(0)}
                     </span>
                   )}
-                  <span className="font-sans text-[11px] text-[#6F6F6F]/45">
+                  <span className="font-sans text-[11px] text-[#6F6F6F]">
                     {tool.name}
                   </span>
                 </div>

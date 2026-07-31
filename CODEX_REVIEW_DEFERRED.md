@@ -112,13 +112,14 @@ Then convert these findings into implementation tasks for Codex.
 **File:** `src/components/case-study/CaseStudyNav.tsx` (line 51, 85)
 **Detail:** `window.history.back()` sends direct visitors off-site. JavaScript smooth scrolling ignores reduced-motion preferences. Section IDs placed below headings in `CaseStudyLayout.tsx` (line 167) scroll titles out of view.
 **Action:** Replace `history.back()` with a deterministic link to the case study index. Use CSS `scroll-behavior` with `prefers-reduced-motion` media query. Move IDs to heading elements.
-**Status:** ✅ Fixed 2026-07-26 — Sidebar rewrite (workstream 2)
+**Status:** ✅ Fixed 2026-07-26 — Sidebar rewrite (workstream 2). 2026-07-31 — additional TOC anchors added to Letters App (`a-home-built-for-returning-to-stories`) and TODO++ (`a-dedicated-surface-for-the-days-work`); sections now carry `scroll-mt-16` so anchor jumps clear the sticky nav.
 
 ### P2-7. SEO metadata incomplete and deployment-sensitive
 
 **Files:** `src/app/layout.tsx` (line 23), `src/app/sitemap.ts` (line 7)
 **Detail:** No `metadataBase`, canonical URLs, Open Graph, or Twitter metadata. Sitemap falls back to Netlify hostname and assigns `new Date()` to every page on every build.
 **Action:** Add `metadataBase` to layout metadata. Add OG/Twitter tags. Fix sitemap to use build-time dates or content dates, not `new Date()`.
+**Status:** ✅ Fixed 2026-07-31 — per-route `openGraph`/`twitter`/`alternates.canonical` added to `/`, `/about-temi`, `/contact`, `/featured-case-studies`, and per-slug case-study routes (dynamic per case study). All canonical/`og:url` resolve to `https://mrchadsite.netlify.app/…` with trailing slashes. No visual change.
 
 ### P2-8. Heading structure inconsistent
 

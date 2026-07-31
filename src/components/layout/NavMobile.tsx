@@ -68,6 +68,7 @@ export function NavMobile({ items, currentPath, onClose }: NavMobileProps) {
   return (
     <div
       ref={overlayRef}
+      id="mobile-navigation-menu"
       role="dialog"
       aria-label="Navigation menu"
       aria-modal="true"

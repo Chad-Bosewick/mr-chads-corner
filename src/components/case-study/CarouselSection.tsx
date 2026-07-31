@@ -11,12 +11,14 @@ interface CarouselSectionProps {
   aspectRatio?: number;
   /** Optional carousel transition surface, matched to the source artwork's edge colour. */
   background?: string;
+  /** Anchor id so the sticky section nav can target this section. */
+  id?: string;
 }
 
-export function CarouselSection({ heading, body, slides, autoAdvanceMs, aspectRatio, background }: CarouselSectionProps) {
+export function CarouselSection({ heading, body, slides, autoAdvanceMs, aspectRatio, background, id }: CarouselSectionProps) {
   return (
     <SectionReveal>
-      <section>
+      <section id={id} className={id ? "scroll-mt-16" : undefined}>
         {heading && (
           <h2 className="mb-6 font-sans text-[clamp(1.25rem,3vw,1.5rem)] font-medium text-[#151515]">
             {heading}

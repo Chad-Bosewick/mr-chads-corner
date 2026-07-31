@@ -7,10 +7,22 @@ import { projects } from "@/content/projects";
 import { uiComponents } from "@/content/ui-components";
 import type { Metadata } from "next";
 
+const DESCRIPTION =
+  "A selection of recent work spanning talent platforms, productivity, communication, and developer tools.";
+
 export const metadata: Metadata = {
   title: "Featured case studies",
-  description:
-    "A selection of recent work spanning talent platforms, productivity, communication, and developer tools.",
+  description: DESCRIPTION,
+  alternates: { canonical: "/featured-case-studies" },
+  openGraph: {
+    title: "Featured case studies",
+    description: DESCRIPTION,
+    url: "/featured-case-studies",
+  },
+  twitter: {
+    title: "Featured case studies",
+    description: DESCRIPTION,
+  },
 };
 
 export default function CaseStudiesPage() {
@@ -38,6 +50,7 @@ export default function CaseStudiesPage() {
               coverScroll={project.coverScroll}
               annotationSet={project.annotationSet}
               status={project.status}
+              titleAs="h2"
               device={project.device}
               sector={project.sector}
               delay={index * 100}
