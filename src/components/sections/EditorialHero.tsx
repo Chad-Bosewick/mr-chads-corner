@@ -48,10 +48,7 @@ export function EditorialHero({
   const [timelineReady, setTimelineReady] = useState(false);
 
   return (
-    <section
-      className="relative"
-      aria-label="Introduction"
-    >
+    <section className="relative" aria-label="Introduction" data-hero-band>
       {showEntrance && (
         <EntranceAnimation
           onComplete={() => {

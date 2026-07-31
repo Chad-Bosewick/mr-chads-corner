@@ -12,6 +12,10 @@ const INK = "21, 21, 21";
 const ACCENT = "164, 55, 24";
 const HEART_START = [222, 110, 50] as const;
 const HEART_END = [164, 55, 24] as const;
+const RECESSION_SCROLL_VIEWPORTS = 1.15;
+const UNRAVEL_RADIUS = { desktop: 8, mobile: 5 } as const;
+const TAP_IGNORE_SELECTOR =
+  'a, button, input, textarea, select, [role="button"], [contenteditable]';
 
 /* Heavily favour the middle dot for a quiet, ambient texture */
 const CHARS = [
@@ -53,6 +57,11 @@ interface ShaderState {
   mouse: MouseState;
   lastFrame: number;
   rafId: number;
+  s: number;
+  heroElement: Element | null;
+  heroRectBottom: number | null;
+  heartAlpha: number;
+  tapStartedAt: number | null;
 }
 
 interface HeartFrame {
@@ -84,6 +93,26 @@ function easeOutCubic(value: number) {
   const t = clamp01(value);
   const inverse = 1 - t;
   return 1 - inverse * inverse * inverse;
+}
+
+export function computeScrollFactor(
+  scrollY: number,
+  viewportH: number,
+  recessionViewports = RECESSION_SCROLL_VIEWPORTS,
+): number {
+  return easeOutCubic(clamp01(scrollY / (viewportH * recessionViewports)));
+}
+
+export function computeHeartAlpha(
+  heroBottom: number,
+  viewportH: number,
+): number {
+  return clamp01(heroBottom / viewportH);
+}
+
+export function isInteractiveControl(target: EventTarget | null): boolean {
+  if (!(target instanceof Element)) return false;
+  return target.closest(TAP_IGNORE_SELECTOR) !== null;
 }
 
 /* Standard heart curve: (x² + y² - 1)³ - x²·y³ ≤ 0 */
@@ -125,6 +154,19 @@ function getHeartFrame(time: number, animated: boolean): HeartFrame {
     scale: 0.30 + shapedBeat * 0.70,
     boost: 0.01 + shapedBeat * 0.39,
     glow: shapedBeat,
+  };
+}
+
+function getTapHeartFrame(time: number, start: number): HeartFrame | null {
+  const elapsed = time - start;
+  if (elapsed < 0 || elapsed > 0.7) return null;
+  const attack = easeOutCubic(clamp01(elapsed / 0.14));
+  const decay = 1 - clamp01((elapsed - 0.14) / 0.56);
+  const beat = attack * decay;
+  return {
+    scale: 0.30 + beat * 0.70,
+    boost: 0.01 + beat * 0.39,
+    glow: beat,
   };
 }
 
@@ -188,7 +230,12 @@ function prepareCanvas(canvas: HTMLCanvasElement, state: ShaderState) {
   state.fontSize = mobile ? 10 : 8;
   state.mobile = mobile;
   state.particles = buildParticles(width, height, cell);
-  state.mouse = { x: width / 2, y: height / 2, active: false };
+  state.mouse = { x: 0, y: 0, active: false };
+  state.s = 0;
+  state.heroElement = null;
+  state.heroRectBottom = null;
+  state.heartAlpha = 0;
+  state.tapStartedAt = null;
 }
 
 /* ── Particle update ─────────────────────────────────────────── */
@@ -198,9 +245,13 @@ function updateParticle(
   state: ShaderState,
   time: number,
   dt: number,
+  s: number,
 ) {
   /* ── Slow orbital drift around anchor ── */
-  const driftRadius = particle.maxDrift;
+  const unravelRadius = state.mobile
+    ? UNRAVEL_RADIUS.mobile
+    : UNRAVEL_RADIUS.desktop;
+  const driftRadius = particle.maxDrift * (1 + s * unravelRadius);
   const orbitSpeed = 0.18 + particle.grain * 0.12;
   const targetX =
     particle.anchorX +
@@ -222,9 +273,10 @@ function updateParticle(
   const dy = state.mouse.y - particle.y;
   const dist = Math.hypot(dx, dy) || 1;
 
-  const mouseInfluence = state.mouse.active
-    ? 1 - smoothstep(0, state.mobile ? 280 : 420, dist)
-    : 0;
+  const mouseInfluence =
+    (state.mouse.active
+      ? 1 - smoothstep(0, state.mobile ? 280 : 420, dist)
+      : 0) * (1 - s);
 
   if (mouseInfluence > 0) {
     const pull = 0.035 * mouseInfluence * dt;
@@ -274,11 +326,12 @@ function drawCursorGlow(
   context: CanvasRenderingContext2D,
   state: ShaderState,
   heart: HeartFrame,
+  heartAlpha: number,
 ) {
-  if (state.mobile || !state.mouse.active) return;
+  if (!state.mouse.active || heartAlpha <= 0.01) return;
 
-  const glowAlpha = 0.06 + heart.glow * 0.10;
-  const dotAlpha = 0.05 + heart.glow * 0.18;
+  const glowAlpha = (0.06 + heart.glow * 0.10) * heartAlpha;
+  const dotAlpha = (0.05 + heart.glow * 0.18) * heartAlpha;
   const radius = 24 + heart.glow * 14;
 
   /* Faint accent halo */
@@ -311,14 +364,41 @@ function draw(
   if (!context) return;
 
   const dt = Math.min(2.4, Math.max(0.6, FRAME_INTERVAL / 16.67));
+  const s = computeScrollFactor(window.scrollY, state.height);
+  state.s = s;
+
+  if (s > 0.97) {
+    context.setTransform(state.dpr, 0, 0, state.dpr, 0, 0);
+    context.fillStyle = BASE;
+    context.fillRect(0, 0, state.width, state.height);
+    return;
+  }
 
   context.setTransform(state.dpr, 0, 0, state.dpr, 0, 0);
   context.clearRect(0, 0, state.width, state.height);
   context.fillStyle = BASE;
   context.fillRect(0, 0, state.width, state.height);
 
-  const heartFrame = getHeartFrame(time, shouldUpdate);
-  drawCursorGlow(context, state, heartFrame);
+  const heartAlpha =
+    state.heroRectBottom === null
+      ? 0
+      : computeHeartAlpha(state.heroRectBottom, state.height);
+  state.heartAlpha = heartAlpha;
+
+  let heartFrame: HeartFrame;
+  if (state.mobile && state.tapStartedAt !== null) {
+    const tapFrame = getTapHeartFrame(time, state.tapStartedAt);
+    if (tapFrame) {
+      heartFrame = tapFrame;
+    } else {
+      state.tapStartedAt = null;
+      state.mouse.active = false;
+      heartFrame = getHeartFrame(time, shouldUpdate);
+    }
+  } else {
+    heartFrame = getHeartFrame(time, shouldUpdate);
+  }
+  drawCursorGlow(context, state, heartFrame, heartAlpha);
 
   context.font = `${state.fontSize}px ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace`;
   context.textBaseline = "middle";
@@ -328,7 +408,7 @@ function draw(
 
   for (const particle of state.particles) {
     const { dist, mouseInfluence } = shouldUpdate
-      ? updateParticle(particle, state, time, dt)
+      ? updateParticle(particle, state, time, dt, s)
       : {
           dist: Math.hypot(
             state.mouse.x - particle.x,
@@ -341,7 +421,7 @@ function draw(
     let heart = 0;
     let heartX = 0;
     let heartY = 0;
-    if (heartScale > 0) {
+    if (heartScale > 0 && heartAlpha > 0.01 && state.mouse.active) {
       heartX = (particle.x - state.mouse.x) / heartScale;
       heartY = (particle.y - state.mouse.y) / heartScale;
       if (heartInside(heartX, heartY)) {
@@ -363,16 +443,15 @@ function draw(
     const nearCursor = state.mouse.active
       ? 1 - smoothstep(0, state.mobile ? 120 : 160, dist)
       : 0;
-    const cursorBonus = nearCursor * 0.035;
-    const heartBonus = heart * heartFrame.boost;
+    const fieldBase = 0.016 + breathe * 0.02;
+    const cursor = nearCursor * 0.035 * heartAlpha;
+    const heartA = heart > 0.08 && heartAlpha > 0.01
+      ? heart * heartFrame.boost * heartAlpha
+      : 0;
 
     const alpha = Math.min(
       heart > 0 ? (heartFrame.glow > 0.5 ? 0.50 : 0.35) : 0.09,
-      0.016 +
-        breathe * 0.02 +
-        cursorBonus +
-        heartBonus +
-        mouseInfluence * 0.015,
+      (fieldBase + cursor + heartA + mouseInfluence * 0.015 * heartAlpha) * (1 - s),
     );
 
     /* ── Colour ── */
@@ -406,6 +485,11 @@ export function useAsciiShader(
     mouse: { x: 0, y: 0, active: false },
     lastFrame: 0,
     rafId: 0,
+    s: 0,
+    heroElement: null,
+    heroRectBottom: null,
+    heartAlpha: 0,
+    tapStartedAt: null,
   });
 
   useEffect(() => {
@@ -414,6 +498,13 @@ export function useAsciiShader(
 
     const state = stateRef.current;
     let disposed = false;
+    const hero = document.querySelector<HTMLElement>("[data-hero-band]");
+
+    const refreshHero = () => {
+      state.heroElement = hero ?? null;
+      state.heroRectBottom = hero ? hero.getBoundingClientRect().bottom : null;
+    };
+    refreshHero();
 
     const resize = () => {
       prepareCanvas(canvas, state);
@@ -421,6 +512,7 @@ export function useAsciiShader(
     };
 
     const handlePointerMove = (event: PointerEvent) => {
+      if (state.mobile) return;
       state.mouse.x = event.clientX;
       state.mouse.y = event.clientY;
       state.mouse.active = true;
@@ -428,6 +520,18 @@ export function useAsciiShader(
 
     const handlePointerLeave = () => {
       state.mouse.active = false;
+    };
+
+    const handleTap = (event: PointerEvent) => {
+      if (!state.mobile) return;
+      if (isInteractiveControl(event.target)) return;
+      if (!(event.target instanceof Node)) return;
+      if (!state.heroElement || !state.heroElement.contains(event.target)) return;
+
+      state.mouse.x = event.clientX;
+      state.mouse.y = event.clientY;
+      state.mouse.active = true;
+      state.tapStartedAt = performance.now() / 1000;
     };
 
     const tick = (timestamp: number) => {
@@ -440,7 +544,10 @@ export function useAsciiShader(
     };
 
     resize();
+    refreshHero();
     window.addEventListener("resize", resize);
+    window.addEventListener("scroll", refreshHero, { passive: true });
+    window.addEventListener("resize", refreshHero);
 
     if (!prefersReducedMotion && !isPaused) {
       window.addEventListener("pointermove", handlePointerMove, {
@@ -449,14 +556,18 @@ export function useAsciiShader(
       window.addEventListener("pointerleave", handlePointerLeave, {
         passive: true,
       });
+      window.addEventListener("pointerdown", handleTap, { passive: true });
       state.rafId = window.requestAnimationFrame(tick);
     }
 
     return () => {
       disposed = true;
       window.removeEventListener("resize", resize);
+      window.removeEventListener("scroll", refreshHero);
+      window.removeEventListener("resize", refreshHero);
       window.removeEventListener("pointermove", handlePointerMove);
       window.removeEventListener("pointerleave", handlePointerLeave);
+      window.removeEventListener("pointerdown", handleTap);
       window.cancelAnimationFrame(state.rafId);
     };
   }, [canvasRef, prefersReducedMotion, isPaused]);
