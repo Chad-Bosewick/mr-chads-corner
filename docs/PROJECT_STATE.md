@@ -15,6 +15,17 @@
 
 ---
 
+## Active Work
+
+**ASCII field unravel** (started 2026-07-31)
+- Spec: `docs/superpowers/specs/2026-07-31-ascii-unravel-design.md` — approved (commit `3bde563`)
+- Plan: `docs/superpowers/plans/2026-07-31-ascii-unravel.md` — implementation-ready (commit `7a6f6eb`)
+- Status: **Implementation by Codex** (senior design engineer) — in progress in a separate terminal.
+- On completion, Claude Code resumes as orchestrator: verify the implementation against the plan/spec, then hand to **ChatGPT** for independent QA (per pipeline stage 7).
+- Scope guardrail: only `useAsciiShader.ts` and `EditorialHero.tsx` change; one new test file; no new dependencies. Do not stage `tsconfig.tsbuildinfo` or the repo's existing untracked files.
+
+---
+
 ## What's Done
 
 | Phase | Scope | Report |
@@ -48,6 +59,7 @@
 | ~~**UI-003**~~ | ~~ChatGPT QA review of dual-phone composition~~ | ~~Done — deployed.~~ |
 | ~~**A11Y-PERF-001**~~ | ~~ChatGPT QA review of accessibility/performance batch~~ | ~~Done — deployed.~~ |
 | ~~**P1**~~ | ~~Deploy foundations branch to Netlify~~ | ~~Live at https://mrchadsite.netlify.app/~~ |
+| **P1** | ASCII field unravel — **in implementation** (Codex) | Spec + plan in `docs/superpowers/`; then ChatGPT QA |
 | **P2** | Custom domain setup (Netlify) | If desired — replace mrchadsite.netlify.app with a branded URL |
 | **P2** | Test coverage for risky behaviour (carousels, animations, navigation) | Sprint 2 |
 | **P2** | Merge `foundations` into `main` | Clean up branch history |
