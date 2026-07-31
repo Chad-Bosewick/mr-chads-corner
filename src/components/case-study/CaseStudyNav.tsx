@@ -79,7 +79,7 @@ export function CaseStudyNav({
         <Link
           href="/featured-case-studies"
           className={cn(
-            "flex size-11 shrink-0 items-center justify-center border-r border-[#151515]/10 text-[#6F6F6F]",
+            "flex size-11 shrink-0 items-center justify-center border-r border-[#151515]/10 text-[#6F6F6F] sm:ml-1",
             "transition-[color,scale] duration-[var(--duration-fast)] hover:text-[#151515] active:scale-[0.96]",
             "focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-[#A43718]",
           )}

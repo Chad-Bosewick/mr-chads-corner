@@ -22,19 +22,37 @@ export function PhoneBezel({
   sizes = "(max-width: 768px) 34vw, 180px",
   fitHeight,
 }: PhoneBezelProps) {
+  // cqw must resolve against an *ancestor* container — the sizing wrapper below
+  // is that container, so the shell/notch/screen all scale off the phone width.
+  // Anchored to the 180px standalone bezel (notch 60x14, radius 22).
   return (
     <div
       className={cn(
-        "relative overflow-hidden rounded-[22px] bg-[#1a1a1a] p-[1.5px]",
-        "shadow-[0_8px_30px_rgba(21,21,21,0.08)]",
+        "[container-type:inline-size]",
         className,
         fitHeight && "h-full w-auto",
       )}
       style={fitHeight ? { aspectRatio: "9 / 19" } : undefined}
     >
-      <div className="absolute left-1/2 top-0 z-10 h-[14px] w-[60px] -translate-x-1/2 rounded-b-[10px] bg-[#1a1a1a]" />
-      <div className="relative aspect-[9/19] w-full overflow-hidden rounded-[20px] bg-[#f0f0f0]">
-        <Image src={src} alt={alt} fill className="object-cover" sizes={sizes} />
+      <div
+        className={cn(
+          "relative h-full w-full overflow-hidden rounded-[12.22cqw] bg-[#1a1a1a] p-[1.5px]",
+          "shadow-[0_8px_30px_rgba(21,21,21,0.08)]",
+        )}
+      >
+        <div className="absolute left-1/2 top-0 z-10 h-[7.78cqw] w-[33.33cqw] -translate-x-1/2 rounded-b-[5.56cqw] bg-[#1a1a1a]" />
+        <div
+          className={cn(
+            "relative overflow-hidden rounded-[11.11cqw] bg-[#f0f0f0]",
+            // fitHeight: the wrapper locks the shell to 19:9, so the screen fills the
+            // padded content box to keep the bezel stroke uniform on all four sides.
+            // Standalone: the shell is content-sized, so the screen's own 9:19 ratio
+            // (width-derived) is what defines it.
+            fitHeight ? "h-full w-full" : "aspect-[9/19] w-full",
+          )}
+        >
+          <Image src={src} alt={alt} fill className="object-cover" sizes={sizes} />
+        </div>
       </div>
     </div>
   );
