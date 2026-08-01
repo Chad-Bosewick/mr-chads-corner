@@ -22,7 +22,9 @@
 - Plan: `docs/superpowers/plans/2026-08-01-ui-polish-batch.md` — implementation-ready, 6 tasks (commit `8160d3a`)
 - Task: `tasks/2026-08-01-codex-ui-polish-batch.md` (UI-POLISH-001) — **handed to Codex for implementation**
 - Items: (1) H2 2023 timeline note copy; (2) carousel active-pill **slides** between dots; (3) footer availability dot **breathes** ~2.8s; (4) footer email link label → "Email"; (5) interest-card **like hearts** (session-only); (6) contact page **mailto ice-breaker form** (Email/Social links removed, none under the form); (7) footer **wordmark ASCII scribble** "Temi Adekunle" ↔ "Chad Bosewick" (static "Temi Adekunle" under reduced motion / no-JS).
-- **Next:** Codex implements (6 commits) → Claude Code orchestration review → **ChatGPT** independent QA (pipeline stage 7).
+- **Implementation: complete** by Codex — 6 commits `da16c39`→`3831904`. Claude Code orchestration review (2026-08-01): **passed** — diffs match plan/spec; 16 focused tests pass; typecheck + lint clean; working-tree guardrail held.
+- **Pre-existing (not from this batch):** `CoverScroll.test.tsx` has 2 failing assertions (`expect(...transform).toBe("")` gets `translateY(0px)`). Reproduced identically at the pre-Codex commit `1507d7b` in a throwaway worktree; not caused by the UI polish batch. Open a separate fix task.
+- **Next:** browser QA at 375px/1440px/reduced-motion → hand to **ChatGPT** for independent QA (pipeline stage 7).
 - Scope guardrail: six touched files + two new components + new tests; no new dependencies. Do not stage `tsconfig.tsbuildinfo`, `next-env.d.ts`, `.superpowers/`, `*.mjs` QA scripts, `temi's cvs/`, `tasks/2026-07-30-codex-feedback-round-1.md`, or `ascii wordmark footer sample.jpg` (pre-existing untracked).
 
 **ASCII field unravel** (started 2026-07-31)
@@ -69,8 +71,9 @@
 | ~~**UI-003**~~ | ~~ChatGPT QA review of dual-phone composition~~ | ~~Done — deployed.~~ |
 | ~~**A11Y-PERF-001**~~ | ~~ChatGPT QA review of accessibility/performance batch~~ | ~~Done — deployed.~~ |
 | ~~**P1**~~ | ~~Deploy foundations branch to Netlify~~ | ~~Live at https://mrchadsite.netlify.app/~~ |
-| **P1** | **UI polish batch (7 items)** — task `tasks/2026-08-01-codex-ui-polish-batch.md` handed to Codex | Spec + plan approved; Codex implements; then ChatGPT QA |
+| **P1** | **UI polish batch (7 items)** — **implemented, orchestration review passed** (commits `da16c39`→`3831904`) | Awaiting browser QA (375px/1440px/reduced-motion) then ChatGPT independent QA |
 | **P1** | ASCII field unravel — **implemented, verified, awaiting ChatGPT QA** (commit `ad42937`) | Browser QA passed (2026-08-01); one P2 spring fix queued; ChatGPT QA next |
+| **P2** | `CoverScroll.test.tsx` — 2 pre-existing failing assertions (transform `""` vs `translateY(0px)`) | Reproduced at pre-batch commit `1507d7b`; not caused by UI polish batch |
 | **P2** | Custom domain setup (Netlify) | If desired — replace mrchadsite.netlify.app with a branded URL |
 | **P2** | Test coverage for risky behaviour (carousels, animations, navigation) | Sprint 2 |
 | **P2** | Merge `foundations` into `main` | Clean up branch history |
