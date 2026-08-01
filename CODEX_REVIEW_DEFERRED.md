@@ -147,6 +147,12 @@ Then convert these findings into implementation tasks for Codex.
 **Detail:** Eight existing assertions cover only `cn`, basic visually-hidden styles, and hook initialization. Navigation focus, responsive galleries, carousels, reduced motion, animation cleanup, content rendering, and static routes are untested.
 **Action:** Add test coverage for: carousel navigation, responsive gallery layout, animation cleanup on unmount, reduced-motion behaviour, case-study content rendering, and route generation.
 
+### P2-12. CoverScroll reduced-motion tests fail (pre-existing, unrelated to ASCII feature)
+
+**File:** `src/components/case-study/CoverScroll.test.tsx` (lines 268, 318)
+**Detail:** Two tests — "respects reduced motion and never starts auto-scroll" — assert `inner.style.transform` is `""`, but the component sets `transform: translateY(0px)`. Verified failing at parent commit `4c588eb` (before `ad42937`), so pre-existing. 39/41 tests pass; these 2 fail.
+**Action:** Decide intended reduced-motion behavior for CoverScroll — either the component should leave transform unset under reduced motion (fix component), or the tests should assert `translateY(0px)` (fix tests).
+
 ---
 
 ## Notes

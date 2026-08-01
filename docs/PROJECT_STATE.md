@@ -20,9 +20,11 @@
 **ASCII field unravel** (started 2026-07-31)
 - Spec: `docs/superpowers/specs/2026-07-31-ascii-unravel-design.md` — approved (commit `3bde563`)
 - Plan: `docs/superpowers/plans/2026-07-31-ascii-unravel.md` — implementation-ready (commit `7a6f6eb`)
-- Status: **Implementation by Codex** (senior design engineer) — in progress in a separate terminal.
-- On completion, Claude Code resumes as orchestrator: verify the implementation against the plan/spec, then hand to **ChatGPT** for independent QA (per pipeline stage 7).
-- Scope guardrail: only `useAsciiShader.ts` and `EditorialHero.tsx` change; one new test file; no new dependencies. Do not stage `tsconfig.tsbuildinfo` or the repo's existing untracked files.
+- Implementation: **complete** by Codex (commit `ad42937`, `feat: unravel ascii field below the hero`)
+- Claude Code orchestration review (2026-08-01): **passed**. Browser QA at 1440×900 and 375×812 verified — field recession to flat by ~1.15 viewports, hero-only heart dissolving at the band edge, mobile no-idle-heart + tap-to-beat, interactive-tap rejection, no-hero pages field-only, pause-freeze (same gate as reduced motion). 9/9 helper tests pass.
+- **Next:** hand to **ChatGPT** for independent QA (pipeline stage 7).
+- **Known deviation (P2):** anchor-return spring at `useAsciiShader.ts:299-304` uses `particle.maxDrift * 1.6` instead of the plan-required `driftRadius * 1.6`, damping the unravel's spread to ~2/3 of intended. Imperceptible at the field's 1–4% alpha; one-line fix. See `tasks/2026-08-01-codex-ascii-unravel-spring-fix.md`.
+- Scope guardrail: only `useAsciiShader.ts` and `EditorialHero.tsx` changed; one new test file; no new dependencies. Do not stage `tsconfig.tsbuildinfo` or the repo's existing untracked files.
 
 ---
 
@@ -59,7 +61,7 @@
 | ~~**UI-003**~~ | ~~ChatGPT QA review of dual-phone composition~~ | ~~Done — deployed.~~ |
 | ~~**A11Y-PERF-001**~~ | ~~ChatGPT QA review of accessibility/performance batch~~ | ~~Done — deployed.~~ |
 | ~~**P1**~~ | ~~Deploy foundations branch to Netlify~~ | ~~Live at https://mrchadsite.netlify.app/~~ |
-| **P1** | ASCII field unravel — **in implementation** (Codex) | Spec + plan in `docs/superpowers/`; then ChatGPT QA |
+| **P1** | ASCII field unravel — **implemented, verified, awaiting ChatGPT QA** (commit `ad42937`) | Browser QA passed (2026-08-01); one P2 spring fix queued; ChatGPT QA next |
 | **P2** | Custom domain setup (Netlify) | If desired — replace mrchadsite.netlify.app with a branded URL |
 | **P2** | Test coverage for risky behaviour (carousels, animations, navigation) | Sprint 2 |
 | **P2** | Merge `foundations` into `main` | Clean up branch history |
