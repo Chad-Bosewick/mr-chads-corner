@@ -1,5 +1,6 @@
 import { SectionReveal } from "@/components/sections/SectionReveal";
 import { PageShell } from "@/components/layout/PageShell";
+import { ContactForm } from "@/components/contact/ContactForm";
 import type { Metadata } from "next";
 
 const DESCRIPTION =
@@ -20,17 +21,6 @@ export const metadata: Metadata = {
   },
 };
 
-const SOCIAL_LINKS = [
-  {
-    label: "LinkedIn",
-    href: "https://www.linkedin.com/in/temidayoadekunle/",
-  },
-  {
-    label: "Dribbble",
-    href: "https://dribbble.com/ChadBosewick27",
-  },
-];
-
 export default function ContactPage() {
   return (
     <PageShell>
@@ -45,42 +35,9 @@ export default function ContactPage() {
         </p>
       </SectionReveal>
 
-      {/* Email */}
+      {/* Ice-breaker form */}
       <SectionReveal delay={80}>
-        <div className="mt-12">
-          <p className="font-sans text-sm uppercase tracking-wider text-[var(--color-text-muted)]">
-            Email
-          </p>
-          <a
-            href="mailto:Addtemi270@gmail.com"
-            className="mt-2 inline-block font-sans text-[clamp(1rem,2.5vw,1.125rem)] font-medium text-[#A43718] transition-colors duration-[var(--duration-fast)] hover:text-[#A43718]"
-          >
-            Addtemi270@gmail.com
-          </a>
-        </div>
-      </SectionReveal>
-
-      {/* Social */}
-      <SectionReveal delay={160}>
-        <div className="mt-12">
-          <p className="font-sans text-sm uppercase tracking-wider text-[var(--color-text-muted)]">
-            Social
-          </p>
-          <ul className="mt-3 space-y-2">
-            {SOCIAL_LINKS.map((link) => (
-              <li key={link.label}>
-                <a
-                  href={link.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-block font-sans text-[clamp(0.875rem,2vw,1rem)] text-[#151515]/70 transition-colors duration-[var(--duration-fast)] hover:text-[#A43718]"
-                >
-                  {link.label}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </div>
+        <ContactForm />
       </SectionReveal>
 
       {/* Availability */}
