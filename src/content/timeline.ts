@@ -15,7 +15,7 @@ export const TIMELINE_MILESTONES: Milestone[] = [
   {
     id: 2,
     year: "H2 2023",
-    note: "Later in 2023, completed the Google UX Design Certificate and built my design foundation.",
+    note: "Completed the Google UX Design Certificate and built my design foundation.",
     type: "education",
   },
   {
