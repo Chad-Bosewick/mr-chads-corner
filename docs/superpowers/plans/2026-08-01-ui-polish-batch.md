@@ -112,6 +112,7 @@ Add these two tests to `CarouselImage.test.tsx` (inside the existing `describe("
 
 ```ts
 it("slides a single active pill to the current dot", () => {
+  vi.useFakeTimers();
   const { container } = render(<CarouselImage slides={slides} heading="Workflow" />);
   const pill = container.querySelector(".carousel-pill") as HTMLElement;
   expect(pill).not.toBeNull();
@@ -120,6 +121,11 @@ it("slides a single active pill to the current dot", () => {
   fireEvent.click(screen.getByLabelText("Next slide"));
   expect(pill.style.transform).toContain("translateX(34px)");
 
+  // The carousel intentionally ignores navigation during its 600ms slide
+  // transition (see the existing "ignores navigation during transitions"
+  // test) — advance the lock timer before the second click; do NOT remove
+  // the interaction lock.
+  act(() => vi.advanceTimersByTime(600));
   fireEvent.click(screen.getByLabelText("Next slide"));
   expect(pill.style.transform).toContain("translateX(66px)");
 });
