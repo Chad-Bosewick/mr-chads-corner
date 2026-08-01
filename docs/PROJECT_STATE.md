@@ -11,11 +11,19 @@
 ## Current branch: `foundations`
 ## Deployed: Yes — live at https://mrchadsite.netlify.app/
 ## Remote: https://github.com/Chad-Bosewick/mr-chads-corner
-## Last updated: 2026-07-31
+## Last updated: 2026-08-01
 
 ---
 
 ## Active Work
+
+**UI polish batch (7 items)** (started 2026-08-01)
+- Spec: `docs/superpowers/specs/2026-08-01-ui-polish-batch-design.md` — approved (commits `599803e`, `9db0b01`)
+- Plan: `docs/superpowers/plans/2026-08-01-ui-polish-batch.md` — implementation-ready, 6 tasks (commit `8160d3a`)
+- Task: `tasks/2026-08-01-codex-ui-polish-batch.md` (UI-POLISH-001) — **handed to Codex for implementation**
+- Items: (1) H2 2023 timeline note copy; (2) carousel active-pill **slides** between dots; (3) footer availability dot **breathes** ~2.8s; (4) footer email link label → "Email"; (5) interest-card **like hearts** (session-only); (6) contact page **mailto ice-breaker form** (Email/Social links removed, none under the form); (7) footer **wordmark ASCII scribble** "Temi Adekunle" ↔ "Chad Bosewick" (static "Temi Adekunle" under reduced motion / no-JS).
+- **Next:** Codex implements (6 commits) → Claude Code orchestration review → **ChatGPT** independent QA (pipeline stage 7).
+- Scope guardrail: six touched files + two new components + new tests; no new dependencies. Do not stage `tsconfig.tsbuildinfo`, `next-env.d.ts`, `.superpowers/`, `*.mjs` QA scripts, `temi's cvs/`, `tasks/2026-07-30-codex-feedback-round-1.md`, or `ascii wordmark footer sample.jpg` (pre-existing untracked).
 
 **ASCII field unravel** (started 2026-07-31)
 - Spec: `docs/superpowers/specs/2026-07-31-ascii-unravel-design.md` — approved (commit `3bde563`)
@@ -61,6 +69,7 @@
 | ~~**UI-003**~~ | ~~ChatGPT QA review of dual-phone composition~~ | ~~Done — deployed.~~ |
 | ~~**A11Y-PERF-001**~~ | ~~ChatGPT QA review of accessibility/performance batch~~ | ~~Done — deployed.~~ |
 | ~~**P1**~~ | ~~Deploy foundations branch to Netlify~~ | ~~Live at https://mrchadsite.netlify.app/~~ |
+| **P1** | **UI polish batch (7 items)** — task `tasks/2026-08-01-codex-ui-polish-batch.md` handed to Codex | Spec + plan approved; Codex implements; then ChatGPT QA |
 | **P1** | ASCII field unravel — **implemented, verified, awaiting ChatGPT QA** (commit `ad42937`) | Browser QA passed (2026-08-01); one P2 spring fix queued; ChatGPT QA next |
 | **P2** | Custom domain setup (Netlify) | If desired — replace mrchadsite.netlify.app with a branded URL |
 | **P2** | Test coverage for risky behaviour (carousels, animations, navigation) | Sprint 2 |
