@@ -6,14 +6,15 @@ Branch: `foundations`
 
 ## 1. Summary
 
-A batch of six small, independent product-polish items that make the site feel more alive and more intentional without changing its architecture:
+A batch of seven small, independent product-polish items that make the site feel more alive and more intentional without changing its architecture:
 
 - **A. Timeline tooltip copy** — light grammar pass on two milestone notes.
 - **B. Carousel indicator** — the active pill slides between dots instead of morphing in place.
 - **C. Availability dot** — the footer "Available to work" green dot breathes softly instead of sitting static.
 - **D. Wordmark scribble** — the footer ASCII wordmark morphs between "Temi Adekunle" and "Chad Bosewick" in a looping scribble.
 - **E. Interest-card hearts** — session-only like/heart affordance on the "Do we have similar interests?" cards.
-- **F. Contact form** — the contact page's Email + Social links are replaced with a short ice-breaker form.
+- **F. Contact form** — the contact page's Email + Social links are replaced with a short ice-breaker form (no email link under the form — the footer keeps the contact links).
+- **G. Footer email label** — the footer's mailto link reads "Email" instead of the bare address, matching the other link labels.
 
 Every item is self-contained, low-risk, and reversible. No architecture changes, no new dependencies, no content-model changes.
 
@@ -94,6 +95,13 @@ Every item is self-contained, low-risk, and reversible. No architecture changes,
 - Validation: required fields before composing (native + friendly inline handling); character cap enforced.
 - Keep the availability paragraph at the bottom of the page. Styling matches the design system (serif/sans rhythm, `#151515` / `#A43718` accents, visible focus rings, 44px min-height fields, consistent spacing).
 - No new dependencies; fully client-side.
+- **No email or social link under the form** — the footer remains the single home for contact links (user decision).
+
+### G. Footer email label (`src/components/layout/Footer.tsx`)
+
+- In the `SOCIAL_LINKS` array, change the first entry's label from `"Addtemi270@gmail.com"` to `"Email"` (href stays `mailto:Addtemi270@gmail.com`).
+- This makes the footer link list read uniformly: **Email · LinkedIn · Dribbble · Download CV**. The link opens a `mailto:` just as before; only the visible label changes.
+- No behavior change; the unique `key` (now `"Email"`) remains valid.
 
 ## 5. Named tuning knobs
 
@@ -114,6 +122,7 @@ Every item is self-contained, low-risk, and reversible. No architecture changes,
 - `src/components/layout/FooterAsciiBrand.tsx` — ASCII scribble morph.
 - `src/components/sections/InterestCard.tsx` — heart like control (restructure card to sibling controls).
 - `src/app/contact/page.tsx` + new `src/components/contact/ContactForm.tsx` — ice-breaker form.
+- `src/components/layout/Footer.tsx` — availability dot breathe **and** email link label → "Email" (same file).
 - Tests: carousel `aria-current`, contact-form mailto URL composition, interest heart toggle, wordmark reduced-motion fallback.
 
 **Out of scope (unchanged):**
@@ -139,9 +148,10 @@ Every item is self-contained, low-risk, and reversible. No architecture changes,
 3. Footer dot breathes softly on a ~2.8s cycle and is static under reduced motion; no layout shift.
 4. Footer wordmark loops "Temi Adekunle" → scribble → "Chad Bosewick" → scribble → back; static "Temi Adekunle" under reduced motion / no-JS; canvas stops when the footer is off screen.
 5. Interest cards show a 44px heart button top-right; clicking it fills the heart, ticks 0→1, and does not open the popover; `aria-pressed` toggles; popover still works; reduced-motion fills without the pop.
-6. Contact page shows the ice-breaker form (Name, Role, Message w/ counter, CTA); submit opens a correctly composed `mailto:` draft; the availability paragraph remains; Email/Social sections are gone.
-7. Build, type check, and lint pass; no new dependencies; no layout shift or regressions in the touched components.
-8. ChatGPT independently reviews the batch per the project QA pipeline.
+6. Contact page shows the ice-breaker form (Name, Role, Message w/ counter, CTA); submit opens a correctly composed `mailto:` draft; the availability paragraph remains; Email/Social sections are gone; no email/social link sits under the form.
+7. Footer link list reads **Email · LinkedIn · Dribbble · Download CV**; the "Email" link opens the same `mailto:` as before.
+8. Build, type check, and lint pass; no new dependencies; no layout shift or regressions in the touched components.
+9. ChatGPT independently reviews the batch per the project QA pipeline.
 
 ## 9. Validation
 
