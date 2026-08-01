@@ -129,4 +129,31 @@ describe("CarouselImage", () => {
     expect(screen.getByText("2 / 3")).toBeInTheDocument();
     expect(screen.getByLabelText(/Slide 2 of 3/)).toHaveAttribute("tabindex", "0");
   });
+
+  it("slides a single active pill to the current dot", () => {
+    vi.useFakeTimers();
+    const { container } = render(<CarouselImage slides={slides} heading="Workflow" />);
+    const pill = container.querySelector(".carousel-pill") as HTMLElement;
+    expect(pill).not.toBeNull();
+    expect(pill.style.transform).toContain("translateX(2px)");
+
+    fireEvent.click(screen.getByLabelText("Next slide"));
+    expect(pill.style.transform).toContain("translateX(34px)");
+
+    // The carousel intentionally ignores navigation during its 600ms slide
+    // transition (see the existing "ignores navigation during transitions"
+    // test) — advance the lock timer before the second click; do NOT remove
+    // the interaction lock.
+    act(() => vi.advanceTimersByTime(600));
+    fireEvent.click(screen.getByLabelText("Next slide"));
+    expect(pill.style.transform).toContain("translateX(66px)");
+  });
+
+  it("renders the pill without sliding under reduced motion", () => {
+    motionPreference.reduced = true;
+    const { container } = render(<CarouselImage slides={slides} heading="Workflow" />);
+    const pill = container.querySelector(".carousel-pill") as HTMLElement;
+    expect(pill).toHaveClass("transition-none");
+    expect(pill.style.transform).toContain("translateX(2px)");
+  });
 });
