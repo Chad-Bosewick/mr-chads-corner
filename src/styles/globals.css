@@ -123,6 +123,11 @@ body {
   to { opacity: 1; transform: translateY(0); }
 }
 
+@keyframes availability-breathe {
+  0%, 100% { opacity: 0.45; }
+  50% { opacity: 1; }
+}
+
 /* Motion-controlled animation utilities */
 @media (prefers-reduced-motion: no-preference) {
   .animate-slide-in-right {
@@ -132,6 +137,10 @@ body {
   .animate-fade-in-up {
     opacity: 0;
     animation: fade-in-up var(--duration-standard) var(--ease-out) forwards;
+  }
+
+  .animate-availability-breathe {
+    animation: availability-breathe 2.8s ease-in-out infinite;
   }
 }
 

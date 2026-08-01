@@ -9,7 +9,7 @@ const QUOTE = "The best designs don't just work. They communicate";
 
 const SOCIAL_LINKS = [
   {
-    label: "Addtemi270@gmail.com",
+    label: "Email",
     href: "mailto:Addtemi270@gmail.com",
   },
   {
@@ -75,7 +75,7 @@ export function Footer() {
 
             <p className="inline-flex items-center gap-2 font-sans text-[14px] text-white/80 md:justify-self-end">
               <span
-                className="size-2 rounded-full bg-[#48B36A] shadow-[0_0_0_4px_rgba(72,179,106,0.12)]"
+                className="animate-availability-breathe size-2 rounded-full bg-[#48B36A] shadow-[0_0_0_4px_rgba(72,179,106,0.12)]"
                 aria-hidden="true"
               />
               Available to work
