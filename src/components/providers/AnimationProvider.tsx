@@ -52,7 +52,7 @@ export function GlobalAnimationPauseControl() {
     if (prefersReducedMotion) return;
 
     const hero = document.querySelector("[data-hero-band]");
-    const footer = document.querySelector("footer");
+    const footer = document.querySelector('footer[aria-label="Site footer"]');
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         if (entry.target === hero) setHeroInView(entry.isIntersecting);

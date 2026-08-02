@@ -24,7 +24,7 @@ function PauseControlFixture({ showHero = true }: { showHero?: boolean }) {
   return (
     <AnimationProvider>
       {showHero && <div data-hero-band />}
-      <footer />
+      <footer aria-label="Site footer" />
       <GlobalAnimationPauseControl />
     </AnimationProvider>
   );
