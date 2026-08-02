@@ -51,4 +51,20 @@ describe("InterestCard", () => {
     expect(card).toHaveAttribute("aria-expanded", "true");
     expect(heart).toHaveAttribute("aria-pressed", "false");
   });
+
+  it("uses a 24px heart with a button-wide hover affordance", () => {
+    motionPreference.reduced = false;
+    const { rerender } = render(<InterestCard interest={interest} />);
+    const heart = screen.getByRole("button", { name: /Like this interest/ });
+    const icon = heart.querySelector("svg");
+
+    expect(heart).toHaveClass("group");
+    expect(icon).toHaveAttribute("width", "24");
+    expect(icon).toHaveAttribute("height", "24");
+    expect(icon).toHaveClass("group-hover:scale-110");
+
+    motionPreference.reduced = true;
+    rerender(<InterestCard interest={interest} />);
+    expect(heart.querySelector("svg")).not.toHaveClass("group-hover:scale-110");
+  });
 });

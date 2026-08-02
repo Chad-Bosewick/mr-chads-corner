@@ -104,7 +104,7 @@ export function InterestCard({ interest, className }: InterestCardProps) {
         aria-pressed={liked}
         aria-label={`Like this interest: ${interest.items.join(", ")}`}
         className={cn(
-          "absolute right-2 top-2 z-[2] flex h-11 w-11 items-center justify-center rounded-full",
+          "group absolute right-2 top-2 z-[2] flex h-11 w-11 items-center justify-center rounded-full",
           "outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#A43718]",
           "transition-colors duration-[var(--duration-fast)]",
           liked ? "text-[#A43718]" : "text-[#f5f2ee]",
@@ -112,14 +112,18 @@ export function InterestCard({ interest, className }: InterestCardProps) {
       >
         <svg
           viewBox="0 0 24 24"
-          width="20"
-          height="20"
+          width="24"
+          height="24"
           fill={liked ? `url(#${gradId})` : "none"}
           stroke="currentColor"
           strokeWidth="1.8"
           strokeLinejoin="round"
           aria-hidden="true"
-          className={cn("transition-transform", liked && !prefersReducedMotion && "animate-heart-pop")}
+          className={cn(
+            "transition-transform",
+            !prefersReducedMotion && "group-hover:scale-110",
+            liked && !prefersReducedMotion && "animate-heart-pop",
+          )}
         >
           <path d={HEART_PATH} />
         </svg>
