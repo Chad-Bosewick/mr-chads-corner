@@ -24,17 +24,28 @@ interface Vec {
 }
 
 interface Particle {
-  x: number;
-  y: number;
   ax: Vec | null;
   bx: Vec | null;
   phase: number;
+  driftX: number;
+  driftY: number;
 }
 
 type Phase = "holdA" | "morphAB" | "holdB" | "morphBA";
 
 function easeInOutCubic(t: number): number {
   return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+}
+
+function shuffleAnchors(anchors: Vec[], seed: number): Vec[] {
+  const shuffled = [...anchors];
+  let value = seed;
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    value = (value * 1_664_525 + 1_013_904_223) >>> 0;
+    const j = value % (i + 1);
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+  return shuffled;
 }
 
 /** Rasterize a name into the set of occupied grid-cell indices. */
@@ -94,10 +105,11 @@ function particleTarget(
   );
 
   if (from && to) {
+    const scramble = Math.sin(progress * Math.PI);
     const wobble = Math.sin(now * 0.015 + p.phase * Math.PI * 2) * 2.5 * progress;
     return {
-      x: from.x + (to.x - from.x) * progress + wobble,
-      y: from.y + (to.y - from.y) * progress,
+      x: from.x + (to.x - from.x) * progress + wobble + p.driftX * scramble,
+      y: from.y + (to.y - from.y) * progress + p.driftY * scramble,
       alpha: 1,
     };
   }
@@ -169,11 +181,13 @@ export function FooterAsciiBrand() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const prefersReducedMotion = useReducedMotion();
   const [mounted, setMounted] = useState(false);
+  const [hasDrawn, setHasDrawn] = useState(false);
+  const hasDrawnRef = useRef(false);
 
   useEffect(() => setMounted(true), []);
 
   useEffect(() => {
-    if (prefersReducedMotion) return;
+    if (!mounted || prefersReducedMotion) return;
     const wrapper = wrapperRef.current;
     const canvas = canvasRef.current;
     if (!wrapper || !canvas) return;
@@ -193,25 +207,31 @@ export function FooterAsciiBrand() {
 
     function build(w: number, h: number) {
       const cols = Math.ceil(w / CELL);
-      const rows = Math.ceil(h / CELL);
       const cellsA = sampleCells(WORDMARK_A, w, h);
       const cellsB = sampleCells(WORDMARK_B, w, h);
       if (cellsA.size === 0 && cellsB.size === 0) return;
 
-      const all = new Set<number>([...cellsA, ...cellsB]);
-      const list = [...all];
-      const step = Math.max(1, Math.ceil(list.length / PARTICLE_CAP));
+      const pointsFor = (cells: Set<number>) =>
+        [...cells].map((idx) => ({
+          x: (idx % cols) * CELL + CELL / 2,
+          y: Math.floor(idx / cols) * CELL + CELL / 2,
+        }));
+      const allA = pointsFor(cellsA);
+      const allB = pointsFor(cellsB);
+      const step = Math.max(1, Math.ceil(Math.max(allA.length, allB.length) / PARTICLE_CAP));
+      const anchorsA = shuffleAnchors(allA.filter((_, i) => i % step === 0), 17);
+      const anchorsB = shuffleAnchors(allB.filter((_, i) => i % step === 0), 53);
+      const count = Math.max(anchorsA.length, anchorsB.length);
       particles = [];
-      for (let i = 0; i < list.length; i += step) {
-        const idx = list[i];
-        const cx = (idx % cols) * CELL + CELL / 2;
-        const cy = Math.floor(idx / cols) * CELL + CELL / 2;
+      for (let i = 0; i < count; i++) {
+        const phase = ((i * 7) % 100) / 100;
+        const angle = phase * Math.PI * 2;
         particles.push({
-          x: cx,
-          y: cy,
-          ax: cellsA.has(idx) ? { x: cx, y: cy } : null,
-          bx: cellsB.has(idx) ? { x: cx, y: cy } : null,
-          phase: ((i * 7) % 100) / 100,
+          ax: anchorsA.length ? anchorsA[i % anchorsA.length] : null,
+          bx: anchorsB.length ? anchorsB[i % anchorsB.length] : null,
+          phase,
+          driftX: Math.cos(angle) * (10 + (i % 5) * 3),
+          driftY: Math.sin(angle) * (8 + (i % 4) * 3),
         });
       }
     }
@@ -260,6 +280,10 @@ export function FooterAsciiBrand() {
         activeContext.fillText("·", r.x, r.y);
       }
       activeContext.globalAlpha = 1;
+      if (!hasDrawnRef.current) {
+        hasDrawnRef.current = true;
+        setHasDrawn(true);
+      }
     }
 
     function tick(ts: number) {
@@ -271,14 +295,20 @@ export function FooterAsciiBrand() {
       rafId = requestAnimationFrame(tick);
     }
 
+    function startLoop(now: number) {
+      cancelAnimationFrame(rafId);
+      lastFrame = now - FRAME_INTERVAL;
+      draw(now);
+      rafId = requestAnimationFrame(tick);
+    }
+
     resize();
 
     const io = new IntersectionObserver(
       ([entry]) => {
         inView = entry.isIntersecting;
         if (inView) {
-          lastFrame = performance.now();
-          rafId = requestAnimationFrame(tick);
+          startLoop(performance.now());
         } else {
           cancelAnimationFrame(rafId);
         }
@@ -286,6 +316,10 @@ export function FooterAsciiBrand() {
       { threshold: 0 },
     );
     io.observe(activeWrapper);
+
+    const initialRect = activeWrapper.getBoundingClientRect();
+    inView = initialRect.bottom > 0 && initialRect.top < window.innerHeight;
+    if (inView) startLoop(performance.now());
 
     const ro = new ResizeObserver(() => resize());
     ro.observe(activeWrapper);
@@ -296,7 +330,7 @@ export function FooterAsciiBrand() {
       io.disconnect();
       ro.disconnect();
     };
-  }, [prefersReducedMotion]);
+  }, [mounted, prefersReducedMotion]);
 
   const showCanvas = mounted && !prefersReducedMotion;
 
@@ -306,8 +340,13 @@ export function FooterAsciiBrand() {
       aria-hidden="true"
     >
       {showCanvas ? (
-        <div ref={wrapperRef} className="h-full w-full">
-          <canvas ref={canvasRef} className="block h-full w-full" />
+        <div ref={wrapperRef} className="relative h-full w-full">
+          <StaticWordmark />
+          <canvas
+            ref={canvasRef}
+            className="absolute inset-0 block h-full w-full transition-opacity duration-[var(--duration-standard)]"
+            style={{ opacity: hasDrawn ? 1 : 0 }}
+          />
         </div>
       ) : (
         <StaticWordmark />

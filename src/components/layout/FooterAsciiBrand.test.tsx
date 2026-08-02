@@ -40,4 +40,41 @@ describe("FooterAsciiBrand", () => {
     render(<FooterAsciiBrand />);
     expect(document.querySelector("canvas")).not.toBeNull();
   });
+
+  it("keeps the static wordmark available until canvas drawing succeeds", () => {
+    render(<FooterAsciiBrand />);
+    expect(document.querySelector("canvas")).not.toBeNull();
+    expect(screen.getByText("Temi Adekunle")).toBeInTheDocument();
+  });
+
+  it("sizes the canvas once it mounts so the animation initialises", () => {
+    // Fake 2D context so the effect's resize()/build() actually run. jsdom
+    // has no canvas context; returning null is what let this regression slip.
+    HTMLCanvasElement.prototype.getContext = vi.fn(() => {
+      const data = new Uint8ClampedArray(1_000_000);
+      return {
+        setTransform: vi.fn(),
+        clearRect: vi.fn(),
+        fillText: vi.fn(),
+        getImageData: vi.fn(() => ({ data })),
+        set fillStyle(_v: string) {},
+        set font(_v: string) {},
+        set textAlign(_v: string) {},
+        set textBaseline(_v: string) {},
+        set globalAlpha(_v: number) {},
+      };
+    }) as never;
+    vi.stubGlobal("requestAnimationFrame", () => 1);
+    vi.stubGlobal("cancelAnimationFrame", () => {});
+
+    render(<FooterAsciiBrand />);
+
+    const canvas = document.querySelector("canvas");
+    expect(canvas).not.toBeNull();
+    // Before the fix the effect ran while the static SVG was still mounted,
+    // exited early on the null ref, and never re-ran: the canvas stayed at
+    // the jsdom default 300x150 with no inline style — i.e. blank forever.
+    expect(canvas!.style.width).not.toBe("");
+    expect(canvas!.width).not.toBe(300);
+  });
 });
