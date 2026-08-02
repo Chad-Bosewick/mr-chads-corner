@@ -7,6 +7,7 @@ import { PageShell, ReadingColumn } from "@/components/layout/PageShell";
 import { projects } from "@/content/projects";
 import Link from "next/link";
 import type { Metadata } from "next";
+import { buttonVariants } from "@/components/ui/buttonVariants";
 
 export const metadata: Metadata = {
   alternates: { canonical: "/" },
@@ -103,7 +104,7 @@ export default function HomePage() {
           </p>
           <Link
             href="/contact"
-            className="mt-6 inline-flex items-center gap-2 font-sans text-[clamp(1rem,2.5vw,1.125rem)] font-medium text-[#A43718] transition-colors duration-[var(--duration-fast)] hover:text-[#A43718]"
+            className={`mt-6 ${buttonVariants.tertiary}`}
           >
             Get in touch
             <svg

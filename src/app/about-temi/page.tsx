@@ -4,6 +4,7 @@ import { SkillsGrid } from "@/components/sections/SkillsGrid";
 import { InterestGrid } from "@/components/sections/InterestGrid";
 import type { InterestItem } from "@/components/sections/InterestCard";
 import { PageShell } from "@/components/layout/PageShell";
+import { buttonVariants } from "@/components/ui/buttonVariants";
 import type { Metadata } from "next";
 import {
   siFigma,
@@ -101,7 +102,7 @@ export default function AboutPage() {
             <a
               href="/downloads/temi-adekunle-cv.pdf"
               download
-              className="inline-flex items-center gap-2 rounded-lg border border-[#A43718]/30 bg-[#A43718]/5 px-4 py-2.5 font-sans text-sm font-medium text-[#A43718] transition-colors duration-[var(--duration-fast)] ease-[var(--ease-out)] hover:bg-[#A43718]/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#A43718]"
+              className={buttonVariants.secondary}
             >
               <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
                 <path d="M8 1v9.5M4 7l4 4 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { buttonVariants } from "@/components/ui/buttonVariants";
 
 const MAX_MESSAGE_LENGTH = 600;
 const EMAIL = "Addtemi270@gmail.com";
@@ -103,7 +104,7 @@ export function ContactForm() {
 
       <button
         type="submit"
-        className="inline-flex min-h-11 items-center justify-center rounded-full bg-[#151515] px-7 font-sans text-[#f5f2ee] transition-colors duration-[var(--duration-fast)] hover:bg-[#A43718] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#A43718]"
+        className={buttonVariants.primary}
       >
         Send message
       </button>
