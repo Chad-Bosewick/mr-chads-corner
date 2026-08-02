@@ -130,15 +130,19 @@ describe("CarouselImage", () => {
     expect(screen.getByLabelText(/Slide 2 of 3/)).toHaveAttribute("tabindex", "0");
   });
 
-  it("slides a single active pill to the current dot", () => {
+  it("morphs the focused dot into a pill without a sliding overlay", () => {
     vi.useFakeTimers();
     const { container } = render(<CarouselImage slides={slides} heading="Workflow" />);
-    const pill = container.querySelector(".carousel-pill") as HTMLElement;
-    expect(pill).not.toBeNull();
-    expect(pill.style.transform).toContain("translateX(2px)");
+    const indicators = container.querySelectorAll("[data-carousel-indicator]");
+
+    expect(container.querySelector(".carousel-pill")).toBeNull();
+    expect(indicators).toHaveLength(3);
+    expect(indicators[0]).toHaveClass("scale-x-100", "bg-[#151515]");
+    expect(indicators[1]).toHaveClass("scale-x-[0.4]", "bg-[#151515]/20");
 
     fireEvent.click(screen.getByLabelText("Next slide"));
-    expect(pill.style.transform).toContain("translateX(34px)");
+    expect(indicators[0]).toHaveClass("scale-x-[0.4]", "bg-[#151515]/20");
+    expect(indicators[1]).toHaveClass("scale-x-100", "bg-[#151515]");
 
     // The carousel intentionally ignores navigation during its 600ms slide
     // transition (see the existing "ignores navigation during transitions"
@@ -146,14 +150,16 @@ describe("CarouselImage", () => {
     // the interaction lock.
     act(() => vi.advanceTimersByTime(600));
     fireEvent.click(screen.getByLabelText("Next slide"));
-    expect(pill.style.transform).toContain("translateX(66px)");
+    expect(indicators[1]).toHaveClass("scale-x-[0.4]", "bg-[#151515]/20");
+    expect(indicators[2]).toHaveClass("scale-x-100", "bg-[#151515]");
   });
 
-  it("renders the pill without sliding under reduced motion", () => {
+  it("morphs the focused indicator without motion under reduced motion", () => {
     motionPreference.reduced = true;
     const { container } = render(<CarouselImage slides={slides} heading="Workflow" />);
-    const pill = container.querySelector(".carousel-pill") as HTMLElement;
-    expect(pill).toHaveClass("transition-none");
-    expect(pill.style.transform).toContain("translateX(2px)");
+    const indicators = container.querySelectorAll("[data-carousel-indicator]");
+
+    expect(indicators[0]).toHaveClass("transition-none", "scale-x-100");
+    expect(indicators[1]).toHaveClass("transition-none", "scale-x-[0.4]");
   });
 });

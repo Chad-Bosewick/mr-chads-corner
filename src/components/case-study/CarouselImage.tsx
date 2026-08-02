@@ -34,9 +34,6 @@ interface CarouselImageProps {
 const FRAME_WIDTH = 680;
 const FRAME_HEIGHT = 425;
 const DEFAULT_AUTO_ADVANCE_MS = 4000;
-/* Dot indicator track — each dot button is 24px wide with an 8px gap (gap-2). */
-const DOT_SPACING = 32;   // center-to-center distance between dots
-const DOT_PILL_OFFSET = 2; // keeps the 20px pill centered on the 24px dot button
 
 /**
  * CarouselImage — a fixed-frame carousel for case study sections.
@@ -271,38 +268,35 @@ export function CarouselImage({
             </svg>
           </button>
 
-          {/* Dot indicators — a single pill slides between equal dots */}
-          <div
-            className="relative flex"
-            style={{ width: `${slides.length * DOT_SPACING}px` }}
-          >
-            <div className="flex items-center">
-              {slides.map((_, i) => (
+          {/* Dot indicators — the selected dot itself expands into the pill */}
+          <div className="flex items-center gap-2">
+            {slides.map((_, i) => {
+              const isActive = i === activeIndex;
+
+              return (
                 <button
                   key={i}
                   onClick={() => goTo(i, i >= activeIndex ? "next" : "prev")}
                   className="group flex h-11 w-6 items-center justify-center rounded-sm"
                   aria-label={`Go to slide ${i + 1}`}
-                  aria-current={i === activeIndex ? "true" : undefined}
+                  aria-current={isActive ? "true" : undefined}
                 >
                   <span
-                    className="h-2 w-2 rounded-full bg-[#151515]/20 transition-colors duration-[var(--duration-fast)] group-hover:bg-[#151515]/40"
+                    aria-hidden="true"
+                    data-carousel-indicator
+                    className={cn(
+                      "h-2 w-5 origin-center rounded-full",
+                      prefersReducedMotion
+                        ? "transition-none"
+                        : "transition-[transform,background-color] duration-[var(--duration-standard)] ease-[var(--ease-fluid)]",
+                      isActive
+                        ? "scale-x-100 bg-[#151515]"
+                        : "scale-x-[0.4] bg-[#151515]/20 group-hover:bg-[#151515]/40",
+                    )}
                   />
                 </button>
-              ))}
-            </div>
-            <span
-              aria-hidden="true"
-              className={cn(
-                "carousel-pill pointer-events-none absolute top-1/2 h-2 w-5 rounded-full bg-[#151515]",
-                prefersReducedMotion
-                  ? "transition-none"
-                  : "transition-transform duration-[500ms] ease-[var(--ease-fluid)]",
-              )}
-              style={{
-                transform: `translateY(-50%) translateX(${activeIndex * DOT_SPACING + DOT_PILL_OFFSET}px)`,
-              }}
-            />
+              );
+            })}
           </div>
 
           {/* Next arrow */}
