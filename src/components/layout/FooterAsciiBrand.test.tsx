@@ -1,5 +1,5 @@
 import React from "react";
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { FooterAsciiBrand } from "./FooterAsciiBrand";
 
@@ -76,5 +76,45 @@ describe("FooterAsciiBrand", () => {
     // the jsdom default 300x150 with no inline style — i.e. blank forever.
     expect(canvas!.style.width).not.toBe("");
     expect(canvas!.width).not.toBe(300);
+  });
+
+  it("hands off from the static fallback after the first successful draw", async () => {
+    HTMLCanvasElement.prototype.getContext = vi.fn(() => ({
+      setTransform: vi.fn(),
+      clearRect: vi.fn(),
+      fillText: vi.fn(),
+      getImageData: vi.fn(() => ({
+        data: new Uint8ClampedArray([0, 0, 0, 255]),
+      })),
+      set fillStyle(_v: string) {},
+      set font(_v: string) {},
+      set textAlign(_v: string) {},
+      set textBaseline(_v: string) {},
+      set globalAlpha(_v: number) {},
+    })) as never;
+    vi.stubGlobal("requestAnimationFrame", () => 1);
+    vi.stubGlobal("cancelAnimationFrame", () => {});
+    vi.stubGlobal(
+      "IntersectionObserver",
+      class {
+        constructor(private callback: IntersectionObserverCallback) {}
+        observe(target: Element) {
+          this.callback(
+            [{ isIntersecting: true, target } as IntersectionObserverEntry],
+            this as never,
+          );
+        }
+        disconnect() {}
+      },
+    );
+
+    const { container } = render(<FooterAsciiBrand />);
+
+    await waitFor(() => {
+      expect(container.querySelector("[data-wordmark-fallback]")).toHaveStyle({
+        opacity: "0",
+      });
+      expect(container.querySelector("canvas")).toHaveStyle({ opacity: "1" });
+    });
   });
 });

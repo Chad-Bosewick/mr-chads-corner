@@ -341,7 +341,13 @@ export function FooterAsciiBrand() {
     >
       {showCanvas ? (
         <div ref={wrapperRef} className="relative h-full w-full">
-          <StaticWordmark />
+          <div
+            data-wordmark-fallback
+            className="absolute inset-0 transition-opacity duration-[var(--duration-standard)]"
+            style={{ opacity: hasDrawn ? 0 : 1 }}
+          >
+            <StaticWordmark />
+          </div>
           <canvas
             ref={canvasRef}
             className="absolute inset-0 block h-full w-full transition-opacity duration-[var(--duration-standard)]"
