@@ -90,7 +90,7 @@ export function ContactForm() {
           required
           rows={5}
           maxLength={MAX_MESSAGE_LENGTH}
-          className={`${fieldClass} resize-y`}
+          className={`${fieldClass} resize-y py-3`}
           placeholder="A quick hello and why you're reaching out…"
         />
       </div>

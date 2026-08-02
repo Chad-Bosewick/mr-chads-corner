@@ -1,5 +1,7 @@
+import React from "react";
+import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
-import { buildMailtoUrl } from "./ContactForm";
+import { buildMailtoUrl, ContactForm } from "./ContactForm";
 
 describe("buildMailtoUrl", () => {
   it("composes a name — role subject and a message body", () => {
@@ -26,5 +28,13 @@ describe("buildMailtoUrl", () => {
     const url = buildMailtoUrl("  Temi  ", "Founder", "Hi");
     const params = new URLSearchParams(url.split("?")[1]);
     expect(params.get("subject")).toBe("Temi — Founder");
+  });
+
+  it("adds vertical padding only to the message textarea", () => {
+    render(<ContactForm />);
+
+    expect(screen.getByLabelText("Message")).toHaveClass("py-3");
+    expect(screen.getByLabelText("Name")).not.toHaveClass("py-3");
+    expect(screen.getByLabelText("Role")).not.toHaveClass("py-3");
   });
 });
