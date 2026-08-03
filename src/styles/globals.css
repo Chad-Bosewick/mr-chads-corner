@@ -134,6 +134,31 @@ body {
   100% { transform: scale(1); }
 }
 
+@keyframes footer-texture-arrive {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* A painted-on dot field keeps the footer's atmosphere without a canvas loop. */
+.footer-dot-texture {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.2;
+  background-image: radial-gradient(
+    circle,
+    rgb(245 242 238 / 0.16) 0.55px,
+    transparent 0.75px
+  );
+  background-size: 6px 6px;
+}
+
 /* Motion-controlled animation utilities */
 @media (prefers-reduced-motion: no-preference) {
   .animate-slide-in-right {
@@ -152,6 +177,10 @@ body {
   .animate-heart-pop {
     animation: heart-pop 0.35s var(--ease-out);
   }
+
+  .footer-dot-texture {
+    animation: footer-texture-arrive 700ms var(--ease-out) both;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -159,6 +188,10 @@ body {
   .animate-fade-in-up {
     opacity: 1;
     transform: none;
+    animation: none;
+  }
+
+  .footer-dot-texture {
     animation: none;
   }
 }

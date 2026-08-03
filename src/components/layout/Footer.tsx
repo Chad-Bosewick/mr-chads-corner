@@ -2,7 +2,6 @@
 
 import { ContentRail } from "./PageShell";
 import { useCallback } from "react";
-import { FooterAscii } from "@/components/effects/FooterAscii";
 import { FooterAsciiBrand } from "./FooterAsciiBrand";
 
 const QUOTE = "The best designs don't just work. They communicate";
@@ -43,7 +42,7 @@ export function Footer() {
       className="relative z-10 bg-[#0F0F0F] py-16"
       aria-label="Site footer"
     >
-      <FooterAscii />
+      <div className="footer-dot-texture" aria-hidden="true" />
       <div className="relative z-[1]">
         <ContentRail>
           {/* Quote — hero statement */}
