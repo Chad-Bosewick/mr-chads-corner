@@ -150,13 +150,20 @@ body {
   position: absolute;
   inset: 0;
   pointer-events: none;
-  opacity: 0.2;
-  background-image: radial-gradient(
-    circle,
-    rgb(245 242 238 / 0.16) 0.55px,
-    transparent 0.75px
-  );
-  background-size: 6px 6px;
+  opacity: 0.38;
+  background-image:
+    linear-gradient(
+      to bottom,
+      #0F0F0F 0%,
+      rgb(15 15 15 / 0.97) 42%,
+      rgb(15 15 15 / 0) 100%
+    ),
+    radial-gradient(
+      circle,
+      rgb(245 242 238 / 0.16) 0.55px,
+      transparent 0.75px
+    );
+  background-size: 100% 100%, 6px 6px;
 }
 
 /* Motion-controlled animation utilities */
