@@ -472,6 +472,7 @@ function draw(
 export function useAsciiShader(
   canvasRef: RefObject<HTMLCanvasElement | null>,
   isPaused = false,
+  routeKey = "",
 ) {
   const prefersReducedMotion = useReducedMotion();
   const stateRef = useRef<ShaderState>({
@@ -498,6 +499,8 @@ export function useAsciiShader(
 
     const state = stateRef.current;
     let disposed = false;
+    let heroVisible = false;
+    let listenersAttached = false;
     const hero = document.querySelector<HTMLElement>("[data-hero-band]");
 
     const refreshHero = () => {
@@ -543,32 +546,57 @@ export function useAsciiShader(
       state.rafId = window.requestAnimationFrame(tick);
     };
 
-    resize();
-    refreshHero();
-    window.addEventListener("resize", resize);
-    window.addEventListener("scroll", refreshHero, { passive: true });
-    window.addEventListener("resize", refreshHero);
-
-    if (!prefersReducedMotion && !isPaused) {
-      window.addEventListener("pointermove", handlePointerMove, {
-        passive: true,
-      });
-      window.addEventListener("pointerleave", handlePointerLeave, {
-        passive: true,
-      });
+    const attachListeners = () => {
+      if (listenersAttached) return;
+      listenersAttached = true;
+      window.addEventListener("pointermove", handlePointerMove, { passive: true });
+      window.addEventListener("pointerleave", handlePointerLeave, { passive: true });
       window.addEventListener("pointerdown", handleTap, { passive: true });
-      state.rafId = window.requestAnimationFrame(tick);
-    }
+      window.addEventListener("scroll", refreshHero, { passive: true });
+    };
 
-    return () => {
-      disposed = true;
-      window.removeEventListener("resize", resize);
-      window.removeEventListener("scroll", refreshHero);
-      window.removeEventListener("resize", refreshHero);
+    const detachListeners = () => {
+      if (!listenersAttached) return;
+      listenersAttached = false;
       window.removeEventListener("pointermove", handlePointerMove);
       window.removeEventListener("pointerleave", handlePointerLeave);
       window.removeEventListener("pointerdown", handleTap);
-      window.cancelAnimationFrame(state.rafId);
+      window.removeEventListener("scroll", refreshHero);
     };
-  }, [canvasRef, prefersReducedMotion, isPaused]);
+
+    const stopAnimation = () => {
+      window.cancelAnimationFrame(state.rafId);
+      state.rafId = 0;
+      state.mouse.active = false;
+      detachListeners();
+    };
+
+    const startAnimation = () => {
+      if (prefersReducedMotion || isPaused || !heroVisible || state.rafId) return;
+      refreshHero();
+      attachListeners();
+      state.lastFrame = 0;
+      state.rafId = window.requestAnimationFrame(tick);
+    };
+
+    resize();
+    refreshHero();
+    window.addEventListener("resize", resize);
+    window.addEventListener("resize", refreshHero);
+
+    const observer = new IntersectionObserver(([entry]) => {
+      heroVisible = entry.isIntersecting;
+      if (heroVisible) startAnimation();
+      else stopAnimation();
+    });
+    if (hero) observer.observe(hero);
+
+    return () => {
+      disposed = true;
+      stopAnimation();
+      observer.disconnect();
+      window.removeEventListener("resize", resize);
+      window.removeEventListener("resize", refreshHero);
+    };
+  }, [canvasRef, prefersReducedMotion, isPaused, routeKey]);
 }
