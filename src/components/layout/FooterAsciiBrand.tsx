@@ -11,6 +11,10 @@ const VIEWBOX_HEIGHT = 340;
 const TEXT_WIDTH = 1092;
 const SEGMENT_COUNT = 13;
 const DWELL_MS = 2200;
+const SEGMENT_STAGGER_MS = 44;
+const EXIT_DURATION_MS = 120;
+const REPLACEMENT_GAP_MS = 36;
+const ENTER_DURATION_MS = 160;
 
 function WordMask({ id, name }: { id: string; name: string }) {
   return (
@@ -70,7 +74,7 @@ function SequencedWordmark() {
   const segmentWidth = VIEWBOX_WIDTH / SEGMENT_COUNT;
   const renderName = (name: string, maskId: string, active: boolean) =>
     Array.from({ length: SEGMENT_COUNT }, (_, index) => {
-      const delay = active ? index * 46 : (SEGMENT_COUNT - 1 - index) * 28;
+      const delay = index * SEGMENT_STAGGER_MS + (active ? EXIT_DURATION_MS + REPLACEMENT_GAP_MS : 0);
       return (
         <rect
           key={`${name}-${index}`}
@@ -82,9 +86,8 @@ function SequencedWordmark() {
           mask={`url(#${maskId})`}
           style={{
             opacity: active ? 1 : 0,
-            transform: `translateY(${active ? 0 : name === WORDMARK_A ? -8 : 8}px)`,
-            transitionProperty: "opacity, transform",
-            transitionDuration: "280ms",
+            transitionProperty: "opacity",
+            transitionDuration: `${active ? ENTER_DURATION_MS : EXIT_DURATION_MS}ms`,
             transitionTimingFunction: "cubic-bezier(0.2, 0, 0, 1)",
             transitionDelay: `${delay}ms`,
           }}

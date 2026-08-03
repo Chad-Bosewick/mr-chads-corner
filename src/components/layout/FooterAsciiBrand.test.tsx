@@ -45,6 +45,14 @@ describe("FooterAsciiBrand", () => {
     expect(document.querySelectorAll("circle")).toHaveLength(1);
   });
 
+  it("clears each segment before revealing its replacement", () => {
+    const { container } = render(<FooterAsciiBrand />);
+    const [temiFirst, , , , , , , , , , , , , chadFirst] = container.querySelectorAll("rect");
+
+    expect(temiFirst).toHaveStyle({ transitionDelay: "0ms", transitionDuration: "120ms" });
+    expect(chadFirst).toHaveStyle({ transitionDelay: "156ms", transitionDuration: "160ms" });
+  });
+
   it("changes wordmark state only while visible and unpaused", () => {
     vi.useFakeTimers();
     const { container, rerender } = render(<FooterAsciiBrand />);
