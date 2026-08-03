@@ -46,9 +46,13 @@ describe("FooterAsciiBrand", () => {
   });
 
   it("clears each segment before revealing its replacement", () => {
+    vi.useFakeTimers();
     const { container } = render(<FooterAsciiBrand />);
-    const [temiFirst, , , , , , , , , , , , , chadFirst] = container.querySelectorAll("rect");
+    act(() => intersectionCallback?.([{ isIntersecting: true } as IntersectionObserverEntry], {} as IntersectionObserver));
+    act(() => vi.advanceTimersByTime(2200));
 
+    // Resting state arms the visible name with enter-timing; only a fired swap reveals the true sequence.
+    const [temiFirst, , , , , , , , , , , , , chadFirst] = container.querySelectorAll("rect");
     expect(temiFirst).toHaveStyle({ transitionDelay: "0ms", transitionDuration: "120ms" });
     expect(chadFirst).toHaveStyle({ transitionDelay: "156ms", transitionDuration: "160ms" });
   });
